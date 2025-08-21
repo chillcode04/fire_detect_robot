@@ -1,0 +1,10 @@
+22:57:49 **** Incremental Build of configuration Debug for project micro_ros ****
+make -j8 all 
+docker pull microros/micro_ros_static_library_builder:kilted && docker run --rm -v /home/nqh/STM32CubeIDE/workspace_microros/micro_ros:/project --env MICROROS_LIBRARY_FOLDER=micro_ros_stm32cubemx_utils/microros_static_library_ide microros/micro_ros_static_library_builder:kilted
+permission denied while trying to connect to the Docker daemon socket at unix:///var/run/docker.sock: Post "http://%2Fvar%2Frun%2Fdocker.sock/v1.47/images/create?fromImage=microros%2Fmicro_ros_static_library_builder&tag=kilted": dial unix /var/run/docker.sock: connect: permission denied
+make[1]: *** [makefile:90: pre-build] Error 1
+make: *** [makefile:63: all] Error 2
+"make -j8 all" terminated with exit code 2. Build might be incomplete.
+
+22:57:50 Build Failed. 2 errors, 0 warnings. (took 120ms)
+
