@@ -77,7 +77,17 @@ void StartDefaultTask(void *argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int count = 0;
+std_msgs__msg__Int32 msg;
+void subscription_callback(const void * msgin)
+{
+  // Cast received message to used type
+  const std_msgs__msg__Int32 * msg = (const std_msgs__msg__Int32 *)msgin;
+  HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 
+  // Process message
+  printf("Received: %ld\n", msg->data);
+}
 /* USER CODE END 0 */
 
 /**
@@ -158,6 +168,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+	  count++;
   }
   /* USER CODE END 3 */
 }
@@ -262,6 +274,7 @@ static void MX_DMA_Init(void)
   */
 static void MX_GPIO_Init(void)
 {
+  GPIO_InitTypeDef GPIO_InitStruct = {0};
   /* USER CODE BEGIN MX_GPIO_Init_1 */
 
   /* USER CODE END MX_GPIO_Init_1 */
@@ -270,6 +283,16 @@ static void MX_GPIO_Init(void)
   __HAL_RCC_GPIOC_CLK_ENABLE();
   __HAL_RCC_GPIOH_CLK_ENABLE();
   __HAL_RCC_GPIOA_CLK_ENABLE();
+
+  /*Configure GPIO pin Output Level */
+  HAL_GPIO_WritePin(GPIOC, GPIO_PIN_13, GPIO_PIN_RESET);
+
+  /*Configure GPIO pin : PC13 */
+  GPIO_InitStruct.Pin = GPIO_PIN_13;
+  GPIO_InitStruct.Mode = GPIO_MODE_OUTPUT_PP;
+  GPIO_InitStruct.Pull = GPIO_NOPULL;
+  GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_LOW;
+  HAL_GPIO_Init(GPIOC, &GPIO_InitStruct);
 
   /* USER CODE BEGIN MX_GPIO_Init_2 */
 
@@ -297,7 +320,7 @@ void * microros_zero_allocate(size_t number_of_elements, size_t size_of_element,
 /* USER CODE END Header_StartDefaultTask */
 void StartDefaultTask(void *argument)
 {
-	  /* USER CODE BEGIN 5 */
+  /* USER CODE BEGIN 5 */
 
 	  // micro-ROS configuration
 
@@ -320,42 +343,70 @@ void StartDefaultTask(void *argument)
 	  }
 
 	  // micro-ROS app
+//
+//	  rcl_publisher_t publisher;
+	  rcl_subscription_t subscriber;
 
-	  rcl_publisher_t publisher;
-	  std_msgs__msg__Int32 msg;
 	  rclc_support_t support;
 	  rcl_allocator_t allocator;
 	  rcl_node_t node;
+//
+//	  allocator = rcl_get_default_allocator();
+//
+//	  //create init_options
+//	  rclc_support_init(&support, 0, NULL, &allocator);
+//
+//	  // create node
+//	  rclc_node_init_default(&node, "cubemx_node", "", &support);
+//
+//	  // create publisher
+//	  rclc_publisher_init_default(
+//	    &publisher,
+//	    &node,
+//	    ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
+//	    "cubemx_publisher");
+//
+//	  msg.data = 0;
+//
+//	  for(;;)
+//	  {
+//	    rcl_ret_t ret = rcl_publish(&publisher, &msg, NULL);
+//	    if (ret != RCL_RET_OK)
+//	    {
+//	      printf("Error publishing (line %d)\n", __LINE__);
+//	    }
+//
+//	    msg.data++;
+//	    osDelay(1);
+//	  }
 
-	  allocator = rcl_get_default_allocator();
 
-	  //create init_options
-	  rclc_support_init(&support, 0, NULL, &allocator);
+	 allocator = rcl_get_default_allocator();
+	// create init_options
+	rclc_support_init(&support, 0, NULL, &allocator);
 
-	  // create node
-	  rclc_node_init_default(&node, "cubemx_node", "", &support);
+	//create node
+	rclc_node_init_default(&node, "subscriber_node","", &support);
 
-	  // create publisher
-	  rclc_publisher_init_default(
-	    &publisher,
-	    &node,
-	    ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
-	    "cubemx_publisher");
+	//create subscriber
+	rclc_subscription_init_default(
+		&subscriber,
+		&node,
+		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
+		"cubemx_subscriber");
 
-	  msg.data = 0;
+	// create executor
+	rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
+	rclc_executor_init(&executor, &support.context, 1, &allocator);
 
-	  for(;;)
-	  {
-	    rcl_ret_t ret = rcl_publish(&publisher, &msg, NULL);
-	    if (ret != RCL_RET_OK)
-	    {
-	      printf("Error publishing (line %d)\n", __LINE__);
-	    }
-
-	    msg.data++;
-	    osDelay(1);
-	  }
-	  /* USER CODE END 5 */
+	rclc_executor_add_subscription(
+	  &executor, &subscriber, &msg,
+	  &subscription_callback, ON_NEW_DATA);
+	while(1) {
+		rclc_executor_spin(&executor);
+		vTaskDelay(pdMS_TO_TICKS(10));
+	}
+  /* USER CODE END 5 */
 }
 
 /**
