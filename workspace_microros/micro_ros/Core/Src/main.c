@@ -31,6 +31,7 @@
 #include <rmw_microros/rmw_microros.h>
 
 #include <std_msgs/msg/int32.h>
+#include <geometry_msgs/msg/twist.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -77,16 +78,19 @@ void StartDefaultTask(void *argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
-int count = 0;
-std_msgs__msg__Int32 msg;
-void subscription_callback(const void * msgin)
+geometry_msgs__msg__Twist msg_cmd_vel;
+double v;
+double omega;
+void cmd_vel_callback(const void * msgin)
 {
   // Cast received message to used type
-  const std_msgs__msg__Int32 * msg = (const std_msgs__msg__Int32 *)msgin;
+  const geometry_msgs__msg__Twist * msg = (const geometry_msgs__msg__Twist *)msgin;
+
+   v = msg->linear.x;
+   omega = msg->angular.z;
+
   HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
 
-  // Process message
-  printf("Received: %ld\n", msg->data);
 }
 /* USER CODE END 0 */
 
@@ -168,8 +172,6 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-
-	  count++;
   }
   /* USER CODE END 3 */
 }
@@ -380,28 +382,31 @@ void StartDefaultTask(void *argument)
 //	    osDelay(1);
 //	  }
 
+	// Initialize micro-ROS allocator
+	allocator = rcl_get_default_allocator();
 
-	 allocator = rcl_get_default_allocator();
 	// create init_options
 	rclc_support_init(&support, 0, NULL, &allocator);
 
 	//create node
-	rclc_node_init_default(&node, "subscriber_node","", &support);
+	rclc_node_init_default(&node, "stm32_node","", &support);
 
 	//create subscriber
 	rclc_subscription_init_default(
 		&subscriber,
 		&node,
-		ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
-		"cubemx_subscriber");
+		ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, Twist),
+		"/cmd_vel");
 
 	// create executor
 	rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
 	rclc_executor_init(&executor, &support.context, 1, &allocator);
 
+	// add subscriber callback to the executor
 	rclc_executor_add_subscription(
-	  &executor, &subscriber, &msg,
-	  &subscription_callback, ON_NEW_DATA);
+	  &executor, &subscriber, &msg_cmd_vel,
+	  &cmd_vel_callback, ON_NEW_DATA);
+
 	while(1) {
 		rclc_executor_spin(&executor);
 		vTaskDelay(pdMS_TO_TICKS(10));
