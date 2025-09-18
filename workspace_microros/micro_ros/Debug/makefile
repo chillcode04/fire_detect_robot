@@ -66,8 +66,8 @@ all:
 main-build: micro_ros.elf secondary-outputs
 
 # Tool invocations
-micro_ros.elf micro_ros.map: $(OBJS) $(USER_OBJS) /home/nqh/STM32CubeIDE/workspace_microros/micro_ros/STM32F411CEUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
-	arm-none-eabi-gcc -o "micro_ros.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/nqh/STM32CubeIDE/workspace_microros/micro_ros/STM32F411CEUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="micro_ros.map" -Wl,--gc-sections -static -L../micro_ros_stm32cubemx_utils/microros_static_library_ide/libmicroros --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+micro_ros.elf micro_ros.map: $(OBJS) $(USER_OBJS) /home/nqh/Fire_Alarm_Robot/workspace_microros/micro_ros/STM32F411CEUX_FLASH.ld makefile objects.list $(OPTIONAL_TOOL_DEPS)
+	arm-none-eabi-gcc -o "micro_ros.elf" @"objects.list" $(USER_OBJS) $(LIBS) -mcpu=cortex-m4 -T"/home/nqh/Fire_Alarm_Robot/workspace_microros/micro_ros/STM32F411CEUX_FLASH.ld" --specs=nosys.specs -Wl,-Map="micro_ros.map" -Wl,--gc-sections -static -L../micro_ros_stm32cubemx_utils/microros_static_library_ide/libmicroros --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 	@echo 'Finished building target: $@'
 	@echo ' '
 
@@ -87,7 +87,7 @@ clean:
 	-@echo ' '
 
 pre-build:
-	docker pull microros/micro_ros_static_library_builder:kilted && docker run --rm -v /home/nqh/STM32CubeIDE/workspace_microros/micro_ros:/project --env MICROROS_LIBRARY_FOLDER=micro_ros_stm32cubemx_utils/microros_static_library_ide microros/micro_ros_static_library_builder:kilted
+	docker pull microros/micro_ros_static_library_builder:kilted && docker run --rm -v /home/nqh/Fire_Alarm_Robot/workspace_microros/micro_ros:/project --env MICROROS_LIBRARY_FOLDER=micro_ros_stm32cubemx_utils/microros_static_library_ide microros/micro_ros_static_library_builder:kilted
 	-@echo ' '
 
 secondary-outputs: $(SIZE_OUTPUT) $(OBJDUMP_LIST)
