@@ -31,10 +31,6 @@
 #include <rmw_microros/rmw_microros.h>
 
 #include <std_msgs/msg/int32.h>
-#include <geometry_msgs/msg/twist.h>
-#include <nav_msgs/msg/odometry.h>
-#include <tf2_msgs/msg/tf_message.h>
-#include <geometry_msgs/msg/transform_stamped.h>
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -49,8 +45,7 @@
 
 /* Private macro -------------------------------------------------------------*/
 /* USER CODE BEGIN PM */
-#define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); return 1;}}
-#define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
+
 /* USER CODE END PM */
 
 /* Private variables ---------------------------------------------------------*/
@@ -82,21 +77,20 @@ void StartDefaultTask(void *argument);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+int count = 0;
 geometry_msgs__msg__Twist msg_cmd_vel;
-double v, omega;
-double R = 5, L = 20;
-double vl, vr;
 void cmd_vel_callback(const void * msgin)
 {
   // Cast received message to used type
   const geometry_msgs__msg__Twist * msg = (const geometry_msgs__msg__Twist *)msgin;
 
-   v = msg->linear.x;
-   omega = msg->angular.z;
+  float v = msg->linear.x;
+  float omega = msg->angular.z;
 
-   vl = (2 * v - omega * L) / (2 * R);
-   vr = (2 * v + omega * L) / (2 * R);
   HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);
+
+  // Process message
+  printf("Received: %ld\n", msg->data);
 }
 /* USER CODE END 0 */
 
@@ -178,6 +172,8 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
+
+	  count++;
   }
   /* USER CODE END 3 */
 }
@@ -326,58 +322,6 @@ void * microros_zero_allocate(size_t number_of_elements, size_t size_of_element,
   * @retval None
   */
 /* USER CODE END Header_StartDefaultTask */
-
-
-rcl_publisher_t odom_pub, tf_pub;
-rcl_subscription_t subscriber;
-
-rclc_support_t support;
-rcl_allocator_t allocator;
-rcl_node_t node;
-nav_msgs__msg__Odometry odom_msg;
-geometry_msgs__msg__TransformStamped tf;
-tf2_msgs__msg__TFMessage tf_msg;
-double x_pos = 0, y_pos = 0, z_pos = 0;
-double vx = 2;
-double ax = 0, yaw = 0, v_yaw = 0;
-void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
-{
-	(void) last_call_time;
-	if (timer != NULL) {
-		//Get time actual from agent ros to mcu
-        uint64_t time_ns = rmw_uros_epoch_nanos();
-        odom_msg.header.stamp.sec     = time_ns / 1000000000ULL;
-        odom_msg.header.stamp.nanosec = time_ns % 1000000000ULL;
-
-        // update data /odom
-        x_pos = x_pos + 0.05;
-        odom_msg.pose.pose.position.x = x_pos;
-        odom_msg.pose.pose.position.y = y_pos;
-        odom_msg.pose.pose.position.z = z_pos;
-        odom_msg.pose.pose.orientation.w = 1.0;
-        odom_msg.twist.twist.linear.x = 0.05;
-        odom_msg.twist.twist.angular.z = 0.0;
-
-        tf.header.stamp.sec = time_ns / 1000000000ULL;
-        tf.header.stamp.nanosec = time_ns % 1000000000ULL;
-
-        tf.transform.translation.x = x_pos;
-        tf.transform.translation.y = y_pos;
-        tf.transform.translation.z = z_pos;
-
-        tf.transform.rotation.x = 0.0;
-        tf.transform.rotation.y = 0.0;
-        tf.transform.rotation.z = 0.0;
-        tf.transform.rotation.w = 1.0;
-
-        tf_msg.transforms.data = &tf;
-        tf_msg.transforms.size = 1;
-        tf_msg.transforms.capacity = 1;
-		RCSOFTCHECK(rcl_publish(&odom_pub, &odom_msg, NULL));
-		RCSOFTCHECK(rcl_publish(&tf_pub, &tf_msg, NULL));
-	}
-}
-
 void StartDefaultTask(void *argument)
 {
   /* USER CODE BEGIN 5 */
@@ -402,70 +346,69 @@ void StartDefaultTask(void *argument)
 	      printf("Error on default allocators (line %d)\n", __LINE__);
 	  }
 
-	 // Initialize micro-ROS allocator
+	  // micro-ROS app
+//
+//	  rcl_publisher_t publisher;
+	  rcl_subscription_t subscriber;
+
+	  rclc_support_t support;
+	  rcl_allocator_t allocator;
+	  rcl_node_t node;
+//
+//	  allocator = rcl_get_default_allocator();
+//
+//	  //create init_options
+//	  rclc_support_init(&support, 0, NULL, &allocator);
+//
+//	  // create node
+//	  rclc_node_init_default(&node, "cubemx_node", "", &support);
+//
+//	  // create publisher
+//	  rclc_publisher_init_default(
+//	    &publisher,
+//	    &node,
+//	    ROSIDL_GET_MSG_TYPE_SUPPORT(std_msgs, msg, Int32),
+//	    "cubemx_publisher");
+//
+//	  msg.data = 0;
+//
+//	  for(;;)
+//	  {
+//	    rcl_ret_t ret = rcl_publish(&publisher, &msg, NULL);
+//	    if (ret != RCL_RET_OK)
+//	    {
+//	      printf("Error publishing (line %d)\n", __LINE__);
+//	    }
+//
+//	    msg.data++;
+//	    osDelay(1);
+//	  }
+
+
 	 allocator = rcl_get_default_allocator();
+	// create init_options
+	rclc_support_init(&support, 0, NULL, &allocator);
 
-	 // create init_options
-	 rclc_support_init(&support, 0, NULL, &allocator);
-
-	 //create node_sub
-	 rclc_node_init_default(&node, "stm32_node","", &support);
-
-	  // create publisher
-	 rclc_publisher_init_default(
-	    &odom_pub,
-	    &node,
-		ROSIDL_GET_MSG_TYPE_SUPPORT(nav_msgs, msg, Odometry),
-	    "/odom_data");
-
+	//create node
+	rclc_node_init_default(&node, "stm32_node","", &support);
 
 	//create subscriber
 	rclc_subscription_init_default(
 		&subscriber,
 		&node,
 		ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, Twist),
-		"/cmd_vel");
-
-	rclc_publisher_init_default(
-	    &tf_pub,
-	    &node,
-	    ROSIDL_GET_MSG_TYPE_SUPPORT(tf2_msgs, msg, TFMessage),
-	    "/tf");
-	// create timer
-	rcl_timer_t timer;
-	const unsigned int timer_timeout = 1000;
-	RCCHECK(rclc_timer_init_default(
-		&timer,
-		&support,
-		RCL_MS_TO_NS(timer_timeout),
-		timer_callback));
+		"cmd_vel");
 
 	// create executor
 	rclc_executor_t executor = rclc_executor_get_zero_initialized_executor();
-	rclc_executor_init(&executor, &support.context, 2, &allocator);
+	rclc_executor_init(&executor, &support.context, 1, &allocator);
 
-	// add subscriber callback to the executor
-	rclc_executor_add_subscription(&executor, &subscriber, &msg_cmd_vel, &cmd_vel_callback, ON_NEW_DATA);
-	// add time for executor
-	rclc_executor_add_timer(&executor, &timer);
-
-    if (rmw_uros_sync_session(10) != RMW_RET_OK) {
-        printf("Time sync failed\n");
-    }
-
-    // init data odom
-    odom_msg.header.frame_id.data = "odom";
-    odom_msg.child_frame_id.data  = "base_link";
-    odom_msg.pose.pose.position.x = x_pos;
-    odom_msg.pose.pose.position.y = y_pos;
-    odom_msg.pose.pose.position.z = z_pos;
-    odom_msg.pose.pose.orientation.w = 1.0;
-
-    tf.header.frame_id.data = "odom";
-    tf.child_frame_id.data = "base_link";
+	rclc_executor_add_subscription(
+	  &executor, &subscriber, &msg_cmd_vel,
+	  &cmd_vel_callback, ON_NEW_DATA);
 	while(1) {
-		rclc_executor_spin_some(&executor, RCL_MS_TO_NS(10));
-		vTaskDelay(pdMS_TO_TICKS(1));
+		rclc_executor_spin(&executor);
+		vTaskDelay(pdMS_TO_TICKS(10));
 	}
   /* USER CODE END 5 */
 }
