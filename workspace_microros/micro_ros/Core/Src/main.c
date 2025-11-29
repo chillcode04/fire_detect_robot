@@ -108,11 +108,17 @@ int main(void)
   MX_TIM3_Init();
   MX_TIM4_Init();
   MX_USART1_UART_Init();
-  MX_I2C1_Init();
+//  MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
+<<<<<<< HEAD
   MPU6050_Init();
   MPU6050_CalibGz(&MPU6050,1000);
   MPU6050.Gz_bias = -0.275;
+=======
+  //reset_I2C();
+//  MPU6050_Init();
+//  MPU6050_CalibGz(&MPU6050,1000);
+>>>>>>> 76c0c43 (test speed max 0.8)
   HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_Encoder_Start_IT(&htim2, TIM_CHANNEL_ALL); //LEFT
   HAL_TIM_Encoder_Start_IT(&htim4, TIM_CHANNEL_ALL); //RIGHT
@@ -126,8 +132,13 @@ int main(void)
 	// --- Base timer for control loop (interrupt) ---
     // Khoi tao 2 banh xe
     //80 3 0
+<<<<<<< HEAD
   Motor_Init(&Left_motor, LEFT,GPIOB, GPIO_PIN_12, GPIOB, GPIO_PIN_13,&htim3, TIM_CHANNEL_1, &htim2, 80, 3, 0);
   Motor_Init(&Right_motor,RIGHT,GPIOB, GPIO_PIN_14, GPIOB, GPIO_PIN_15,&htim3, TIM_CHANNEL_2, &htim4, 85, 3, 0);
+=======
+  Motor_Init(&Left_motor, LEFT,GPIOB, GPIO_PIN_12, GPIOB, GPIO_PIN_13,&htim3, TIM_CHANNEL_1, &htim2, 85, 3, 0);
+  Motor_Init(&Right_motor,RIGHT,GPIOB, GPIO_PIN_14, GPIOB, GPIO_PIN_15,&htim3, TIM_CHANNEL_2, &htim4, 90, 3, 0);
+>>>>>>> 76c0c43 (test speed max 0.8)
 
    // Khoi tao PID
   PID(&LPID, &(pLeft->cur_speed),&(pLeft->Pid_output),&(pLeft->target_speed),pLeft->kp, pLeft->ki, pLeft->kd,_PID_P_ON_E, _PID_CD_DIRECT);

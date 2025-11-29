@@ -314,7 +314,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 //void Task_control(void *argument)
 //{
 //    TickType_t start_tick = xTaskGetTickCount();
-//    const TickType_t run_ticks = pdMS_TO_TICKS(5000);  // 5s
+//    const TickType_t run_ticks = pdMS_TO_TICKS(3000);  // 5s
 //
 //    while (1)
 //    {
@@ -338,10 +338,10 @@ void Task_control(void *argument)
     while (1)
     {
     	cnt_control++;
+        Drive_VW(&Left_motor, &Right_motor, v_mps, omega);
         vl_cur_mps = vl_cur * ((2.0f * 3.1415926f * WHEEL_RADIUS_M)) / 60;   // rpm -> mps
         vr_cur_mps = vr_cur * ((2.0f * 3.1415926f * WHEEL_RADIUS_M)) / 60;   // rpm -> mps
-        Drive_VW(&Left_motor, &Right_motor, v_mps, omega);
-        vTaskDelay(pdMS_TO_TICKS(10));  // mỗi 100ms in 1 lần
+        vTaskDelay(pdMS_TO_TICKS(1));  // mỗi 100ms in 1 lần
     }
 }
 
