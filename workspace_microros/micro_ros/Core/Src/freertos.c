@@ -220,6 +220,7 @@ void Task_pub_sub(void *argument)
     int counter = 0;
 	while(1) {
 		cnt_pub++;
+		rclc_executor_spin_some(&executor, RCL_MS_TO_NS(10));
 		if (++counter % 100 == 0) {
 		    rmw_uros_sync_session(100);
 		}
@@ -243,7 +244,6 @@ void Task_IMU(void *argument)
   while(1) {
 	  MPU6050_Read_All(&MPU6050);
 	  cnt_imu++;
-	  PID_Compute(&YPID);
 	  vTaskDelay(pdMS_TO_TICKS(1));
   }
   /* USER CODE END Task_IMU */
@@ -263,54 +263,19 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 	  Motor_GetSpeed(&Right_motor);
 	  vr_cur = Right_motor.cur_speed;
 	  PID_Compute(&RPID);
-      Motor_SetPwm(&Left_motor , &MPU6050);
-      Motor_SetPwm(&Right_motor , &MPU6050);
-
+      Motor_SetPwm(&Left_motor);
+      Motor_SetPwm(&Right_motor);
    }
 }
-//uint64_t elapsed = 0;
-//uint64_t now_ns, start_time_ns;
-/* USER CODE END Header_Task_control */
-//void Task_control(void *argument)
-//{
-//  /* USER CODE BEGIN Task_control */
-//  /* Infinite loop */
-//  start_time_ns = rmw_uros_epoch_nanos();
-//  const double RUN_TIME = 5.0;
-//  while(1) {
-//		cnt_control++;
-//        now_ns = rmw_uros_epoch_nanos();
-//        elapsed = (now_ns - start_time_ns) / 1e9;;
-//
-//        if (elapsed >= RUN_TIME) {
-//    		Drive_VW(&Left_motor, &Right_motor, 0, 0);
-//        }
-//		Drive_VW(&Left_motor, &Right_motor, v_mps, omega);
-//		vTaskDelay(pdMS_TO_TICKS(1));
-//  }
-//  /* USER CODE END Task_control */
-//}
-TickType_t elapsed;
+/* USER CODE END Task_control */
 void Task_control(void *argument)
 {
-    TickType_t start_tick = xTaskGetTickCount();
-    const TickType_t run_ticks = pdMS_TO_TICKS(5000);  // 5s
 
     while (1)
     {
-//        elapsed = xTaskGetTickCount() - start_tick;
-//
-//        if (elapsed < run_ticks)
-//        {
-//            Drive_VW(&Left_motor, &Right_motor, v_mps, omega);
-//        }
-//        else
-//        {
-//            Drive_VW(&Left_motor, &Right_motor, 0, 0);
-//        }
     	cnt_control++;
         Drive_VW(&Left_motor, &Right_motor, v_mps, omega);
-        vTaskDelay(pdMS_TO_TICKS(100));  // mỗi 100ms in 1 lần
+        vTaskDelay(pdMS_TO_TICKS(1));
     }
 }
 

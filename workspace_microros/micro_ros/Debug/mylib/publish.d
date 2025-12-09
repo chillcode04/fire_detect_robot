@@ -243,6 +243,7 @@ mylib/publish.o: ../mylib/publish.c ../mylib/publish.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
  /home/nqh/Fire_Alarm_Robot/workspace_microros/micro_ros/mylib/mpu6050.h \
+ /home/nqh/Fire_Alarm_Robot/workspace_microros/micro_ros/mylib/mpu6050.h \
  /home/nqh/Fire_Alarm_Robot/workspace_microros/micro_ros/mylib/pid.h
 ../mylib/publish.h:
 ../micro_ros_stm32cubemx_utils/microros_static_library_ide/libmicroros/include/rcl/rcl.h:
@@ -489,5 +490,6 @@ mylib/publish.o: ../mylib/publish.c ../mylib/publish.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
+/home/nqh/Fire_Alarm_Robot/workspace_microros/micro_ros/mylib/mpu6050.h:
 /home/nqh/Fire_Alarm_Robot/workspace_microros/micro_ros/mylib/mpu6050.h:
 /home/nqh/Fire_Alarm_Robot/workspace_microros/micro_ros/mylib/pid.h:

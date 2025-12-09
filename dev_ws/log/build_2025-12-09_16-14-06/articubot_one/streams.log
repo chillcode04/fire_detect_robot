@@ -1,0 +1,71 @@
+[0.010s] Invoking command in '/home/nqh/Fire_Alarm_Robot/dev_ws/build/articubot_one': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/nqh/Fire_Alarm_Robot/dev_ws/src/articubot_one -DCMAKE_INSTALL_PREFIX=/home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one
+[0.199s] -- The C compiler identification is GNU 11.4.0
+[0.392s] -- The CXX compiler identification is GNU 11.4.0
+[0.404s] -- Detecting C compiler ABI info
+[0.479s] -- Detecting C compiler ABI info - done
+[0.488s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.488s] -- Detecting C compile features
+[0.489s] -- Detecting C compile features - done
+[0.494s] -- Detecting CXX compiler ABI info
+[0.586s] -- Detecting CXX compiler ABI info - done
+[0.594s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.595s] -- Detecting CXX compile features
+[0.595s] -- Detecting CXX compile features - done
+[0.604s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.759s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.872s] -- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.967s] -- Added test 'copyright' to check source files copyright and LICENSE
+[0.970s] -- Added test 'flake8' to check Python code syntax and style conventions
+[0.971s] -- Added test 'lint_cmake' to check CMake code style
+[0.972s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[0.974s] -- Added test 'xmllint' to check XML markup files
+[0.975s] -- Configuring done
+[0.978s] -- Generating done
+[0.979s] -- Build files have been written to: /home/nqh/Fire_Alarm_Robot/dev_ws/build/articubot_one
+[0.986s] Invoked command in '/home/nqh/Fire_Alarm_Robot/dev_ws/build/articubot_one' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/nqh/Fire_Alarm_Robot/dev_ws/src/articubot_one -DCMAKE_INSTALL_PREFIX=/home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one
+[0.987s] Invoking command in '/home/nqh/Fire_Alarm_Robot/dev_ws/build/articubot_one': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/nqh/Fire_Alarm_Robot/dev_ws/build/articubot_one -- -j8 -l8
+[1.019s] Invoked command in '/home/nqh/Fire_Alarm_Robot/dev_ws/build/articubot_one' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/nqh/Fire_Alarm_Robot/dev_ws/build/articubot_one -- -j8 -l8
+[1.029s] Invoking command in '/home/nqh/Fire_Alarm_Robot/dev_ws/build/articubot_one': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/nqh/Fire_Alarm_Robot/dev_ws/build/articubot_one
+[1.035s] -- Install configuration: ""
+[1.035s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/config
+[1.036s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/config/nav2_params.yaml
+[1.036s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/config/nav2_params_modify.yaml
+[1.036s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/config/view_bot_rviz.rviz
+[1.036s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/config/efk.yamal
+[1.037s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/config/mapper_params_online_async.yaml
+[1.037s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/config/empty.yaml
+[1.037s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/config/nav2_params_origin.yaml
+[1.037s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/description
+[1.038s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/description/gazebo_control.xacro
+[1.038s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/description/lidar.xacro
+[1.038s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/description/robot.urdf.xacro
+[1.038s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/description/camera.xacro
+[1.038s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/description/robot_core.xacro
+[1.038s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/description/inertial_macros.xacro
+[1.038s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/launch
+[1.038s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/launch/rsp_simulator.launch.py
+[1.038s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/launch/rsp.launch.py
+[1.038s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/launch/localization_launch.py
+[1.038s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/launch/navigation_launch_modify.py
+[1.039s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/launch/launch_sim.launch.py
+[1.039s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/launch/online_async_launch.py
+[1.039s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/launch/navigation_launch.py
+[1.039s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/worlds
+[1.039s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/worlds/empty.world
+[1.039s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/worlds/obstacles.world
+[1.039s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/ament_index/resource_index/package_run_dependencies/articubot_one
+[1.039s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/ament_index/resource_index/parent_prefix_path/articubot_one
+[1.040s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/environment/ament_prefix_path.sh
+[1.040s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/environment/ament_prefix_path.dsv
+[1.040s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/environment/path.sh
+[1.040s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/environment/path.dsv
+[1.040s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/local_setup.bash
+[1.040s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/local_setup.sh
+[1.040s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/local_setup.zsh
+[1.041s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/local_setup.dsv
+[1.041s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/package.dsv
+[1.041s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/ament_index/resource_index/packages/articubot_one
+[1.041s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/cmake/articubot_oneConfig.cmake
+[1.041s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/cmake/articubot_oneConfig-version.cmake
+[1.041s] -- Installing: /home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one/share/articubot_one/package.xml
+[1.043s] Invoked command in '/home/nqh/Fire_Alarm_Robot/dev_ws/build/articubot_one' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/nqh/Fire_Alarm_Robot/dev_ws/build/articubot_one

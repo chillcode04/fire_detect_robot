@@ -28,7 +28,9 @@ mylib/Motor.o: ../mylib/Motor.c ../mylib/Motor.h ../mylib/pid.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_pwr_ex.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h \
  ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h \
- ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h
+ ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h \
+ ../mylib/mpu6050.h \
+ /home/nqh/Fire_Alarm_Robot/workspace_microros/micro_ros/mylib/mpu6050.h
 ../mylib/Motor.h:
 ../mylib/pid.h:
 ../Core/Inc/main.h:
@@ -62,3 +64,5 @@ mylib/Motor.o: ../mylib/Motor.c ../mylib/Motor.h ../mylib/pid.h \
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_tim_ex.h:
 ../Drivers/STM32F4xx_HAL_Driver/Inc/stm32f4xx_hal_uart.h:
+../mylib/mpu6050.h:
+/home/nqh/Fire_Alarm_Robot/workspace_microros/micro_ros/mylib/mpu6050.h:

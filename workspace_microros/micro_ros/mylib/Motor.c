@@ -69,7 +69,7 @@ void Motor_GetSpeed(Motor *_motor)
 	}
 	
 	
-void Motor_SetPwm(Motor *motor  , MPU6050_t *DataStruct)
+void Motor_SetPwm(Motor *motor)
 	{
 		if(motor->Pid_output > 999)
 		{
@@ -81,7 +81,7 @@ void Motor_SetPwm(Motor *motor  , MPU6050_t *DataStruct)
 		}
 	if(motor->id == RIGHT)
 		{
-		if (motor->target_speed == 0 && fabs(vr_cur_mps) < OFFSET)
+		if (motor->target_speed == 0 && fabs(vr_cur_mps) < 0.2)
 		{
 			motor->Pid_output = 0;
 		}
@@ -100,18 +100,10 @@ void Motor_SetPwm(Motor *motor  , MPU6050_t *DataStruct)
 				HAL_GPIO_WritePin(motor->IN1_Port, motor->IN1_Pin, GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(motor->IN2_Port, motor->IN2_Pin, GPIO_PIN_RESET);
 			}
-			motor->htim_pwm->Instance->CCR2 =(uint32_t)((fabs)(motor->Pid_output) + (fabs)(DataStruct->OutputYaw));
+			motor->htim_pwm->Instance->CCR2 =(uint32_t)((fabs)(motor->Pid_output));
 			}
 		else if (motor->id == LEFT)
 		{
-			if (motor->target_speed == 0  && fabs(vl_cur_mps) < OFFSET)
-			{
-				motor->Pid_output = 0;
-			}
-			if (motor->target_speed == 0 )
-			{
-				motor->Pid_output = 0;
-			}
 			if(motor->Pid_output > 0)
 			{
 				HAL_GPIO_WritePin(motor->IN1_Port, motor->IN1_Pin,GPIO_PIN_RESET);
@@ -127,7 +119,7 @@ void Motor_SetPwm(Motor *motor  , MPU6050_t *DataStruct)
 				HAL_GPIO_WritePin(motor->IN1_Port, motor->IN1_Pin, GPIO_PIN_RESET);
 				HAL_GPIO_WritePin(motor->IN2_Port, motor->IN2_Pin, GPIO_PIN_RESET);
 			}
-			motor->htim_pwm->Instance->CCR1 =(uint32_t)((fabs)(motor->Pid_output)-(fabs)(DataStruct->OutputYaw));
+			motor->htim_pwm->Instance->CCR1 =(uint32_t)((fabs)(motor->Pid_output));
 
 		}
 

@@ -113,7 +113,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //reset_I2C();
   MPU6050_Init();
-  MPU6050_CalibGz(&MPU6050,2000);
+  MPU6050_CalibGz(&MPU6050,1000);
+//  MPU6050.Gz_bias = -0.275;
   HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_Encoder_Start_IT(&htim2, TIM_CHANNEL_ALL); //LEFT
   HAL_TIM_Encoder_Start_IT(&htim4, TIM_CHANNEL_ALL); //RIGHT
@@ -141,12 +142,6 @@ int main(void)
   PID_SetSampleTime(&RPID, 10);
   PID_SetOutputLimits(&RPID, -999, 999);
 
-
-  MPU6050.TargetYaw = 0;
-  PID(&YPID, &(MPU6050.Yaw), &(MPU6050.OutputYaw) , &(MPU6050.TargetYaw), 5 , 0.5 , 0 ,_PID_P_ON_E, _PID_CD_DIRECT);
-  PID_SetMode(&RPID, _PID_MODE_AUTOMATIC);
-  PID_SetSampleTime(&RPID, 10);
-  PID_SetOutputLimits(&RPID, -90, 90);
 
   /* USER CODE END 2 */
 

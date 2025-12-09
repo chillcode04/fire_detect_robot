@@ -111,7 +111,7 @@ extern float vL, vR;
 
 	void Motor_SetDir(Motor *motor);
 	void PWM_limit(Motor *motor);
-	void Motor_SetPwm(Motor *motor, MPU6050_t *DataStruct);
+	void Motor_SetPwm(Motor *motor	);
 	void Motor_stop(Motor *motor);
 	void Motor_SetTarget(Motor*motor, double target);
 
