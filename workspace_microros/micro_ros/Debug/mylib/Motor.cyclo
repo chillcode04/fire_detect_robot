@@ -1,5 +1,5 @@
 ../mylib/Motor.c:14:7:Motor_Init	1
 ../mylib/Motor.c:61:6:Motor_GetSpeed	2
-../mylib/Motor.c:72:6:Motor_SetPwm	11
-../mylib/Motor.c:127:6:Motor_SetTarget	1
-../mylib/Motor.c:132:6:Drive_VW	5
+../mylib/Motor.c:72:6:Motor_SetPwm	13
+../mylib/Motor.c:131:6:Motor_SetTarget	1
+../mylib/Motor.c:136:6:Drive_VW	5
