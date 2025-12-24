@@ -16,7 +16,7 @@
 #define WHEEL_RADIUS_M   0.034f
 
 
-#define TRACK_WIDTH_M    0.28f
+#define TRACK_WIDTH_M    0.21f
 extern float vL, vR;
 
 

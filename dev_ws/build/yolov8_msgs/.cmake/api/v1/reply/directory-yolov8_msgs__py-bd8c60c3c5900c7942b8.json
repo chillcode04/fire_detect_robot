@@ -1,0 +1,14 @@
+{
+	"backtraceGraph" : 
+	{
+		"commands" : [],
+		"files" : [],
+		"nodes" : []
+	},
+	"installers" : [],
+	"paths" : 
+	{
+		"build" : "yolov8_msgs__py",
+		"source" : "/home/nqh/Fire_Alarm_Robot/dev_ws/build/yolov8_msgs/yolov8_msgs__py"
+	}
+}

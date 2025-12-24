@@ -274,6 +274,8 @@ void Task_control(void *argument)
     while (1)
     {
     	cnt_control++;
+        vl_cur_mps = vl_cur * ((2.0f * 3.1415926f * WHEEL_RADIUS_M)) / 60;   // rpm -> mps
+        vr_cur_mps = vr_cur * ((2.0f * 3.1415926f * WHEEL_RADIUS_M)) / 60;   // rpm -> mps
         Drive_VW(&Left_motor, &Right_motor, v_mps, omega);
         vTaskDelay(pdMS_TO_TICKS(1));
     }

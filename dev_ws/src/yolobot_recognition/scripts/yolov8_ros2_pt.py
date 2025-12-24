@@ -1,4 +1,6 @@
 #!/usr/bin/env python3
+import json
+from std_msgs.msg import String
 
 from ultralytics import YOLO
 import rclpy
@@ -20,7 +22,7 @@ class Camera_subscriber(Node):
     def __init__(self):
         super().__init__('camera_subscriber')
 
-        self.model = YOLO('/home/nqh/dt_yolo/src/yolobot_recognition/scripts/yolov8n.pt')
+        self.model = YOLO('/home/nqh/dt_yolo/src/yolobot_recognition/scripts/my_model.pt')
 
         self.yolov8_inference = Yolov8Inference()
 
@@ -32,16 +34,18 @@ class Camera_subscriber(Node):
 
         self.yolov8_pub = self.create_publisher(Yolov8Inference, "/Yolov8_Inference", 1)
         self.img_pub = self.create_publisher(Image, "/inference_result", 1)
+        self.app_result_pub = self.create_publisher(String, '/camera_result', 10)
 
     def camera_callback(self, data):
 
         np_arr = np.frombuffer(data.data, np.uint8)
         img = cv2.imdecode(np_arr, cv2.IMREAD_COLOR)
-        results = self.model(img)
+        results = self.model(img, conf=0.1)
 
         self.yolov8_inference.header.frame_id = "inference"
         self.yolov8_inference.header.stamp = camera_subscriber.get_clock().now().to_msg()
-
+        app_detected_objects = []
+        
         for r in results:
             boxes = r.boxes
             for box in boxes:
@@ -55,7 +59,24 @@ class Camera_subscriber(Node):
                 self.inference_result.right = int(b[3])
                 self.yolov8_inference.yolov8_inference.append(self.inference_result)
 
-            #camera_subscriber.get_logger().info(f"{self.yolov8_inference}")
+            obj_info = {
+                "class": self.inference_result.class_name,
+                "score": float(box.conf),
+                "box": [int(b[0]), int(b[1]), int(b[2]), int(b[3])] # [top, left, bottom, right]
+            }
+            app_detected_objects.append(obj_info)
+
+        if len(app_detected_objects) > 0:
+            json_msg = String()
+            data_to_send = {
+                "status": "detected",
+                "count": len(app_detected_objects),
+                "objects": app_detected_objects
+            }
+            json_msg.data = json.dumps(data_to_send)
+            self.app_result_pub.publish(json_msg)
+        else:
+            pass
 
         annotated_frame = results[0].plot()
         img_msg = bridge.cv2_to_imgmsg(annotated_frame)  
