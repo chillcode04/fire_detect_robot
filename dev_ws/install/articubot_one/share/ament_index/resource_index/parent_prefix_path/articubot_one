@@ -1,1 +1,1 @@
-/home/nqh/Fire_Alarm_Robot/dev_ws/install/yolov8_msgs:/home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition:/home/nqh/Fire_Alarm_Robot/dev_ws/install/articubot_one:/home/nqh/yolobot/install/yolov8_msgs:/home/nqh/yolobot/install/yolobot_recognition:/home/nqh/yolobot/install/yolobot_gazebo:/home/nqh/yolobot/install/yolobot_description:/home/nqh/yolobot/install/yolobot_control:/opt/ros/humble
+/home/nqh/Fire_Alarm_Robot/dev_ws/build/articubot_one/ament_cmake_index/share/ament_index/resource_index/parent_prefix_path/articubot_one

@@ -1,2 +1,1 @@
-# this drop notebooks from GitHub language stats
-*.ipynb linguist-vendored
+/home/nqh/Fire_Alarm_Robot/dev_ws/src/yolobot_recognition/scripts/.gitattributes

@@ -1,1 +1,1 @@
-prepend-non-duplicate-if-exists;PATH;bin
+/home/nqh/Fire_Alarm_Robot/dev_ws/build/yolov8_msgs/ament_cmake_environment_hooks/path.dsv

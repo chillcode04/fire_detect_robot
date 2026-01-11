@@ -1,0 +1,58 @@
+[0.013s] Invoking command in '/home/nqh/Fire_Alarm_Robot/dev_ws/build/yolobot_recognition': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/nqh/Fire_Alarm_Robot/dev_ws/src/yolobot_recognition -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition
+[0.192s] -- The C compiler identification is GNU 11.4.0
+[0.382s] -- The CXX compiler identification is GNU 11.4.0
+[0.390s] -- Detecting C compiler ABI info
+[0.489s] -- Detecting C compiler ABI info - done
+[0.511s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.511s] -- Detecting C compile features
+[0.512s] -- Detecting C compile features - done
+[0.517s] -- Detecting CXX compiler ABI info
+[0.601s] -- Detecting CXX compiler ABI info - done
+[0.610s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.610s] -- Detecting CXX compile features
+[0.611s] -- Detecting CXX compile features - done
+[0.613s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.771s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.848s] -- Override CMake install command with custom implementation using symlinks instead of copying resources
+[0.891s] -- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[0.989s] -- Added test 'copyright' to check source files copyright and LICENSE
+[0.992s] -- Added test 'flake8' to check Python code syntax and style conventions
+[0.993s] -- Added test 'lint_cmake' to check CMake code style
+[0.994s] -- Added test 'pep257' to check Python code against some of the docstring style conventions in PEP 257
+[0.996s] -- Added test 'xmllint' to check XML markup files
+[0.998s] -- Configuring done
+[1.001s] -- Generating done
+[1.003s] -- Build files have been written to: /home/nqh/Fire_Alarm_Robot/dev_ws/build/yolobot_recognition
+[1.009s] Invoked command in '/home/nqh/Fire_Alarm_Robot/dev_ws/build/yolobot_recognition' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake /home/nqh/Fire_Alarm_Robot/dev_ws/src/yolobot_recognition -DAMENT_CMAKE_SYMLINK_INSTALL=1 -DCMAKE_INSTALL_PREFIX=/home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition
+[1.011s] Invoking command in '/home/nqh/Fire_Alarm_Robot/dev_ws/build/yolobot_recognition': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/nqh/Fire_Alarm_Robot/dev_ws/build/yolobot_recognition -- -j8 -l8
+[1.053s] Invoked command in '/home/nqh/Fire_Alarm_Robot/dev_ws/build/yolobot_recognition' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --build /home/nqh/Fire_Alarm_Robot/dev_ws/build/yolobot_recognition -- -j8 -l8
+[1.055s] Invoking command in '/home/nqh/Fire_Alarm_Robot/dev_ws/build/yolobot_recognition': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/nqh/Fire_Alarm_Robot/dev_ws/build/yolobot_recognition
+[1.061s] -- Install configuration: ""
+[1.062s] -- Execute custom install script
+[1.062s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition//scripts/.dockerignore
+[1.070s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition//scripts/.gitattributes
+[1.078s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition//scripts/.gitignore
+[1.086s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition//scripts/best.pt
+[1.093s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition//scripts/yolov8_ros2_pt.py
+[1.101s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition//scripts/yolov8_ros2_subscriber.py
+[1.108s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition//scripts/yolov8n.pt
+[1.116s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition//launch/launch_yolov8.launch.py
+[1.124s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/lib/yolobot_recognition/yolov8_ros2_pt.py
+[1.131s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/lib/yolobot_recognition/yolov8_ros2_subscriber.py
+[1.140s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/lib/yolobot_recognition/launch_yolov8.launch.py
+[1.148s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/ament_index/resource_index/package_run_dependencies/yolobot_recognition
+[1.155s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/ament_index/resource_index/parent_prefix_path/yolobot_recognition
+[1.163s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition/environment/ament_prefix_path.sh
+[1.171s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition/environment/ament_prefix_path.dsv
+[1.179s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition/environment/path.sh
+[1.186s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition/environment/path.dsv
+[1.194s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition/local_setup.bash
+[1.206s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition/local_setup.sh
+[1.210s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition/local_setup.zsh
+[1.218s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition/local_setup.dsv
+[1.227s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition/package.dsv
+[1.236s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/ament_index/resource_index/packages/yolobot_recognition
+[1.244s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition/cmake/yolobot_recognitionConfig.cmake
+[1.251s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition/cmake/yolobot_recognitionConfig-version.cmake
+[1.259s] -- Symlinking: /home/nqh/Fire_Alarm_Robot/dev_ws/install/yolobot_recognition/share/yolobot_recognition/package.xml
+[1.269s] Invoked command in '/home/nqh/Fire_Alarm_Robot/dev_ws/build/yolobot_recognition' returned '0': CMAKE_PREFIX_PATH=/opt/ros/humble /usr/bin/cmake --install /home/nqh/Fire_Alarm_Robot/dev_ws/build/yolobot_recognition

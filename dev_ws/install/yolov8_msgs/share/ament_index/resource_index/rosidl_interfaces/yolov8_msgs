@@ -1,4 +1,1 @@
-msg/InferenceResult.idl
-msg/InferenceResult.msg
-msg/Yolov8Inference.idl
-msg/Yolov8Inference.msg
+/home/nqh/Fire_Alarm_Robot/dev_ws/build/yolov8_msgs/ament_cmake_index/share/ament_index/resource_index/rosidl_interfaces/yolov8_msgs

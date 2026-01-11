@@ -1,5 +1,1 @@
-string class_name
-int64 top
-int64 left
-int64 bottom
-int64 right
+/home/nqh/Fire_Alarm_Robot/dev_ws/src/yolov8_msgs/msg/InferenceResult.msg

@@ -150,7 +150,7 @@
         </visual>
         <collision>
             <geometry>
-                <sphere radius="0.05"/>
+                <sphere radius="0.035"/>
             </geometry>
         </collision>
         <xacro:inertial_sphere mass="0.1" radius="0.03">

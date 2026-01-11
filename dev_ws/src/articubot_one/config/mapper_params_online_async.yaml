@@ -14,12 +14,12 @@ slam_toolbox:
     base_frame: base_link #base_footprint
     scan_topic: /scan
     use_map_saver: true
-    mode:  mapping #localization #mapping # #mapping
+    mode:  localization  #mapping # #mapping
 
     # if you'd like to immediately start continuing a map at a given pose
     # or at the dock, but they are mutually exclusive, if pose is given
     # will use pose
-    #map_file_name: /home/nqh/Fire_Alarm_Robot/dev_ws/map_home
+    map_file_name: /home/nqh/Fire_Alarm_Robot/dev_ws/map_serial
     #map_start_pose: [-1.81749,-3.08607, 0.0]
     #(-1.81749, -3.08607, 0)
     #map_start_at_dock: true #true nếu mỗi lần bật robot ở 1 vị trí

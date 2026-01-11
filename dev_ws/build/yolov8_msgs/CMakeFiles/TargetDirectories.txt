@@ -9,7 +9,7 @@
 /home/nqh/Fire_Alarm_Robot/dev_ws/build/yolov8_msgs/CMakeFiles/yolov8_msgs__rosidl_typesupport_c.dir
 /home/nqh/Fire_Alarm_Robot/dev_ws/build/yolov8_msgs/CMakeFiles/yolov8_msgs__rosidl_typesupport_introspection_cpp.dir
 /home/nqh/Fire_Alarm_Robot/dev_ws/build/yolov8_msgs/CMakeFiles/yolov8_msgs__rosidl_typesupport_cpp.dir
-/home/nqh/Fire_Alarm_Robot/dev_ws/build/yolov8_msgs/CMakeFiles/ament_cmake_python_copy_yolov8_msgs.dir
+/home/nqh/Fire_Alarm_Robot/dev_ws/build/yolov8_msgs/CMakeFiles/ament_cmake_python_symlink_yolov8_msgs.dir
 /home/nqh/Fire_Alarm_Robot/dev_ws/build/yolov8_msgs/CMakeFiles/ament_cmake_python_build_yolov8_msgs_egg.dir
 /home/nqh/Fire_Alarm_Robot/dev_ws/build/yolov8_msgs/CMakeFiles/yolov8_msgs__rosidl_generator_py.dir
 /home/nqh/Fire_Alarm_Robot/dev_ws/build/yolov8_msgs/CMakeFiles/yolov8_msgs__rosidl_typesupport_fastrtps_c__pyext.dir

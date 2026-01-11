@@ -1,2 +1,1 @@
-std_msgs/Header header
-InferenceResult[] yolov8_inference
+/home/nqh/Fire_Alarm_Robot/dev_ws/src/yolov8_msgs/msg/Yolov8Inference.msg

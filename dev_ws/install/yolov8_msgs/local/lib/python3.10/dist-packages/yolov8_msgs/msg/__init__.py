@@ -1,2 +1,1 @@
-from yolov8_msgs.msg._inference_result import InferenceResult  # noqa: F401
-from yolov8_msgs.msg._yolov8_inference import Yolov8Inference  # noqa: F401
+/home/nqh/Fire_Alarm_Robot/dev_ws/build/yolov8_msgs/rosidl_generator_py/yolov8_msgs/msg/__init__.py
