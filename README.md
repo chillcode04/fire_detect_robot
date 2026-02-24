@@ -1,10 +1,10 @@
 # Autonomous Mobile Robot for 2D Mapping and Early Fire Detection in Supermarkets
 ## System Architecture:
 ![image alt](https://github.com/nqhuy18/fire_detect_robot/blob/9c88bdfb7ecd231aa9ada13e656199b3361bbb53/Screenshot%20from%202026-02-24%2019-37-21.png)
-- Controller: Raspberry Pi 4 & STM32/ESP32
+- Controller: Raspberry Pi 4 & STM32F4
 - Sensors: RPLiDAR, MPU6050 (IMU), USB Camera, Hall Effect Encoders
 - Actuators: DC Geared Motors with L298N/Driver
-- Framework: ROS2 (Humble/Foxy), OpenCV, YOLO
+- Framework: ROS2, OpenCV, YOLOv11
 ## Functions:
 - 2D environment mapping
 - Path planning for inspection
@@ -17,7 +17,7 @@
 - **huy**: Focused on combining sensor data for indoor localization, generating 2D maps, and planning patrol routes.
 - **long**: Handles sensor reading, motor control, and designing the mobile app for robot monitoring.
 - **hai**: Implements early fire detection, including detecting broken wires, smoke, and aging electrical outlets.
-## 2D SLAM & Mapping && Navigation
+## 2D SLAM & Mapping & Navigation
 - High-precision environment reconstruction using LiDAR to generate accurate occupancy grid maps
 ![image alt](https://github.com/nqhuy18/fire_detect_robot/blob/9c88bdfb7ecd231aa9ada13e656199b3361bbb53/Screenshot%20from%202026-02-24%2019-37-59.png)
 - Real-time pose estimation with sub-centimeter accuracy through sensor fusion.
