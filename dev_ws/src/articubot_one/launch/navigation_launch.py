@@ -80,7 +80,7 @@ def generate_launch_description():
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
         'use_sim_time',
-        default_value='true',
+        default_value='false',
         description='Use simulation (Gazebo) clock if true')
 
     declare_params_file_cmd = DeclareLaunchArgument(
@@ -181,15 +181,56 @@ def generate_launch_description():
                 arguments=['--ros-args', '--log-level', log_level],
                 remappings=remappings +
                         [('cmd_vel', 'cmd_vel_nav'), ('cmd_vel_smoothed', 'cmd_vel')]),
+            # Node(
+            #     package='nav2_map_server',
+            #     executable='map_server',
+            #     name='map_server',
+            #     output='screen',
+            #     respawn=use_respawn,
+            #     respawn_delay=2.0,
+            #     parameters=[configured_params],   # trong params phải có map_server.yaml_filename
+            #     arguments=['--ros-args', '--log-level', log_level],
+            #     remappings=remappings,
+            # ),
+            # Node(
+            #     package='nav2_amcl',
+            #     executable='amcl',
+            #     name='amcl',
+            #     output='screen',
+            #     respawn=use_respawn,
+            #     respawn_delay=2.0,
+            #     parameters=[configured_params],
+            #     arguments=['--ros-args', '--log-level', log_level],
+            #     remappings=remappings,
+            # ),
             Node(
                 package='nav2_lifecycle_manager',
                 executable='lifecycle_manager',
-                name='lifecycle_manager_navigation',
+                name='lifecycle_manager_localization',
                 output='screen',
-                arguments=['--ros-args', '--log-level', log_level],
-                parameters=[{'use_sim_time': use_sim_time},
-                            {'autostart': autostart},
-                            {'node_names': lifecycle_nodes}]),
+                # parameters=[{
+                #     'use_sim_time': use_sim_time,
+                #     'autostart': True,
+                #     'node_names': ['map_server', 'amcl', 'controller_server',
+                #     'planner_server',
+                #     'smoother_server',
+                #     'behavior_server',
+                #     'bt_navigator',
+                #     'waypoint_follower',
+                #     'velocity_smoother']
+                # }],
+                parameters=[{
+                    'use_sim_time': use_sim_time,
+                    'autostart': True,
+                    'node_names': ['controller_server',
+                    'planner_server',
+                    'smoother_server',
+                    'behavior_server',
+                    'bt_navigator',
+                    'waypoint_follower',
+                    'velocity_smoother']
+                }],               
+            ),
         ]
     )
 
@@ -240,13 +281,31 @@ def generate_launch_description():
                 parameters=[configured_params],
                 remappings=remappings +
                            [('cmd_vel', 'cmd_vel_nav'), ('cmd_vel_smoothed', 'cmd_vel')]),
+            # ComposableNode(
+            #     package='nav2_map_server',
+            #     plugin='nav2_map_server::MapServer',
+            #     name='map_server',
+            #     parameters=[configured_params],
+            #     remappings=remappings
+            # ),
+
+            # ComposableNode(
+            #     package='nav2_amcl',
+            #     plugin='nav2_amcl::AmclNode',
+            #     name='amcl',
+            #     parameters=[configured_params],
+            #     remappings=remappings
+            # ),
             ComposableNode(
                 package='nav2_lifecycle_manager',
                 plugin='nav2_lifecycle_manager::LifecycleManager',
-                name='lifecycle_manager_navigation',
-                parameters=[{'use_sim_time': use_sim_time,
-                             'autostart': autostart,
-                             'node_names': lifecycle_nodes}]),
+                name='lifecycle_manager_localization',
+                parameters=[{
+                    'use_sim_time': use_sim_time,
+                    'autostart': True,
+                    'node_names': ['map_server', 'amcl']
+                }],
+            ),
         ],
     )
 

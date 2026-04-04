@@ -1,0 +1,260 @@
+[0.008s] Invoking command in '/home/nqh/dt_yolo/build/yolov8_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/nqh/dt_yolo/src/yolov8_msgs -DCMAKE_INSTALL_PREFIX=/home/nqh/dt_yolo/install/yolov8_msgs
+[0.046s] -- The C compiler identification is GNU 11.4.0
+[0.090s] -- The CXX compiler identification is GNU 11.4.0
+[0.096s] -- Detecting C compiler ABI info
+[0.146s] -- Detecting C compiler ABI info - done
+[0.153s] -- Check for working C compiler: /usr/bin/cc - skipped
+[0.153s] -- Detecting C compile features
+[0.153s] -- Detecting C compile features - done
+[0.155s] -- Detecting CXX compiler ABI info
+[0.214s] -- Detecting CXX compiler ABI info - done
+[0.220s] -- Check for working CXX compiler: /usr/bin/c++ - skipped
+[0.220s] -- Detecting CXX compile features
+[0.221s] -- Detecting CXX compile features - done
+[0.223s] -- Found ament_cmake: 1.3.12 (/opt/ros/humble/share/ament_cmake/cmake)
+[0.351s] -- Found Python3: /usr/bin/python3 (found version "3.10.12") found components: Interpreter 
+[0.442s] -- Found std_msgs: 4.9.0 (/opt/ros/humble/share/std_msgs/cmake)
+[0.473s] -- Found rosidl_generator_c: 3.1.7 (/opt/ros/humble/share/rosidl_generator_c/cmake)
+[0.478s] -- Found rosidl_adapter: 3.1.7 (/opt/ros/humble/share/rosidl_adapter/cmake)
+[0.486s] -- Found rosidl_generator_cpp: 3.1.7 (/opt/ros/humble/share/rosidl_generator_cpp/cmake)
+[0.497s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.511s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.535s] -- Found rosidl_default_generators: 1.2.0 (/opt/ros/humble/share/rosidl_default_generators/cmake)
+[0.768s] -- Found ament_cmake_ros: 0.10.0 (/opt/ros/humble/share/ament_cmake_ros/cmake)
+[1.065s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[1.178s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[1.196s] -- Found PythonInterp: /usr/bin/python3 (found suitable version "3.10.12", minimum required is "3.6") 
+[1.198s] -- Found python_cmake_module: 0.10.0 (/opt/ros/humble/share/python_cmake_module/cmake)
+[1.218s] -- Found PythonLibs: /usr/lib/x86_64-linux-gnu/libpython3.10.so (found suitable version "3.10.12", minimum required is "3.5") 
+[1.219s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[1.219s] -- Using PYTHON_INCLUDE_DIRS: /usr/include/python3.10
+[1.219s] -- Using PYTHON_LIBRARIES: /usr/lib/x86_64-linux-gnu/libpython3.10.so
+[1.236s] -- Found PythonExtra: .so  
+[1.278s] -- Found ament_lint_auto: 0.12.14 (/opt/ros/humble/share/ament_lint_auto/cmake)
+[1.297s] -- Added test 'copyright' to check source files copyright and LICENSE
+[1.299s] -- Added test 'lint_cmake' to check CMake code style
+[1.299s] -- Added test 'xmllint' to check XML markup files
+[1.301s] -- Configuring done
+[1.326s] -- Generating done
+[1.335s] -- Build files have been written to: /home/nqh/dt_yolo/build/yolov8_msgs
+[1.341s] Invoked command in '/home/nqh/dt_yolo/build/yolov8_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake /home/nqh/dt_yolo/src/yolov8_msgs -DCMAKE_INSTALL_PREFIX=/home/nqh/dt_yolo/install/yolov8_msgs
+[1.342s] Invoking command in '/home/nqh/dt_yolo/build/yolov8_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/nqh/dt_yolo/build/yolov8_msgs -- -j8 -l8
+[1.370s] [  2%] [34m[1mGenerating C code for ROS interfaces[0m
+[1.378s] [  5%] [34m[1mGenerating C++ code for ROS interfaces[0m
+[1.384s] [  5%] Built target ament_cmake_python_copy_yolov8_msgs
+[1.595s] running egg_info
+[1.595s] creating yolov8_msgs.egg-info
+[1.595s] writing yolov8_msgs.egg-info/PKG-INFO
+[1.595s] writing dependency_links to yolov8_msgs.egg-info/dependency_links.txt
+[1.595s] writing top-level names to yolov8_msgs.egg-info/top_level.txt
+[1.596s] writing manifest file 'yolov8_msgs.egg-info/SOURCES.txt'
+[1.597s] reading manifest file 'yolov8_msgs.egg-info/SOURCES.txt'
+[1.598s] writing manifest file 'yolov8_msgs.egg-info/SOURCES.txt'
+[1.636s] [  5%] Built target ament_cmake_python_build_yolov8_msgs_egg
+[1.651s] [  5%] Built target yolov8_msgs__cpp
+[1.651s] [  7%] [32mBuilding C object CMakeFiles/yolov8_msgs__rosidl_generator_c.dir/rosidl_generator_c/yolov8_msgs/msg/detail/inference_result__functions.c.o[0m
+[1.651s] [ 10%] [32mBuilding C object CMakeFiles/yolov8_msgs__rosidl_generator_c.dir/rosidl_generator_c/yolov8_msgs/msg/detail/yolov8_inference__functions.c.o[0m
+[1.658s] [ 17%] [34m[1mGenerating C++ type support for eProsima Fast-RTPS[0m
+[1.658s] [ 17%] [34m[1mGenerating C++ introspection for ROS interfaces[0m
+[1.658s] [ 17%] [34m[1mGenerating C++ type support dispatch for ROS interfaces[0m
+[1.705s] [ 20%] [32m[1mLinking C shared library libyolov8_msgs__rosidl_generator_c.so[0m
+[1.733s] [ 20%] Built target yolov8_msgs__rosidl_generator_c
+[1.742s] [ 23%] [34m[1mGenerating C type support for eProsima Fast-RTPS[0m
+[1.744s] [ 28%] [34m[1mGenerating C introspection for ROS interfaces[0m
+[1.744s] [ 28%] [34m[1mGenerating C type support dispatch for ROS interfaces[0m
+[1.894s] [ 33%] [32mBuilding CXX object CMakeFiles/yolov8_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/yolov8_msgs/msg/inference_result__type_support.cpp.o[0m
+[1.895s] [ 33%] [32mBuilding CXX object CMakeFiles/yolov8_msgs__rosidl_typesupport_cpp.dir/rosidl_typesupport_cpp/yolov8_msgs/msg/yolov8_inference__type_support.cpp.o[0m
+[1.949s] [ 38%] [32mBuilding CXX object CMakeFiles/yolov8_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/yolov8_msgs/msg/detail/dds_fastrtps/yolov8_inference__type_support.cpp.o[0m
+[1.949s] [ 38%] [32mBuilding CXX object CMakeFiles/yolov8_msgs__rosidl_typesupport_fastrtps_cpp.dir/rosidl_typesupport_fastrtps_cpp/yolov8_msgs/msg/detail/dds_fastrtps/inference_result__type_support.cpp.o[0m
+[2.049s] [ 41%] [32mBuilding CXX object CMakeFiles/yolov8_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/yolov8_msgs/msg/detail/inference_result__type_support.cpp.o[0m
+[2.136s] [ 43%] [32mBuilding CXX object CMakeFiles/yolov8_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/yolov8_msgs/msg/inference_result__type_support.cpp.o[0m
+[2.176s] [ 46%] [32mBuilding CXX object CMakeFiles/yolov8_msgs__rosidl_typesupport_c.dir/rosidl_typesupport_c/yolov8_msgs/msg/yolov8_inference__type_support.cpp.o[0m
+[2.201s] [ 48%] [32mBuilding C object CMakeFiles/yolov8_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/yolov8_msgs/msg/detail/inference_result__type_support.c.o[0m
+[2.208s] [ 51%] [32mBuilding CXX object CMakeFiles/yolov8_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/yolov8_msgs/msg/detail/inference_result__type_support_c.cpp.o[0m
+[2.215s] [ 53%] [32m[1mLinking CXX shared library libyolov8_msgs__rosidl_typesupport_c.so[0m
+[2.248s] [ 56%] [32mBuilding C object CMakeFiles/yolov8_msgs__rosidl_typesupport_introspection_c.dir/rosidl_typesupport_introspection_c/yolov8_msgs/msg/detail/yolov8_inference__type_support.c.o[0m
+[2.269s] [ 56%] Built target yolov8_msgs__rosidl_typesupport_c
+[2.270s] [ 58%] [32mBuilding CXX object CMakeFiles/yolov8_msgs__rosidl_typesupport_fastrtps_c.dir/rosidl_typesupport_fastrtps_c/yolov8_msgs/msg/detail/yolov8_inference__type_support_c.cpp.o[0m
+[2.275s] [ 61%] [32m[1mLinking CXX shared library libyolov8_msgs__rosidl_typesupport_cpp.so[0m
+[2.281s] [ 64%] [32mBuilding CXX object CMakeFiles/yolov8_msgs__rosidl_typesupport_introspection_cpp.dir/rosidl_typesupport_introspection_cpp/yolov8_msgs/msg/detail/yolov8_inference__type_support.cpp.o[0m
+[2.297s] [ 66%] [32m[1mLinking C shared library libyolov8_msgs__rosidl_typesupport_introspection_c.so[0m
+[2.329s] [ 66%] Built target yolov8_msgs__rosidl_typesupport_cpp
+[2.337s] [ 66%] Built target yolov8_msgs__rosidl_typesupport_introspection_c
+[2.505s] [ 69%] [32m[1mLinking CXX shared library libyolov8_msgs__rosidl_typesupport_fastrtps_cpp.so[0m
+[2.578s] [ 69%] Built target yolov8_msgs__rosidl_typesupport_fastrtps_cpp
+[2.634s] [ 71%] [32m[1mLinking CXX shared library libyolov8_msgs__rosidl_typesupport_fastrtps_c.so[0m
+[2.697s] [ 71%] Built target yolov8_msgs__rosidl_typesupport_fastrtps_c
+[2.748s] [ 74%] [32m[1mLinking CXX shared library libyolov8_msgs__rosidl_typesupport_introspection_cpp.so[0m
+[2.802s] [ 74%] Built target yolov8_msgs__rosidl_typesupport_introspection_cpp
+[2.817s] [ 74%] Built target yolov8_msgs
+[2.832s] [ 76%] [34m[1mGenerating Python code for ROS interfaces[0m
+[3.156s] [ 76%] Built target yolov8_msgs__py
+[3.171s] [ 82%] [32mBuilding C object CMakeFiles/yolov8_msgs__rosidl_generator_py.dir/rosidl_generator_py/yolov8_msgs/msg/_yolov8_inference_s.c.o[0m
+[3.171s] [ 82%] [32mBuilding C object CMakeFiles/yolov8_msgs__rosidl_generator_py.dir/rosidl_generator_py/yolov8_msgs/msg/_inference_result_s.c.o[0m
+[3.254s] [ 84%] [32m[1mLinking C shared library rosidl_generator_py/yolov8_msgs/libyolov8_msgs__rosidl_generator_py.so[0m
+[3.285s] [ 84%] Built target yolov8_msgs__rosidl_generator_py
+[3.300s] [ 92%] [32mBuilding C object CMakeFiles/yolov8_msgs__rosidl_typesupport_c__pyext.dir/rosidl_generator_py/yolov8_msgs/_yolov8_msgs_s.ep.rosidl_typesupport_c.c.o[0m
+[3.300s] [ 92%] [32mBuilding C object CMakeFiles/yolov8_msgs__rosidl_typesupport_introspection_c__pyext.dir/rosidl_generator_py/yolov8_msgs/_yolov8_msgs_s.ep.rosidl_typesupport_introspection_c.c.o[0m
+[3.300s] [ 92%] [32mBuilding C object CMakeFiles/yolov8_msgs__rosidl_typesupport_fastrtps_c__pyext.dir/rosidl_generator_py/yolov8_msgs/_yolov8_msgs_s.ep.rosidl_typesupport_fastrtps_c.c.o[0m
+[3.380s] [100%] [32m[1mLinking C shared library rosidl_generator_py/yolov8_msgs/yolov8_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so[0m
+[3.380s] [100%] [32m[1mLinking C shared library rosidl_generator_py/yolov8_msgs/yolov8_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so[0m
+[3.380s] [100%] [32m[1mLinking C shared library rosidl_generator_py/yolov8_msgs/yolov8_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so[0m
+[3.409s] [100%] Built target yolov8_msgs__rosidl_typesupport_fastrtps_c__pyext
+[3.409s] [100%] Built target yolov8_msgs__rosidl_typesupport_c__pyext
+[3.409s] [100%] Built target yolov8_msgs__rosidl_typesupport_introspection_c__pyext
+[3.418s] Invoked command in '/home/nqh/dt_yolo/build/yolov8_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --build /home/nqh/dt_yolo/build/yolov8_msgs -- -j8 -l8
+[3.419s] Invoking command in '/home/nqh/dt_yolo/build/yolov8_msgs': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/nqh/dt_yolo/build/yolov8_msgs
+[3.425s] -- Install configuration: ""
+[3.425s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/ament_index/resource_index/rosidl_interfaces/yolov8_msgs
+[3.425s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs
+[3.426s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg
+[3.426s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail
+[3.426s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__type_support.h
+[3.426s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__functions.h
+[3.426s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__functions.h
+[3.426s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__functions.c
+[3.426s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__struct.h
+[3.426s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__struct.h
+[3.426s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__type_support.h
+[3.426s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__functions.c
+[3.426s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/rosidl_generator_c__visibility_control.h
+[3.426s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/yolov8_inference.h
+[3.426s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/inference_result.h
+[3.427s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/environment/library_path.sh
+[3.427s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/environment/library_path.dsv
+[3.427s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_generator_c.so
+[3.428s] -- Set runtime path of "/home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_generator_c.so" to ""
+[3.428s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs
+[3.428s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg
+[3.428s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail
+[3.428s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__rosidl_typesupport_fastrtps_c.h
+[3.429s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__rosidl_typesupport_fastrtps_c.h
+[3.429s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/rosidl_typesupport_fastrtps_c__visibility_control.h
+[3.429s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_typesupport_fastrtps_c.so
+[3.429s] -- Set runtime path of "/home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_typesupport_fastrtps_c.so" to ""
+[3.429s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs
+[3.429s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg
+[3.429s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail
+[3.430s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__traits.hpp
+[3.430s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__builder.hpp
+[3.430s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__builder.hpp
+[3.430s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__traits.hpp
+[3.430s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__type_support.hpp
+[3.430s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__type_support.hpp
+[3.430s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__struct.hpp
+[3.430s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__struct.hpp
+[3.430s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/inference_result.hpp
+[3.430s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/rosidl_generator_cpp__visibility_control.hpp
+[3.430s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/yolov8_inference.hpp
+[3.430s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs
+[3.430s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg
+[3.430s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/rosidl_typesupport_fastrtps_cpp__visibility_control.h
+[3.431s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail
+[3.431s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/dds_fastrtps
+[3.431s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__rosidl_typesupport_fastrtps_cpp.hpp
+[3.431s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__rosidl_typesupport_fastrtps_cpp.hpp
+[3.431s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_typesupport_fastrtps_cpp.so
+[3.431s] -- Set runtime path of "/home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_typesupport_fastrtps_cpp.so" to ""
+[3.431s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs
+[3.431s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg
+[3.431s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail
+[3.431s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__rosidl_typesupport_introspection_c.h
+[3.431s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__rosidl_typesupport_introspection_c.h
+[3.432s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__type_support.c
+[3.432s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__type_support.c
+[3.432s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/rosidl_typesupport_introspection_c__visibility_control.h
+[3.432s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_typesupport_introspection_c.so
+[3.432s] -- Set runtime path of "/home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_typesupport_introspection_c.so" to ""
+[3.432s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_typesupport_c.so
+[3.432s] -- Set runtime path of "/home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_typesupport_c.so" to ""
+[3.432s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs
+[3.432s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg
+[3.432s] -- Up-to-date: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail
+[3.432s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__rosidl_typesupport_introspection_cpp.hpp
+[3.432s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__type_support.cpp
+[3.433s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/inference_result__rosidl_typesupport_introspection_cpp.hpp
+[3.433s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/include/yolov8_msgs/yolov8_msgs/msg/detail/yolov8_inference__type_support.cpp
+[3.433s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_typesupport_introspection_cpp.so
+[3.433s] -- Set runtime path of "/home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_typesupport_introspection_cpp.so" to ""
+[3.433s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_typesupport_cpp.so
+[3.433s] -- Set runtime path of "/home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_typesupport_cpp.so" to ""
+[3.433s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/environment/pythonpath.sh
+[3.433s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/environment/pythonpath.dsv
+[3.433s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs-0.0.0-py3.10.egg-info
+[3.433s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs-0.0.0-py3.10.egg-info/dependency_links.txt
+[3.433s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs-0.0.0-py3.10.egg-info/PKG-INFO
+[3.434s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs-0.0.0-py3.10.egg-info/SOURCES.txt
+[3.434s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs-0.0.0-py3.10.egg-info/top_level.txt
+[3.434s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs
+[3.434s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/yolov8_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[3.434s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/_yolov8_msgs_s.ep.rosidl_typesupport_introspection_c.c
+[3.434s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/yolov8_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[3.434s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/__init__.py
+[3.434s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/libyolov8_msgs__rosidl_generator_py.so
+[3.434s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/_yolov8_msgs_s.ep.rosidl_typesupport_fastrtps_c.c
+[3.434s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/yolov8_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[3.434s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/_yolov8_msgs_s.ep.rosidl_typesupport_c.c
+[3.434s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/msg
+[3.435s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/msg/__init__.py
+[3.435s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/msg/_inference_result_s.c
+[3.435s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/msg/_yolov8_inference.py
+[3.435s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/msg/_yolov8_inference_s.c
+[3.435s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/msg/_inference_result.py
+[3.462s] Listing '/home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs'...
+[3.463s] Compiling '/home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/__init__.py'...
+[3.463s] Listing '/home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/msg'...
+[3.463s] Compiling '/home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/msg/__init__.py'...
+[3.463s] Compiling '/home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/msg/_inference_result.py'...
+[3.463s] Compiling '/home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/msg/_yolov8_inference.py'...
+[3.466s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/yolov8_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so
+[3.466s] -- Set runtime path of "/home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/yolov8_msgs_s__rosidl_typesupport_fastrtps_c.cpython-310-x86_64-linux-gnu.so" to ""
+[3.467s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/yolov8_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so
+[3.467s] -- Set runtime path of "/home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/yolov8_msgs_s__rosidl_typesupport_introspection_c.cpython-310-x86_64-linux-gnu.so" to ""
+[3.467s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/yolov8_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so
+[3.467s] -- Set runtime path of "/home/nqh/dt_yolo/install/yolov8_msgs/local/lib/python3.10/dist-packages/yolov8_msgs/yolov8_msgs_s__rosidl_typesupport_c.cpython-310-x86_64-linux-gnu.so" to ""
+[3.467s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_generator_py.so
+[3.467s] -- Set runtime path of "/home/nqh/dt_yolo/install/yolov8_msgs/lib/libyolov8_msgs__rosidl_generator_py.so" to ""
+[3.467s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/msg/InferenceResult.idl
+[3.468s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/msg/Yolov8Inference.idl
+[3.468s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/msg/InferenceResult.msg
+[3.468s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/msg/Yolov8Inference.msg
+[3.468s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/ament_index/resource_index/package_run_dependencies/yolov8_msgs
+[3.468s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/ament_index/resource_index/parent_prefix_path/yolov8_msgs
+[3.468s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/environment/ament_prefix_path.sh
+[3.468s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/environment/ament_prefix_path.dsv
+[3.468s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/environment/path.sh
+[3.468s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/environment/path.dsv
+[3.468s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/local_setup.bash
+[3.468s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/local_setup.sh
+[3.468s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/local_setup.zsh
+[3.468s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/local_setup.dsv
+[3.469s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/package.dsv
+[3.469s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/ament_index/resource_index/packages/yolov8_msgs
+[3.469s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/export_yolov8_msgs__rosidl_generator_cExport.cmake
+[3.469s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/export_yolov8_msgs__rosidl_generator_cExport-noconfig.cmake
+[3.469s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/export_yolov8_msgs__rosidl_typesupport_fastrtps_cExport.cmake
+[3.469s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/export_yolov8_msgs__rosidl_typesupport_fastrtps_cExport-noconfig.cmake
+[3.469s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/export_yolov8_msgs__rosidl_generator_cppExport.cmake
+[3.469s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/export_yolov8_msgs__rosidl_typesupport_fastrtps_cppExport.cmake
+[3.469s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/export_yolov8_msgs__rosidl_typesupport_fastrtps_cppExport-noconfig.cmake
+[3.470s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/yolov8_msgs__rosidl_typesupport_introspection_cExport.cmake
+[3.470s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/yolov8_msgs__rosidl_typesupport_introspection_cExport-noconfig.cmake
+[3.470s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/yolov8_msgs__rosidl_typesupport_cExport.cmake
+[3.470s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/yolov8_msgs__rosidl_typesupport_cExport-noconfig.cmake
+[3.470s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/yolov8_msgs__rosidl_typesupport_introspection_cppExport.cmake
+[3.470s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/yolov8_msgs__rosidl_typesupport_introspection_cppExport-noconfig.cmake
+[3.470s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/yolov8_msgs__rosidl_typesupport_cppExport.cmake
+[3.470s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/yolov8_msgs__rosidl_typesupport_cppExport-noconfig.cmake
+[3.470s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/export_yolov8_msgs__rosidl_generator_pyExport.cmake
+[3.470s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/export_yolov8_msgs__rosidl_generator_pyExport-noconfig.cmake
+[3.470s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/rosidl_cmake-extras.cmake
+[3.470s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/ament_cmake_export_dependencies-extras.cmake
+[3.470s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/ament_cmake_export_include_directories-extras.cmake
+[3.471s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/ament_cmake_export_libraries-extras.cmake
+[3.471s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/ament_cmake_export_targets-extras.cmake
+[3.471s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/rosidl_cmake_export_typesupport_targets-extras.cmake
+[3.471s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/rosidl_cmake_export_typesupport_libraries-extras.cmake
+[3.471s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/yolov8_msgsConfig.cmake
+[3.471s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/cmake/yolov8_msgsConfig-version.cmake
+[3.471s] -- Installing: /home/nqh/dt_yolo/install/yolov8_msgs/share/yolov8_msgs/package.xml
+[3.473s] Invoked command in '/home/nqh/dt_yolo/build/yolov8_msgs' returned '0': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/humble /usr/bin/cmake --install /home/nqh/dt_yolo/build/yolov8_msgs
