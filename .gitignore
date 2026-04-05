@@ -1,0 +1,9 @@
+/home/nqh/Fire_Alarm_Robot/workspace_microros/micro_ros/Debug/
+/home/nqh/Fire_Alarm_Robot/workspace_microros/micro_ros/Release/
+*.elf
+*.list
+*.map
+*.o
+*.d
+*.su
+*.pb

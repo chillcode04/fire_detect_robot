@@ -109,7 +109,7 @@ void MX_FREERTOS_Init(void) {
 
   /* Create the thread(s) */
   /* creation of myTask1 */
-//  myTask1Handle = osThreadNew(Task_pub_sub, NULL, &myTask1_attributes);
+  myTask1Handle = osThreadNew(Task_pub_sub, NULL, &myTask1_attributes);
 
   /* creation of myTask02 */
   myTask02Handle = osThreadNew(Task_IMU, NULL, &myTask02_attributes);
@@ -274,7 +274,6 @@ void Task_control(void *argument)
     while (1)
     {
     	cnt_control++;
-    	v_mps = -1;
         Drive_VW(&Left_motor, &Right_motor, v_mps, omega);
         vTaskDelay(pdMS_TO_TICKS(1));
     }

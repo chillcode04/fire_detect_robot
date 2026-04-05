@@ -5,12 +5,11 @@ double x_pos = 0, y_pos = 0, z_pos = 0;
 double vx = 0, vy = 0;
 double v_yaw = 0;
 double vl_cur_mps = 0, vr_cur_mps = 0, v_cur_mps = 0;
-double vr_cur, vl_cur;
+double vr_cur, vl_cur; //(rpm)
 double roll, pitch, yaw;
 int cnt_pub = 0, cnt_imu = 0, cnt_control = 0;
 
 double v_mps, omega;
-double vl, vr;
 
 MPU6050_t MPU6050;
 rcl_publisher_t odom_pub;
@@ -121,7 +120,4 @@ void cmd_vel_callback(const void * msgin)
 
    v_mps = msg->linear.x;
    omega = msg->angular.z;
-
-   vl = (2 * v_mps - omega * TRACK_WIDTH_M) / 2; // m/s
-   vr = (2 * v_mps + omega * TRACK_WIDTH_M) / 2; // m/s
 }
