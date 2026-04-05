@@ -29,7 +29,6 @@ extern double vl_cur_mps, vr_cur_mps, v_cur_mps;
 extern double vr_cur, vl_cur;
 extern double roll, pitch, yaw;
 extern int cnt_pub, cnt_imu, cnt_control;
-extern double vl, vr;
 extern double v_mps, omega;
 extern Motor Left_motor;
 extern Motor Right_motor;
