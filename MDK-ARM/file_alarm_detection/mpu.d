@@ -1,5 +1,6 @@
-file_alarm_detection/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
-  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h \
+file_alarm_detection/mpu.o: ..\myLib\mpu.c \
+  E:\keilc_fullcrack\arm\ARM\ARMCLANG\Bin\..\include\math.h \
+  ..\myLib\mpu.h ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal.h \
   ..\Core\Inc\stm32f4xx_hal_conf.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_rcc.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_def.h \
@@ -30,13 +31,4 @@ file_alarm_detection/main.o: ..\Core\Src\main.c ..\Core\Inc\main.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_pwr_ex.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim.h \
   ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_tim_ex.h \
-  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h \
-  ..\myLib\motor.h \
-  E:\keilc_fullcrack\arm\ARM\ARMCLANG\Bin\..\include\stdbool.h \
-  ..\myLib\pid.h \
-  E:\keilc_fullcrack\arm\ARM\ARMCLANG\Bin\..\include\string.h \
-  ..\myLib\pid.h ..\myLib\AdaptiveFuzzyPID.h \
-  E:\keilc_fullcrack\arm\ARM\ARMCLANG\Bin\..\include\math.h \
-  ..\myLib\mpu.h \
-  E:\keilc_fullcrack\arm\ARM\ARMCLANG\Bin\..\include\stdio.h \
-  E:\keilc_fullcrack\arm\ARM\ARMCLANG\Bin\..\include\stdlib.h
+  ..\Drivers\STM32F4xx_HAL_Driver\Inc\stm32f4xx_hal_uart.h

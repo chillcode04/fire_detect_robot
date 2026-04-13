@@ -25,6 +25,7 @@
 "file_alarm_detection\motor.o"
 "file_alarm_detection\pid.o"
 "file_alarm_detection\adaptivefuzzypid.o"
+"file_alarm_detection\mpu.o"
 --strict --scatter "file_alarm_detection\file_alarm_detection.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers

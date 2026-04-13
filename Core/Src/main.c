@@ -64,12 +64,21 @@ uint8_t rx_data;          // Luu 1 byte nh?n du?c
 char rx_buffer[20];       // B? d?m luu chu?i s? (v� d? "10")
 int rx_index = 0;
 int set_speed = 0;
+float global_lastErrL = 0;
+float global_lastErrR = 0;
 
 
 float Ax,Ay,Az,Gx,Gy,Gz;
 float pitch  ;
 float roll ;
 float yaw ;
+float current_Kp_L;
+float current_Ki_L;
+float current_Kd_L;
+float current_Kp_R;
+float current_Ki_R;
+float current_Kd_R;
+
 
 
 
@@ -99,6 +108,8 @@ Motor Right_motor;
 Motor *pRight = &Right_motor;
 PID_TypeDef RPID;
 PID_TypeDef LPID;
+FuzzyTuner LeftTuner;
+FuzzyTuner RightTuner;
 
 //FuzzyTuner LeftTuner;
 //FuzzyTuner RightTuner;
@@ -145,39 +156,37 @@ const int8_t Kd_Table[49] = {
 
 
 
-void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
-    if (huart->Instance == USART2) {
-        if (rx_data == '\n' || rx_data == '\r') {
-            rx_buffer[rx_index] = '\0';
-            
-            // Tìm vị trí của dấu phẩy để tách 2 giá trị
-            char *comma_ptr = strchr(rx_buffer, ',');
-            if (comma_ptr != NULL) {
-                *comma_ptr = '\0'; // Tạm thời chia chuỗi làm 2 phần
-                
-                // Giả sử App gửi định dạng "100,200"
-                float speed_L = atof(rx_buffer);        // Lấy phần trước dấu phẩy
-                float speed_R = atof(comma_ptr + 1);    // Lấy phần sau dấu phẩy
-                
-                Motor_SetTarget(&Left_motor, speed_L);
-                Motor_SetTarget(&Right_motor, speed_R);
-            } else {
-                // Nếu không có dấu phẩy, áp dụng 1 tốc độ cho cả 2 (như cũ)
-                int set_speed = atoi(rx_buffer);
-                Motor_SetTarget(&Left_motor, (float)set_speed);
-                Motor_SetTarget(&Right_motor, (float)set_speed);
-            }
+//void HAL_UART_RxCpltCallback(UART_HandleTypeDef *huart) {
+//    if (huart->Instance == USART2) {
+//        if (rx_data == '\n' || rx_data == '\r') {
+//            rx_buffer[rx_index] = '\0';
+//            char *comma_ptr = strchr(rx_buffer, ',');
+//            if (comma_ptr != NULL) {
+//                *comma_ptr = '\0'; 
+//                
+//              
+//                float speed_L = atof(rx_buffer);       
+//                float speed_R = atof(comma_ptr + 1);    
+//                
+//                Motor_SetTarget(&Left_motor, speed_L);
+//                Motor_SetTarget(&Right_motor, speed_R);
+//            } else {
+//              
+//                int set_speed = atoi(rx_buffer);
+//                Motor_SetTarget(&Left_motor, (float)set_speed);
+//                Motor_SetTarget(&Right_motor, (float)set_speed);
+//            }
 
-            rx_index = 0;
-            HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13); 
-        } else {
-            if (rx_index < 19) {
-                rx_buffer[rx_index++] = rx_data;
-            }
-        }
-        HAL_UART_Receive_IT(&huart2, &rx_data, 1);
-    }
-}
+//            rx_index = 0;
+//            HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13); 
+//        } else {
+//            if (rx_index < 19) {
+//                rx_buffer[rx_index++] = rx_data;
+//            }
+//        }
+//        HAL_UART_Receive_IT(&huart2, &rx_data, 1);
+//    }
+//}
 
 
 
@@ -230,11 +239,11 @@ int main(void)
 	HAL_NVIC_SetPriority(TIM1_UP_TIM10_IRQn, 0, 0);
   HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
 	// Khoi tao Fuzzy-PID
-	 //Fuzzy_Init(&LeftTuner, 300.0f, 60.0f, 0.5f, 3.0f, 0.01f, Kp_Table, Ki_Table, Kd_Table);
-   //Fuzzy_Init(&RightTuner, 300.0f, 60.0f, 0.5f, 3.0f, 0.01f, Kp_Table, Ki_Table, Kd_Table);
+	Fuzzy_Init(&LeftTuner, 300.0f, 60.0f, 0.6f, 3.0f, 0.005f, Kp_Table, Ki_Table, Kd_Table);
+  Fuzzy_Init(&RightTuner, 300.0f, 60.0f, 0.3f, 3.0f, 0.0015f, Kp_Table, Ki_Table, Kd_Table);
 	// Khoi tao 2 banh xe0
  //  Motor_Init(&Left_motor, LEFT,GPIOB, GPIO_PIN_12, GPIOB, GPIO_PIN_13,&htim3, TIM_CHANNEL_1, &htim2, 23.4, 1170, 0.117);
-	 Motor_Init(&Left_motor, LEFT,GPIOB, GPIO_PIN_12, GPIOB, GPIO_PIN_13,&htim3, TIM_CHANNEL_1, &htim2, 9.6, 960, 0.024);
+	 Motor_Init(&Left_motor, LEFT,GPIOB, GPIO_PIN_12, GPIOB, GPIO_PIN_13,&htim3, TIM_CHANNEL_1,&htim2, 9.6, 960, 0.024);
    Motor_Init(&Right_motor,RIGHT,GPIOB, GPIO_PIN_14, GPIOB, GPIO_PIN_15,&htim3, TIM_CHANNEL_2, &htim4	, 17.7 , 1770, 0.04425);
   // Khoi tao PID
 	 PID(&LPID, &(pLeft->cur_speed),&(pLeft->Pid_output),&(pLeft->target_speed),pLeft->kp, pLeft->ki, pLeft->kd,_PID_P_ON_E, _PID_CD_DIRECT);
@@ -249,10 +258,10 @@ int main(void)
 	 
 	 // Khoi tao MPU
 	   MPU6050_init();
-	 
-	 Motor_SetTarget(&Left_motor, 100);
-	 Motor_SetTarget(&Right_motor, 100);
-	 
+//	 
+//	 Motor_SetTarget(&Left_motor, 100);
+//   Motor_SetTarget(&Right_motor, 100);
+
 	 
    
 	 
@@ -268,9 +277,9 @@ int main(void)
 
     /* USER CODE BEGIN 3 */
 		
-		MPU6050_Read_Accel(&Ax,&Ay,&Az);
-		MPU6050_Read_Gyro(&Gx,&Gy,&Gz);
-		filter(&Ax,&Ay,&Az,&Gx,&Gy,&Gz,&pitch,&roll,&yaw);
+//		MPU6050_Read_Accel(&Ax,&Ay,&Az);
+//		MPU6050_Read_Gyro(&Gx,&Gy,&Gz);
+//		filter(&Ax,&Ay,&Az,&Gx,&Gy,&Gz,&pitch,&roll,&yaw);
 		char tx_buf[64];
 		double left_speed = (double)Left_motor.cur_speed;
     double right_speed = (double)Right_motor.cur_speed;
@@ -643,23 +652,23 @@ static void MX_GPIO_Init(void)
 }
 
 /* USER CODE BEGIN 4 */
- void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+  void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
    if(htim->Instance == TIM1) {
-      /*
+    
    		 Motor_GetSpeed(&Left_motor);
 		   Motor_GetSpeed(&Right_motor);
 		   // ----Banh trai--------------
-		
 		    float dt = 0.01f;
+		    
 		    float errL = Left_motor.target_speed - Left_motor.cur_speed;
         float dErrL = (errL - global_lastErrL) / dt;
         global_lastErrL = errL;
 		   
 		    Fuzzy_Compute(&LeftTuner, errL, dErrL);
-		    current_Kp_L = 21.6f + LeftTuner.deltaKp;
-        current_Ki_L = 786.0f + LeftTuner.deltaKi;
-        current_Kd_L = 0.1485f + LeftTuner.deltaKd;
+		    current_Kp_L = 9.6f + LeftTuner.deltaKp;
+        current_Ki_L = 960.0f + LeftTuner.deltaKi;
+        current_Kd_L = 0.024f + LeftTuner.deltaKd;
         PID_SetTunings(&LPID, current_Kp_L, current_Ki_L, current_Kd_L);
 		    
 		   
@@ -669,31 +678,29 @@ static void MX_GPIO_Init(void)
         global_lastErrR = errR;
 		     
 		    Fuzzy_Compute(&RightTuner, errR, dErrR);
-				current_Kp_R = 21.6f + RightTuner.deltaKp;
-        current_Ki_R = 786.0f + RightTuner.deltaKi;
-        current_Kd_R = 0.1485f + RightTuner.deltaKd;
+				current_Kp_R = 17.7f + RightTuner.deltaKp;
+        current_Ki_R = 1770.0f + RightTuner.deltaKi;
+        current_Kd_R = 0.04425f + RightTuner.deltaKd;
 				PID_SetTunings(&RPID, current_Kp_R, current_Ki_R, current_Kd_R);
 				
 		   
 		    
-		   PID_Compute(&LPID);
-		   PID_Compute(&RPID);
-		   Motor_SetPwm(&Left_motor);
-		   Motor_SetPwm(&Right_motor);
-			 */
-			 Motor_GetSpeed(&Left_motor);
-       Motor_GetSpeed(&Right_motor);
-		   PID_Compute(&LPID);
-       PID_Compute(&RPID);
-		   Motor_SetPwm(&Left_motor);
-       Motor_SetPwm(&Right_motor);
-		   
+		    PID_Compute(&LPID);
+		    PID_Compute(&RPID);
+		    Motor_SetPwm(&Left_motor);
+		    Motor_SetPwm(&Right_motor);
+
+//			 Motor_GetSpeed(&Left_motor);
+//       Motor_GetSpeed(&Right_motor);
+//		   PID_Compute(&LPID);
+//       PID_Compute(&RPID);
+//		   Motor_SetPwm(&Left_motor);
+//       Motor_SetPwm(&Right_motor);
+	   
     }
 }
 
 
-
-		 
 
 /* USER CODE END 4 */
 
