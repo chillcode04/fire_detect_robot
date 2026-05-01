@@ -136,7 +136,7 @@ void MX_FREERTOS_Init(void) {
 /* USER CODE END Header_Task_pub_sub */
 void Task_pub_sub(void *argument)
 {
-  /* USER CODE BEGIN 5 */
+  /* USER CODE BEGIN Task_pub_sub */
 
 	  // micro-ROS configuration
 
@@ -164,7 +164,6 @@ void Task_pub_sub(void *argument)
 	 // create init_options
 	 rclc_support_init(&support, 0, NULL, &allocator);
 
-
 	 //create node_sub
 	 rclc_node_init_default(&node, "stm32_node","", &support);
 
@@ -175,6 +174,17 @@ void Task_pub_sub(void *argument)
 		ROSIDL_GET_MSG_TYPE_SUPPORT(nav_msgs, msg, Odometry),
 	    "/odom_data");
 
+	 rclc_publisher_init_default(
+	     &wheel_vel_pub,
+	     &node,
+	     ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, Vector3),
+	     "/wheel_velocity");
+
+	 rclc_publisher_init_default(
+	 	    &tf_pub,
+	 	    &node,
+	 	    ROSIDL_GET_MSG_TYPE_SUPPORT(tf2_msgs, msg, TFMessage),
+	 	    "/tf");
 
 	//create subscriber
 	rclc_subscription_init_default(
@@ -183,11 +193,6 @@ void Task_pub_sub(void *argument)
 		ROSIDL_GET_MSG_TYPE_SUPPORT(geometry_msgs, msg, Twist),
 		"/cmd_vel");
 
-	rclc_publisher_init_default(
-	    &tf_pub,
-	    &node,
-	    ROSIDL_GET_MSG_TYPE_SUPPORT(tf2_msgs, msg, TFMessage),
-	    "/tf");
 	// create timer
 	rcl_timer_t timer;
 	const unsigned int timer_timeout = 50;
@@ -227,7 +232,7 @@ void Task_pub_sub(void *argument)
 		rclc_executor_spin_some(&executor, RCL_MS_TO_NS(100));
 		vTaskDelay(pdMS_TO_TICKS(1));
 	}
-  /* USER CODE END 5 */
+  /* USER CODE END Task_pub_sub */
 }
 
 /* USER CODE BEGIN Header_Task_IMU */
@@ -248,35 +253,25 @@ void Task_IMU(void *argument)
   }
   /* USER CODE END Task_IMU */
 }
+
 /* USER CODE BEGIN Header_Task_control */
 /**
 * @brief Function implementing the myTask03 thread.
 * @param argument: Not used
 * @retval None
 */
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  if (htim->Instance == TIM1) {
-      Motor_GetSpeed(&Left_motor);
-      vl_cur = Left_motor.cur_speed;
-	  PID_Compute(&LPID);
-	  Motor_GetSpeed(&Right_motor);
-	  vr_cur = Right_motor.cur_speed;
-	  PID_Compute(&RPID);
-      Motor_SetPwm(&Left_motor);
-      Motor_SetPwm(&Right_motor);
-   }
-}
-/* USER CODE END Task_control */
+/* USER CODE END Header_Task_control */
 void Task_control(void *argument)
 {
-
+	/* USER CODE BEGIN Task_control */
+	/* Infinite loop */
     while (1)
     {
     	cnt_control++;
         Drive_VW(&Left_motor, &Right_motor, v_mps, omega);
         vTaskDelay(pdMS_TO_TICKS(1));
     }
+    /* USER CODE END Task_control */
 }
 
 

@@ -31,6 +31,7 @@
 #include <Motor.h>
 #include <mpu6050.h>
 #include <pid.h>
+#include "AdaptiveFuzzyPID.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -52,7 +53,14 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
+float global_lastErrL = 0;
+float global_lastErrR = 0;
+float current_Kp_L;
+float current_Ki_L;
+float current_Kd_L;
+float current_Kp_R;
+float current_Ki_R;
+float current_Kd_R;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -71,6 +79,43 @@ Motor *pRight = &Right_motor;
 PID_TypeDef RPID;
 PID_TypeDef LPID;
 PID_TypeDef YPID;
+
+FuzzyTuner LeftTuner;
+FuzzyTuner RightTuner;
+const int8_t Kp_Table[49] = {
+// de: NL(-3), NM(-2), NS(-1), ZE(0), PS(1), PM(2), PL(3)  | e:
+    -3, -3, -2, -2, -1,  0,  0,  // NL (Dòng 0)
+    -3, -2, -2, -1, -1,  0,  1,  // NM
+    -2, -2, -1, -1,  0,  1,  1,  // NS
+    -2, -1, -1,  0,  1,  1,  2,  // ZE (Dòng 3)
+    -1, -1,  0,  1,  1,  2,  2,  // PS
+    -1,  0,  1,  1,  2,  2,  3,  // PM
+     0,  0,  1,  2,  2,  3,  3   // PL (Dòng 6)
+};
+
+
+
+const int8_t Ki_Table[49] = {
+// de: NL,  NM,  NS,  ZE,  PS,  PM,  PL   |  e:
+    -3,  -3,  -2,  -2,  -1,   0,   0,  // NL
+    -3,  -2,  -2,  -1,  -1,   0,   0,  // NM
+    -2,  -2,  -1,   0,   0,   1,   1,  // NS
+    -2,  -1,   0,   0,   0,   1,   2,  // ZE (Vùng nhạy cảm nhất)
+    -1,  -1,   0,   0,   1,   2,   2,  // PS
+     0,   0,   1,   1,   2,   2,   3,  // PM
+     0,   0,   1,   2,   2,   3,   3   // PL
+};
+
+const int8_t Kd_Table[49] = {
+// de: NL,  NM,  NS,  ZE,  PS,  PM,  PL   |  e:
+     3,   2,   1,   0,   0,  -1,  -2,  // NL
+     3,   2,   1,   1,   0,  -1,  -2,  // NM
+     2,   2,   1,   1,   0,  -1,  -1,  // NS
+     2,   1,   1,   0,   1,   1,   2,  // ZE
+    -1,  -1,   0,   1,   1,   2,   2,  // PS
+    -2,  -1,   0,   1,   1,   2,   3,  // PM
+    -2,  -1,   0,   0,   1,   2,   3   // PL
+};
 /* USER CODE END 0 */
 
 /**
@@ -126,8 +171,11 @@ int main(void)
   HAL_NVIC_EnableIRQ(TIM1_UP_TIM10_IRQn);
 
 	// --- Base timer for control loop (interrupt) ---
+	// Khoi tao Fuzzy-PID
+  Fuzzy_Init(&LeftTuner, 300.0f, 60.0f, 0.6f, 3.0f, 0.005f, Kp_Table, Ki_Table, Kd_Table);
+  Fuzzy_Init(&RightTuner, 300.0f, 60.0f, 0.3f, 3.0f, 0.0015f, Kp_Table, Ki_Table, Kd_Table);
+
     // Khoi tao 2 banh xe
-    //10 1.2 0.03
   Motor_Init(&Left_motor, LEFT,GPIOB, GPIO_PIN_12, GPIOB, GPIO_PIN_13,&htim3, TIM_CHANNEL_1, &htim2, 9.6, 960, 0.024);
   Motor_Init(&Right_motor,RIGHT,GPIOB, GPIO_PIN_14, GPIOB, GPIO_PIN_15,&htim3, TIM_CHANNEL_2, &htim4	, 17.7, 1770, 0.04425);
 
@@ -212,7 +260,45 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+	 if(htim->Instance == TIM1) {
+	   	Motor_GetSpeed(&Left_motor);
+	    Motor_GetSpeed(&Right_motor);
+	    vl_cur = Left_motor.cur_speed;
+		vr_cur = Right_motor.cur_speed;
 
+	 // ----Banh trai--------------
+		float dt = 0.01f;
+
+		float errL = Left_motor.target_speed - Left_motor.cur_speed;
+	    float dErrL = (errL - global_lastErrL) / dt;
+	    global_lastErrL = errL;
+
+		Fuzzy_Compute(&LeftTuner, errL, dErrL);
+		current_Kp_L = 9.6f + LeftTuner.deltaKp;
+	    current_Ki_L = 960.0f + LeftTuner.deltaKi;
+	    current_Kd_L = 0.024f + LeftTuner.deltaKd;
+	    PID_SetTunings(&LPID, current_Kp_L, current_Ki_L, current_Kd_L);
+
+
+		//------Banh phai-------------
+		float errR = Right_motor.target_speed - Right_motor.cur_speed;
+	    float dErrR = (errR - global_lastErrR) / dt;
+	    global_lastErrR = errR;
+
+		Fuzzy_Compute(&RightTuner, errR, dErrR);
+		current_Kp_R = 17.7f + RightTuner.deltaKp;
+	    current_Ki_R = 1770.0f + RightTuner.deltaKi;
+	    current_Kd_R = 0.04425f + RightTuner.deltaKd;
+		PID_SetTunings(&RPID, current_Kp_R, current_Ki_R, current_Kd_R);
+
+		PID_Compute(&LPID);
+		PID_Compute(&RPID);
+		Motor_SetPwm(&Left_motor);
+		Motor_SetPwm(&Right_motor);
+	 }
+}
 /* USER CODE END 4 */
 
 /**

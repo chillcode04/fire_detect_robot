@@ -12,8 +12,7 @@ int cnt_pub = 0, cnt_imu = 0, cnt_control = 0;
 double v_mps, omega;
 
 MPU6050_t MPU6050;
-rcl_publisher_t odom_pub;
-rcl_publisher_t tf_pub;
+rcl_publisher_t odom_pub, tf_pub, wheel_vel_pub;
 rcl_subscription_t subscriber;
 rcl_allocator_t allocator;
 rclc_support_t support;
@@ -22,6 +21,7 @@ nav_msgs__msg__Odometry odom_msg;
 geometry_msgs__msg__TransformStamped tf;
 tf2_msgs__msg__TFMessage tf_msg;
 geometry_msgs__msg__Twist msg_cmd_vel;
+geometry_msgs__msg__Vector3 wheel_vel_msg;
 
 geometry_msgs__msg__Quaternion euler_to_quaternion(double roll, double pitch, double yaw) {
     geometry_msgs__msg__Quaternion q;
@@ -108,8 +108,14 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
         tf_msg.transforms.data = &tf;
         tf_msg.transforms.size = 1;
         tf_msg.transforms.capacity = 1;
+
+        // ====== Publish wheel velocity ======
+        wheel_vel_msg.x = vl_cur_mps;
+        wheel_vel_msg.y = vr_cur_mps;
+
 		RCSOFTCHECK(rcl_publish(&odom_pub, &odom_msg, NULL));
 		RCSOFTCHECK(rcl_publish(&tf_pub, &tf_msg, NULL));
+		RCSOFTCHECK(rcl_publish(&wheel_vel_pub, &wheel_vel_msg, NULL));
 	}
 }
 

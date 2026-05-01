@@ -14,6 +14,8 @@
 #include <nav_msgs/msg/odometry.h>
 #include <tf2_msgs/msg/tf_message.h>
 #include <geometry_msgs/msg/transform_stamped.h>
+#include <std_msgs/msg/float32_multi_array.h>
+#include "geometry_msgs/msg/vector3.h"
 
 #include <Motor.h>
 #include <mpu6050.h>
@@ -43,6 +45,7 @@ typedef struct Velocity {
 
 extern rcl_publisher_t odom_pub, tf_pub;
 extern rcl_subscription_t subscriber;
+extern rcl_publisher_t wheel_vel_pub;
 
 extern rclc_support_t support;
 extern rcl_allocator_t allocator;
@@ -51,6 +54,7 @@ extern nav_msgs__msg__Odometry odom_msg;
 extern geometry_msgs__msg__TransformStamped tf;
 extern tf2_msgs__msg__TFMessage tf_msg;
 extern geometry_msgs__msg__Twist msg_cmd_vel;
+extern geometry_msgs__msg__Vector3 wheel_vel_msg;
 
 geometry_msgs__msg__Quaternion euler_to_quaternion(double roll, double pitch, double yaw);
 Velocity convertVrVlYaw(double vl_cur, double vr_cur, double yaw, double L);
