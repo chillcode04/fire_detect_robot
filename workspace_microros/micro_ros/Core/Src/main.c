@@ -172,8 +172,8 @@ int main(void)
 
 	// --- Base timer for control loop (interrupt) ---
 	// Khoi tao Fuzzy-PID
-  Fuzzy_Init(&LeftTuner, 300.0f, 60.0f, 0.6f, 3.0f, 0.005f, Kp_Table, Ki_Table, Kd_Table);
-  Fuzzy_Init(&RightTuner, 300.0f, 60.0f, 0.3f, 3.0f, 0.0015f, Kp_Table, Ki_Table, Kd_Table);
+//  Fuzzy_Init(&LeftTuner, 300.0f, 60.0f, 0.6f, 3.0f, 0.005f, Kp_Table, Ki_Table, Kd_Table);
+//  Fuzzy_Init(&RightTuner, 300.0f, 60.0f, 0.3f, 3.0f, 0.0015f, Kp_Table, Ki_Table, Kd_Table);
 
     // Khoi tao 2 banh xe
   Motor_Init(&Left_motor, LEFT,GPIOB, GPIO_PIN_12, GPIOB, GPIO_PIN_13,&htim3, TIM_CHANNEL_1, &htim2, 9.6, 960, 0.024);
@@ -260,44 +260,39 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+double Convert_mps_pwd(double v) {
+	return (v * 999) / (318.18 * 2 * 3.1415926f * WHEEL_RADIUS_M / 60); // pwd
+}
+
+double Convert_mps_pwm_L(double v) {
+    double rpm_max = 280.0;
+	return (v * 999) / (rpm_max* 2 * 3.1415926f * WHEEL_RADIUS_M / 60);
+}
+
+double Convert_mps_pwm_R(double v) {
+    double rpm_max = 280.0;
+	return (v * 999) / (rpm_max* 2 * 3.1415926f * WHEEL_RADIUS_M / 60);
+}
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-	 if(htim->Instance == TIM1) {
-	   	Motor_GetSpeed(&Left_motor);
-	    Motor_GetSpeed(&Right_motor);
-	    vl_cur = Left_motor.cur_speed;
-		vr_cur = Right_motor.cur_speed;
+  if (htim->Instance == TIM1) {
+      Motor_GetSpeed(&Left_motor);
+	  Motor_GetSpeed(&Right_motor);
 
-	 // ----Banh trai--------------
-		float dt = 0.01f;
+//	  PID_Compute(&LPID);
+      Left_motor.Pid_output = Convert_mps_pwm_L(vL);
 
-		float errL = Left_motor.target_speed - Left_motor.cur_speed;
-	    float dErrL = (errL - global_lastErrL) / dt;
-	    global_lastErrL = errL;
+	  Right_motor.Pid_output = Convert_mps_pwm_R(vR);
+//      Left_motor.Pid_output = 999;
+//
+//	  Right_motor.Pid_output = 999;
+//	  PID_Compute(&RPID);
 
-		Fuzzy_Compute(&LeftTuner, errL, dErrL);
-		current_Kp_L = 9.6f + LeftTuner.deltaKp;
-	    current_Ki_L = 960.0f + LeftTuner.deltaKi;
-	    current_Kd_L = 0.024f + LeftTuner.deltaKd;
-	    PID_SetTunings(&LPID, current_Kp_L, current_Ki_L, current_Kd_L);
-
-
-		//------Banh phai-------------
-		float errR = Right_motor.target_speed - Right_motor.cur_speed;
-	    float dErrR = (errR - global_lastErrR) / dt;
-	    global_lastErrR = errR;
-
-		Fuzzy_Compute(&RightTuner, errR, dErrR);
-		current_Kp_R = 17.7f + RightTuner.deltaKp;
-	    current_Ki_R = 1770.0f + RightTuner.deltaKi;
-	    current_Kd_R = 0.04425f + RightTuner.deltaKd;
-		PID_SetTunings(&RPID, current_Kp_R, current_Ki_R, current_Kd_R);
-
-		PID_Compute(&LPID);
-		PID_Compute(&RPID);
-		Motor_SetPwm(&Left_motor);
-		Motor_SetPwm(&Right_motor);
-	 }
+      vl_cur = Left_motor.cur_speed;
+	  vr_cur = Right_motor.cur_speed;
+      Motor_SetPwm(&Left_motor);
+      Motor_SetPwm(&Right_motor);
+   }
 }
 /* USER CODE END 4 */
 

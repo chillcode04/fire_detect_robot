@@ -1,0 +1,4 @@
+../mylib/AdaptiveFuzzyPID.c:10:8:Triangle_MF	6
+../mylib/AdaptiveFuzzyPID.c:17:7:Fuzzify	1
+../mylib/AdaptiveFuzzyPID.c:28:6:Fuzzy_Init	2
+../mylib/AdaptiveFuzzyPID.c:45:6:Fuzzy_Compute	18

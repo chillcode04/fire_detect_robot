@@ -1,0 +1,4 @@
+../Core/Src/freertos.c:89:6:MX_FREERTOS_Init	1
+../Core/Src/freertos.c:137:6:Task_pub_sub	5
+../Core/Src/freertos.c:245:6:Task_IMU	1
+../Core/Src/freertos.c:264:6:Task_control	1
