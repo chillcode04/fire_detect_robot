@@ -4,9 +4,10 @@ class AppConfig {
 
   // --- 2. NHÓM ĐIỀU HƯỚNG & BẢN ĐỒ (Nav2) ---
   static const String topicCmdVel = '/cmd_vel';
-  static const String topicOdom = '/odom'; // Theo thiết lập của bạn
+  static const String topicOdom = '/odom';
   static const String topicGoal = '/goal_pose';
   static const String topicMap = '/map';
+  static const String topicEnvSensors = '/env_sensors';
 
   // --- 3. NHÓM CẢM BIẾN & GIÁM SÁT HỎA HOẠN ---
   static const String topicBattery = '/battery_state';
@@ -16,6 +17,6 @@ class AppConfig {
   static const String cameraResultTopic = '/camera_result';
 
   // --- 4. CÁC THÔNG SỐ NGƯỠNG (THRESHOLDS) ---
-  static const double distThreshold = 0.1; // 10cm là coi như đến đích
-  static const double angleThreshold = 0.15; // ~8.5 độ
+  static const double distThreshold = 0.1;
+  static const double angleThreshold = 0.15;
 }

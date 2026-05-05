@@ -16,23 +16,24 @@ class _HudControlPanelState extends State<HudControlPanel> {
 
   // Biến trạng thái chế độ (Manual hoặc Auto)
   bool isAutoMode = false;
-  Timer? _driveTimer; // Bộ đếm nhịp bắn lệnh
-  String activeDirection = 'NONE'; // Lưu tên hướng đang chạy để làm sáng nút
+  Timer? _driveTimer;
+  String activeDirection = 'NONE';
 
-  final Color neonGreen = const Color(0xFF00E676);
-  final Color alertOrange =
-      const Color.fromARGB(255, 5, 8, 196); // Màu cam cho chế độ Auto
+  // 🌟 BẢNG MÀU MỚI: ĐỎ - TRẮNG
+  final Color primaryRed = Colors.red;
+  final Color autoModeColor =
+      Colors.orange[800]!; // Cam đậm cho chế độ Auto để dễ phân biệt
 
   @override
   void dispose() {
-    _driveTimer?.cancel(); // Tắt vòng lặp khi chuyển tab
+    _driveTimer?.cancel();
     super.dispose();
   }
 
   void _stopRobot() {
-    setState(() => activeDirection = 'NONE'); // Tắt đèn tất cả các nút
-    _driveTimer?.cancel(); // Dừng spam lệnh
-    rosService.move(0.0, 0.0); // Bắn lệnh phanh xuống ROS 2
+    setState(() => activeDirection = 'NONE');
+    _driveTimer?.cancel();
+    rosService.move(0.0, 0.0);
   }
 
   @override
@@ -48,9 +49,12 @@ class _HudControlPanelState extends State<HudControlPanel> {
             const SizedBox(width: 15),
             Container(
               padding: const EdgeInsets.all(12),
-              decoration: const BoxDecoration(
-                  color: Color(0xFF2C3E3A), shape: BoxShape.circle),
-              child: Icon(Icons.camera_alt, color: neonGreen),
+              decoration: BoxDecoration(
+                  color: primaryRed
+                      .withOpacity(0.1), // 🌟 Sửa nền thành tone đỏ nhạt
+                  shape: BoxShape.circle),
+              child:
+                  Icon(Icons.camera_alt, color: primaryRed), // 🌟 Sửa màu icon
             ),
             const SizedBox(width: 15),
             _buildActionButton(Icons.zoom_in, null),
@@ -63,55 +67,60 @@ class _HudControlPanelState extends State<HudControlPanel> {
         const SizedBox(height: 10),
         _buildModeButton(),
 
-        // PHẦN QUAN TRỌNG: Khu vực lái xe tự co giãn
+        // PHẦN QUAN TRỌNG: Khu vực lái xe
         Expanded(
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              // Slider trái
-              _buildVerticalSlider(
-                label: 'V-SPEED\n${maxLinearSpeed.toStringAsFixed(1)} m/s',
-                value: maxLinearSpeed,
-                min: 0.1,
-                max: 1.0,
-                color: neonGreen,
-                onChanged: (val) => setState(() => maxLinearSpeed = val),
-              ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                _buildVerticalSlider(
+                  label: 'V-SPEED\n${maxLinearSpeed.toStringAsFixed(1)} m/s',
+                  value: maxLinearSpeed,
+                  min: 0.1,
+                  max: 1.0,
+                  color: primaryRed,
+                  onChanged: (val) => setState(() => maxLinearSpeed = val),
+                ),
 
-              // D-Pad ở giữa - Dùng FittedBox để không bao giờ bị Overflow
-              Expanded(
-                flex: 2,
-                child: Center(
-                  child: FittedBox(
-                    fit: BoxFit.contain,
-                    child: Opacity(
-                      opacity: isAutoMode ? 0.3 : 1.0,
-                      child: IgnorePointer(
-                          ignoring: isAutoMode, child: _buildDPad()),
+                const Spacer(flex: 2),
+
+                // D-Pad ở giữa
+                Expanded(
+                  flex: 5,
+                  child: Center(
+                    child: FittedBox(
+                      fit: BoxFit.contain,
+                      child: Opacity(
+                        opacity: isAutoMode ? 0.3 : 1.0,
+                        child: IgnorePointer(
+                            ignoring: isAutoMode, child: _buildDPad()),
+                      ),
                     ),
                   ),
                 ),
-              ),
 
-              // Slider phải
-              _buildVerticalSlider(
-                label: 'OMEGA\n${maxAngularSpeed.toStringAsFixed(1)} rad',
-                value: maxAngularSpeed,
-                min: 0.2,
-                max: 2.0,
-                color: neonGreen,
-                onChanged: (val) => setState(() => maxAngularSpeed = val),
-              ),
-            ],
+                const Spacer(flex: 2),
+
+                _buildVerticalSlider(
+                  label: 'OMEGA\n${maxAngularSpeed.toStringAsFixed(1)} rad',
+                  value: maxAngularSpeed,
+                  min: 0.2,
+                  max: 2.0,
+                  color: primaryRed,
+                  onChanged: (val) => setState(() => maxAngularSpeed = val),
+                ),
+              ],
+            ),
           ),
         ),
-        const SizedBox(height: 15), // Khoảng đệm dưới đáy điện thoại
+        const SizedBox(height: 15),
       ],
     );
   }
 
   // ==========================================
-  // CÁC WIDGET PHỤ TRỢ ĐÃ ĐƯỢC NÂNG CẤP
+  // CÁC WIDGET PHỤ TRỢ (GIAO DIỆN SÁNG)
   // ==========================================
 
   Widget _buildVerticalSlider({
@@ -130,7 +139,8 @@ class _HudControlPanelState extends State<HudControlPanel> {
             label,
             textAlign: TextAlign.center,
             style: TextStyle(
-                color: color,
+                color:
+                    Colors.black87, // 🌟 Chữ màu đen để nổi bật trên nền trắng
                 fontSize: 11,
                 fontFamily: 'monospace',
                 fontWeight: FontWeight.bold),
@@ -142,8 +152,9 @@ class _HudControlPanelState extends State<HudControlPanel> {
               child: SliderTheme(
                 data: SliderTheme.of(context).copyWith(
                   activeTrackColor: color,
-                  inactiveTrackColor: Colors.grey[800],
-                  thumbColor: Colors.white,
+                  inactiveTrackColor:
+                      Colors.grey[300], // 🌟 Track chìm màu xám nhạt
+                  thumbColor: color, // 🌟 Cục tròn màu đỏ
                   trackHeight: 8.0,
                   thumbShape:
                       const RoundSliderThumbShape(enabledThumbRadius: 12.0),
@@ -164,7 +175,6 @@ class _HudControlPanelState extends State<HudControlPanel> {
         setState(() {
           isAutoMode = !isAutoMode;
         });
-        // 🌟 SỬA: Khi đang chạy tay mà gạt sang chế độ Auto thì phải ngắt ga ngay lập tức
         if (isAutoMode) {
           _stopRobot();
         }
@@ -173,14 +183,14 @@ class _HudControlPanelState extends State<HudControlPanel> {
         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 10),
         decoration: BoxDecoration(
           border: Border.all(
-              color: isAutoMode ? alertOrange : neonGreen, width: 1.5),
+              color: isAutoMode ? autoModeColor : primaryRed, width: 1.5),
           borderRadius: BorderRadius.circular(30),
-          color: (isAutoMode ? alertOrange : neonGreen).withOpacity(0.1),
+          color: (isAutoMode ? autoModeColor : primaryRed).withOpacity(0.1),
         ),
         child: Text(
           isAutoMode ? 'MODE: AUTONOMOUS' : 'MODE: MANUAL',
           style: TextStyle(
-            color: isAutoMode ? alertOrange : neonGreen,
+            color: isAutoMode ? autoModeColor : primaryRed,
             fontWeight: FontWeight.bold,
             letterSpacing: 2,
           ),
@@ -194,33 +204,35 @@ class _HudControlPanelState extends State<HudControlPanel> {
     return Container(
       width: 160,
       height: 160,
-      decoration:
-          const BoxDecoration(color: Color(0xFF222224), shape: BoxShape.circle),
+      decoration: BoxDecoration(
+          color: Colors.grey[200], // 🌟 Nền cụm D-Pad màu xám nhạt
+          shape: BoxShape.circle,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              spreadRadius: 2,
+            )
+          ]),
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // 🌟 SỬA: Đã truyền đủ 4 tham số (Thêm tên hướng)
           Positioned(
               top: 5,
               child: _buildDirectionButton(
                   Icons.keyboard_arrow_up, 1.0, 0.0, 'UP')),
-
           Positioned(
               bottom: 5,
               child: _buildDirectionButton(
                   Icons.keyboard_arrow_down, -1.0, 0.0, 'DOWN')),
-
           Positioned(
               left: 5,
               child: _buildDirectionButton(
                   Icons.keyboard_arrow_left, 0.0, 1.0, 'LEFT')),
-
           Positioned(
               right: 5,
               child: _buildDirectionButton(
                   Icons.keyboard_arrow_right, 0.0, -1.0, 'RIGHT')),
-
-          // 🌟 SỬA: Gắn hàm _stopRobot và đổi màu nền khi nút STOP đang được kích hoạt
           GestureDetector(
             onTap: _stopRobot,
             child: Container(
@@ -228,14 +240,14 @@ class _HudControlPanelState extends State<HudControlPanel> {
               height: 50,
               decoration: BoxDecoration(
                   color: activeDirection == 'NONE'
-                      ? Colors.redAccent.withOpacity(0.2)
-                      : const Color(0xFF333335),
+                      ? primaryRed.withOpacity(0.2)
+                      : Colors.white, // 🌟 Nền nút Stop màu trắng
                   shape: BoxShape.circle,
-                  border: Border.all(color: Colors.redAccent, width: 2)),
+                  border: Border.all(color: primaryRed, width: 2)),
               child: const Center(
                 child: Text('STOP',
                     style: TextStyle(
-                        color: Colors.redAccent,
+                        color: Colors.red, // 🌟 Chữ đỏ
                         fontSize: 11,
                         fontWeight: FontWeight.bold)),
               ),
@@ -254,7 +266,6 @@ class _HudControlPanelState extends State<HudControlPanel> {
       onTap: () {
         if (isAutoMode) return;
 
-        // 1. Sáng nút vừa bấm lên
         setState(() {
           activeDirection = dirName;
         });
@@ -262,10 +273,7 @@ class _HudControlPanelState extends State<HudControlPanel> {
         double currentLinear = maxLinearSpeed * linearDir;
         double currentAngular = maxAngularSpeed * angularDir;
 
-        // 2. Dừng bộ đếm cũ (nếu đang chạy hướng khác)
         _driveTimer?.cancel();
-
-        // 3. Spam lệnh liên tục 10Hz để Rùa không bị phanh lại
         _driveTimer =
             Timer.periodic(const Duration(milliseconds: 100), (timer) {
           rosService.move(currentLinear, currentAngular);
@@ -274,11 +282,11 @@ class _HudControlPanelState extends State<HudControlPanel> {
       child: Container(
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: isActive ? neonGreen.withOpacity(0.3) : Colors.transparent,
+          color: isActive ? primaryRed.withOpacity(0.2) : Colors.transparent,
           shape: BoxShape.circle,
         ),
         child:
-            Icon(icon, color: isActive ? neonGreen : Colors.white54, size: 36),
+            Icon(icon, color: isActive ? primaryRed : Colors.black38, size: 36),
       ),
     );
   }
@@ -287,15 +295,17 @@ class _HudControlPanelState extends State<HudControlPanel> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-          color: const Color(0xFF2A2A2C),
+          color: Colors.grey[200], // 🌟 Nền nút xám nhạt
           borderRadius: BorderRadius.circular(8)),
       child: Row(
         children: [
-          if (icon != null) Icon(icon, color: Colors.white70, size: 18),
+          if (icon != null)
+            Icon(icon, color: Colors.black87, size: 18), // 🌟 Icon đen
           if (icon != null && text != null) const SizedBox(width: 6),
           if (text != null)
             Text(text,
-                style: const TextStyle(color: Colors.white70, fontSize: 14)),
+                style: const TextStyle(
+                    color: Colors.black87, fontSize: 14)), // 🌟 Chữ đen
         ],
       ),
     );

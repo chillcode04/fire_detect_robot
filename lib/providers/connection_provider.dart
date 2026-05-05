@@ -5,22 +5,18 @@ import '../services/ros_service.dart';
 class ConnectionProvider extends ChangeNotifier {
   String _ipAddress = "192.168.1.100";
   bool _isConnected = false;
-
-  // 🌟 ĐÂY LÀ BIẾN ĐANG BỊ THIẾU NÈ:
   bool _isConnecting = false;
 
   String get ipAddress => _ipAddress;
   bool get isConnected => _isConnected;
-  bool get isConnecting => _isConnecting; // Cung cấp cho giao diện đọc
+  bool get isConnecting => _isConnecting;
 
   ConnectionProvider() {
     _loadSavedIp();
 
-    // Lắng nghe cục phát sóng mạng từ ros_service
     rosService.connectionStream.listen((isConnected) {
       _isConnected = isConnected;
-      _isConnecting =
-          false; // Đã có kết quả (thành công/thất bại) thì ngừng "Đang thử..."
+      _isConnecting = false;
       notifyListeners();
     });
   }
@@ -44,8 +40,7 @@ class ConnectionProvider extends ChangeNotifier {
       print("Đang ngắt kết nối với $_ipAddress...");
       rosService.disconnect();
     } else {
-      if (_isConnecting)
-        return; // Nếu đang trong quá trình thử kết nối thì chặn không cho bấm spam
+      if (_isConnecting) return;
 
       _isConnecting = true; // Bật trạng thái "ĐANG THỬ..."
       notifyListeners();

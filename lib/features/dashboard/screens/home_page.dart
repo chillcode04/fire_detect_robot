@@ -11,50 +11,48 @@ import '../../settings/widgets/hud_settings_view.dart';
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
-  // Khai báo màu chủ đạo cho giao diện HUD
-  final Color neonGreen = const Color.fromARGB(255, 0, 177, 80);
-  final Color darkPanel = const Color(0xFF1C1C1E);
+  final Color primaryRed = const Color.fromARGB(255, 237, 109, 109);
+  final Color lightPanel = const Color.fromARGB(255, 244, 242, 242);
 
   @override
   Widget build(BuildContext context) {
     final navProvider = context.watch<NavigationProvider>();
-    bool isLargeMap = navProvider.currentMode == AppMode.map ||
-        navProvider.currentMode == AppMode.waypoint ||
-        navProvider.currentMode == AppMode.settings; // Thêm dòng này
+
+    bool isLargeBottom = navProvider.currentMode == AppMode.map ||
+        navProvider.currentMode == AppMode.waypoint;
+
     return Scaffold(
-      backgroundColor: Colors.black,
-      drawer: const AppDrawer(), // Đăng ký Drawer vào đây
+      backgroundColor: const Color.fromARGB(255, 245, 244, 244), // Nền sáng
+      drawer: const AppDrawer(),
       body: SafeArea(
         child: Stack(
           children: [
-            // 1. GIAO DIỆN CHÍNH (Được bọc bởi Consumer để lắng nghe Mode)
+            // 1. GIAO DIỆN CHÍNH
             Consumer<NavigationProvider>(
               builder: (context, nav, child) {
-                // NẾU LÀ SETTINGS: Trả về Full màn hình, KHÔNG CÓ COLUMN & CAMERA
                 if (nav.currentMode == AppMode.settings) {
                   return const HudSettingsView();
                 }
 
-                // 3 TAB CÒN LẠI: Trả về Column có Camera
-                bool isLargeBottom = nav.currentMode == AppMode.map ||
-                    nav.currentMode == AppMode.waypoint;
                 return Column(
                   children: [
                     // NỬA TRÊN: CAMERA
                     Expanded(
-                      flex: isLargeBottom ? 40 : 65,
+                      flex: 40,
                       child: const HudCameraView(),
                     ),
-                    // NỬA DƯỚI: MAP / WAYPOINT / ĐIỀU KHIỂN
+
                     Expanded(
-                      flex: isLargeBottom ? 60 : 35,
+                      flex: 60,
                       child: Builder(
                         builder: (context) {
-                          if (nav.currentMode == AppMode.map)
+                          if (nav.currentMode == AppMode.map) {
                             return const HudMapView();
-                          if (nav.currentMode == AppMode.waypoint)
+                          }
+                          if (nav.currentMode == AppMode.waypoint) {
                             return const HudWaypointView();
-                          return const HudControlPanel(); // Mặc định là lái tay
+                          }
+                          return const HudControlPanel();
                         },
                       ),
                     ),
@@ -62,13 +60,13 @@ class HomePage extends StatelessWidget {
                 );
               },
             ),
-            // NÚT MỞ MENU (Nằm đè lên góc trên bên trái)
+
             Builder(
               builder: (context) => Positioned(
                 top: 10,
                 left: 10,
                 child: IconButton(
-                  icon: const Icon(Icons.menu, color: Colors.white, size: 30),
+                  icon: Icon(Icons.menu, color: primaryRed, size: 30),
                   onPressed: () => Scaffold.of(context).openDrawer(),
                 ),
               ),
@@ -78,89 +76,84 @@ class HomePage extends StatelessWidget {
       ),
     );
   }
-  // --- CÁC HÀM PHỤ TRỢ ĐỂ CODE GỌN GÀNG HƠN ---
 
-  // Hàm tạo chữ kiểu HUD (Màu xanh neon, font máy tính)
   Widget _buildHudText(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 4.0),
       child: Text(
         text,
         style: TextStyle(
-          color: neonGreen,
+          color: primaryRed, // 🌟 Chữ đỏ
           fontSize: 12,
-          fontFamily: 'monospace', // Dùng font chữ vi tính cho giống thật
+          fontFamily: 'monospace',
           fontWeight: FontWeight.bold,
-          shadows: [
-            Shadow(color: Colors.black, blurRadius: 2)
-          ], // Tạo viền đen để dễ đọc trên nền sáng
         ),
       ),
     );
   }
 
-  // Hàm tạo nút chức năng nhỏ màu xám
   Widget _buildActionButton(IconData? icon, String? text) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFF2A2A2C),
+        color: Colors.grey[200], // 🌟 Nền xám nhạt
         borderRadius: BorderRadius.circular(8),
       ),
       child: Row(
         children: [
-          if (icon != null) Icon(icon, color: Colors.white70, size: 18),
+          if (icon != null)
+            Icon(icon, color: Colors.black87, size: 18), // 🌟 Icon đen
           if (icon != null && text != null) const SizedBox(width: 6),
           if (text != null)
             Text(text,
-                style: const TextStyle(color: Colors.white70, fontSize: 14)),
+                style: const TextStyle(
+                    color: Colors.black87, fontSize: 14)), // 🌟 Chữ đen
         ],
       ),
     );
   }
 
-  // Hàm vẽ cụm D-Pad lái xe
   Widget _buildDPad() {
     return Container(
       width: 160,
       height: 160,
       decoration: BoxDecoration(
-        color: const Color(0xFF222224),
+        color: Colors.grey[200], // 🌟 Nền D-Pad xám nhạt
         shape: BoxShape.circle,
       ),
       child: Stack(
         alignment: Alignment.center,
         children: [
-          // 4 Mũi tên
+          // 4 Mũi tên xám đậm
           Positioned(
               top: 10,
               child: Icon(Icons.keyboard_arrow_up,
-                  color: Colors.white54, size: 30)),
+                  color: Colors.black54, size: 30)),
           Positioned(
               bottom: 10,
               child: Icon(Icons.keyboard_arrow_down,
-                  color: Colors.white54, size: 30)),
+                  color: Colors.black54, size: 30)),
           Positioned(
               left: 10,
               child: Icon(Icons.keyboard_arrow_left,
-                  color: Colors.white54, size: 30)),
+                  color: Colors.black54, size: 30)),
           Positioned(
               right: 10,
               child: Icon(Icons.keyboard_arrow_right,
-                  color: Colors.white54, size: 30)),
+                  color: Colors.black54, size: 30)),
 
-          // Nút tròn ở giữa (FUNC)
+          // Nút tròn ở giữa
           Container(
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color: const Color(0xFF333335),
-              shape: BoxShape.circle,
-            ),
-            child: const Center(
+                color: Colors.white, // 🌟 Nền trắng viền đỏ
+                shape: BoxShape.circle,
+                border: Border.all(color: primaryRed, width: 2)),
+            child: Center(
               child: Text('FUNC',
                   style: TextStyle(
-                      color: Colors.white70,
+                      color: primaryRed, // 🌟 Chữ đỏ
                       fontSize: 12,
                       fontWeight: FontWeight.bold)),
             ),

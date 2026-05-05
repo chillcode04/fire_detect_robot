@@ -7,7 +7,8 @@ import '../services/ros_service.dart';
 
 enum WaypointStatus { pending, active, completed }
 
-enum RunMode { continuous, stop5s }
+// 🌟 Đã thêm chế độ 'single' vào danh sách
+enum RunMode { continuous, stop5s, single }
 
 enum AppMode { manual, waypoint, map, settings }
 
@@ -30,17 +31,22 @@ class Waypoint {
 // 🌟 Model lưu trữ thông tin báo động
 class AlarmLog {
   final DateTime timestamp;
-  final String type; // "FIRE" hoặc "SMOKE"
+  final String type;
   final double x;
   final double y;
   final String imageUrl;
+  final double temperature; // Chỉ khai báo 1 lần ở đây
+  final double humidity; // Chỉ khai báo 1 lần ở đây
 
-  AlarmLog(
-      {required this.timestamp,
-      required this.type,
-      required this.x,
-      required this.y,
-      required this.imageUrl});
+  AlarmLog({
+    required this.timestamp,
+    required this.type,
+    required this.x,
+    required this.y,
+    required this.imageUrl,
+    required this.temperature, // Chỉ truyền 1 lần ở đây
+    required this.humidity, // Chỉ truyền 1 lần ở đây
+  });
 }
 
 class NavigationProvider extends ChangeNotifier {
@@ -49,7 +55,7 @@ class NavigationProvider extends ChangeNotifier {
   bool isFireAlarmActive = false;
 
   List<Waypoint> waypoints = [];
-  List<AlarmLog> alarmLogs = []; // 🌟 Đã mang vào đúng vị trí bên trong class
+  List<AlarmLog> alarmLogs = [];
 
   ui.Image? slamImage;
   List<int> mapData = [];
@@ -62,6 +68,9 @@ class NavigationProvider extends ChangeNotifier {
   double currentX = 0.0;
   double currentY = 0.0;
   double currentYaw = 0.0;
+
+  double currentTemp = 0.0;
+  double currentHum = 0.0;
 
   int? selectedIndex;
   bool isNavigating = false;
@@ -112,6 +121,17 @@ class NavigationProvider extends ChangeNotifier {
     rosService.cameraResultStream.listen((jsonString) {
       _handleCameraAI(jsonString);
     });
+
+    rosService.envSensorsStream.listen((jsonString) {
+      try {
+        final data = jsonDecode(jsonString);
+        // Cập nhật giá trị liên tục từ vi điều khiển
+        currentTemp = (data['temp'] ?? 0.0).toDouble();
+        currentHum = (data['hum'] ?? 0.0).toDouble();
+      } catch (e) {
+        debugPrint("🚨 LỖI JSON CẢM BIẾN: $e");
+      }
+    });
   }
 
   // ==========================================
@@ -126,7 +146,6 @@ class NavigationProvider extends ChangeNotifier {
       if ((detectedClass == "fire" || detectedClass == "smoke") &&
           confidence > 0.7) {
         if (!isFireAlarmActive) {
-          // 🌟 Truyền loại sự cố vào hàm
           _triggerFireEmergency(detectedClass.toUpperCase());
         }
       }
@@ -135,7 +154,6 @@ class NavigationProvider extends ChangeNotifier {
     }
   }
 
-  // 🌟 Hàm báo động ĐÃ ĐƯỢC CHUẨN HOÁ
   void _triggerFireEmergency(String type) {
     isFireAlarmActive = true;
     isNavigating = false;
@@ -143,13 +161,11 @@ class NavigationProvider extends ChangeNotifier {
     rosService.stopRobot();
 
     try {
-      // Tự động tách địa chỉ IP từ kết nối ROS hiện tại
       String currentIp =
           rosService.ros.url.replaceAll('ws://', '').split(':')[0];
       String snapshotUrl =
           "http://$currentIp:8080/snapshot?topic=/camera/image_raw";
 
-      // LƯU LOG MỚI VÀO DANH SÁCH
       alarmLogs.insert(
           0,
           AlarmLog(
@@ -158,6 +174,8 @@ class NavigationProvider extends ChangeNotifier {
             x: currentX,
             y: currentY,
             imageUrl: snapshotUrl,
+            temperature: currentTemp,
+            humidity: currentHum,
           ));
 
       debugPrint("🔥 ĐÃ LƯU NHẬT KÝ ($type) TẠI X: $currentX, Y: $currentY");
@@ -173,9 +191,6 @@ class NavigationProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  // ==========================================
-  // LOGIC TUẦN TRA & BẢN ĐỒ (GIỮ NGUYÊN)
-  // ==========================================
   void _checkProximity(double robotX, double robotY) {
     int targetIndex =
         waypoints.indexWhere((wp) => wp.status == WaypointStatus.active);
@@ -189,12 +204,21 @@ class NavigationProvider extends ChangeNotifier {
       target.status = WaypointStatus.completed;
       notifyListeners();
 
+      // 🌟 NẾU CHẾ ĐỘ LÀ SINGLE -> DỪNG NGAY LẬP TỨC KHÔNG ĐI TIẾP
+      if (_currentRunMode == RunMode.single) {
+        isNavigating = false;
+        rosService.move(0.0, 0.0); // Ra lệnh phanh mượt mà cho robot
+        notifyListeners();
+        return;
+      }
+
+      // Nếu là chạy liên tục hoặc dừng 5s thì nạp điểm tiếp theo
       if (targetIndex < waypoints.length - 1) {
         int nextIndex = targetIndex + 1;
         if (_currentRunMode == RunMode.continuous) {
           waypoints[nextIndex].status = WaypointStatus.active;
           _sendCurrentGoalToRos();
-        } else {
+        } else if (_currentRunMode == RunMode.stop5s) {
           _pauseAndGo(nextIndex);
         }
       } else {
@@ -346,5 +370,29 @@ class NavigationProvider extends ChangeNotifier {
   void setMode(AppMode mode) {
     _currentMode = mode;
     notifyListeners();
+  }
+
+  void selectWaypointByCoords(double x, double y) {
+    isNavigating = true;
+    isPaused = false;
+    for (var wp in waypoints) {
+      if (wp.status == WaypointStatus.active) {
+        wp.status = WaypointStatus.pending;
+      }
+    }
+    rosService.sendNav2Goal(x, y, 0.0);
+    notifyListeners();
+  }
+
+  void clearAlarmLogs() {
+    alarmLogs.clear();
+    notifyListeners();
+  }
+
+  void removeAlarmLog(int index) {
+    if (index >= 0 && index < alarmLogs.length) {
+      alarmLogs.removeAt(index);
+      notifyListeners();
+    }
   }
 }

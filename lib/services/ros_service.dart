@@ -13,7 +13,7 @@ class RosService {
   Timer? _connectionTimer;
 
   // --- 1. KHAI BÁO CÁC TOPIC ---
-  Topic? batteryTopic;
+  Topic? envSensorsTopic;
   Topic? cmdVelTopic;
   Topic? goalTopic;
   Topic? odomTopic;
@@ -37,6 +37,9 @@ class RosService {
   // 🌟 Loa phát JSON từ AI YOLO
   final _cameraResultController = StreamController<String>.broadcast();
   Stream<String> get cameraResultStream => _cameraResultController.stream;
+
+  final _envSensorsController = StreamController<String>.broadcast();
+  Stream<String> get envSensorsStream => _envSensorsController.stream;
 
   void connectToRobot(String ipAddress) {
     _connectionTimer?.cancel();
@@ -74,36 +77,35 @@ class RosService {
   }
 
   void _setupSubscribers() {
-    batteryTopic = Topic(
+    odomTopic = Topic(
         ros: ros,
-        name: AppConfig.topicBattery,
-        type: 'sensor_msgs/BatteryState');
-    batteryTopic?.subscribe((msg) async {});
-
-    odomTopic =
-        Topic(ros: ros, name: AppConfig.topicOdom, type: 'nav_msgs/Odometry');
+        name: AppConfig.topicOdom,
+        type: 'nav_msgs/msg/Odometry'); // Thêm /msg/
     odomTopic?.subscribe((msg) async {
       _odomController.add(msg);
     });
 
     mapTopic = Topic(
-        ros: ros, name: AppConfig.topicMap, type: 'nav_msgs/OccupancyGrid');
+        ros: ros,
+        name: AppConfig.topicMap,
+        type: 'nav_msgs/msg/OccupancyGrid'); // Thêm /msg/
     mapTopic?.subscribe((msg) async {
       _mapController.add(msg);
     });
 
-    fireAlarmTopic =
-        Topic(ros: ros, name: AppConfig.topicFireAlarm, type: 'std_msgs/Bool');
+    fireAlarmTopic = Topic(
+        ros: ros,
+        name: AppConfig.topicFireAlarm,
+        type: 'std_msgs/msg/Bool'); // Thêm /msg/
     fireAlarmTopic?.subscribe((msg) async {
       bool isFire = msg['data'] ?? false;
       _fireAlarmController.add(isFire);
-      if (isFire) debugPrint("🚨 CẢNH BÁO: AI PHÁT HIỆN LỬA TRONG SIÊU THỊ!");
     });
 
-    // 🌟 ĐĂNG KÝ NGHE TOPIC CAMERA_RESULT
-    cameraResultTopic =
-        Topic(ros: ros, name: '/camera_result', type: 'std_msgs/String');
-
+    cameraResultTopic = Topic(
+        ros: ros,
+        name: '/camera_result',
+        type: 'std_msgs/msg/String'); // Thêm /msg/
     cameraResultTopic?.subscribe((msg) async {
       try {
         String jsonString = msg['data'] ?? "";
@@ -112,6 +114,18 @@ class RosService {
         }
       } catch (e) {
         debugPrint("🚨 LỖI KHI NHẬN DỮ LIỆU CAMERA RESULT: $e");
+      }
+    });
+    envSensorsTopic = Topic(
+        ros: ros, name: AppConfig.topicEnvSensors, type: 'std_msgs/msg/String');
+    envSensorsTopic?.subscribe((msg) async {
+      try {
+        String jsonString = msg['data'] ?? "";
+        if (jsonString.isNotEmpty) {
+          _envSensorsController.add(jsonString); // Phát tín hiệu đi
+        }
+      } catch (e) {
+        debugPrint("🚨 LỖI NHẬN DỮ LIỆU CẢM BIẾN: $e");
       }
     });
   }
@@ -169,11 +183,11 @@ class RosService {
   }
 
   void disconnect() {
-    batteryTopic?.unsubscribe();
     odomTopic?.unsubscribe();
     mapTopic?.unsubscribe();
     fireAlarmTopic?.unsubscribe();
-    cameraResultTopic?.unsubscribe(); // Đã khai báo hợp lệ ở trên
+    cameraResultTopic?.unsubscribe();
+    envSensorsTopic?.unsubscribe();
     cmdVelTopic?.unadvertise();
     goalTopic?.unadvertise();
     ros.close();

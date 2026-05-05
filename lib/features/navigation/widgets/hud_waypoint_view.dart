@@ -11,8 +11,11 @@ class HudWaypointView extends StatefulWidget {
 
 class _HudWaypointViewState extends State<HudWaypointView> {
   final TextEditingController _searchController = TextEditingController();
-  final Color neonGreen = const Color(0xFF00E676);
-  final Color darkPanel = const Color(0xFF111111);
+
+  // 🌟 BẢNG MÀU ĐỒNG BỘ ĐỎ - TRẮNG
+  final Color primaryRed = const Color.fromARGB(255, 237, 109, 109);
+  final Color lightPanel = const Color(0xFFF0F0F0); // Xám cực nhạt cho các khối
+  final Color background = Colors.white; // Nền trắng
 
   @override
   void dispose() {
@@ -26,7 +29,7 @@ class _HudWaypointViewState extends State<HudWaypointView> {
     final waypoints = navProvider.filteredWaypoints;
 
     return Container(
-      color: Colors.black,
+      color: background, // 🌟 Nền tổng thể màu trắng
       padding: const EdgeInsets.all(16.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -40,7 +43,7 @@ class _HudWaypointViewState extends State<HudWaypointView> {
               Text(
                 'MISSION CONTROL',
                 style: TextStyle(
-                    color: neonGreen,
+                    color: primaryRed, // 🌟 Tiêu đề Đỏ
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 2),
@@ -54,7 +57,7 @@ class _HudWaypointViewState extends State<HudWaypointView> {
                           : Icons.play_circle_fill,
                       size: 32,
                     ),
-                    color: Colors.cyanAccent,
+                    color: primaryRed, // 🌟 Nút Play/Pause Đỏ
                     onPressed: () {
                       if (navProvider.isNavigating) {
                         navProvider.togglePause();
@@ -75,22 +78,24 @@ class _HudWaypointViewState extends State<HudWaypointView> {
           TextField(
             controller: _searchController,
             onChanged: (value) => navProvider.updateSearchQuery(value),
-            style: const TextStyle(color: Colors.white, fontSize: 13),
+            style: const TextStyle(
+                color: Colors.black87, fontSize: 13), // 🌟 Chữ đen
             decoration: InputDecoration(
               filled: true,
-              fillColor: darkPanel,
+              fillColor: lightPanel, // 🌟 Nền thanh tìm kiếm xám nhạt
               hintText: 'Nhập tên Waypoint để tìm...',
-              hintStyle: const TextStyle(color: Colors.white24, fontSize: 13),
-              prefixIcon: Icon(Icons.search, color: neonGreen.withOpacity(0.5)),
+              hintStyle: const TextStyle(
+                  color: Colors.black45, fontSize: 13), // 🌟 Hint xám
+              prefixIcon:
+                  Icon(Icons.search, color: primaryRed.withOpacity(0.5)),
               enabledBorder: OutlineInputBorder(
-                // 🌟 Thêm chữ Input vào đây
-                borderSide: const BorderSide(color: Colors.white12, width: 1),
+                borderSide: const BorderSide(
+                    color: Colors.black12, width: 1), // 🌟 Viền xám mờ
                 borderRadius: BorderRadius.circular(8),
               ),
               focusedBorder: OutlineInputBorder(
-                // 🌟 Thêm chữ Input vào đây
                 borderSide:
-                    BorderSide(color: neonGreen.withOpacity(0.5), width: 1),
+                    BorderSide(color: primaryRed, width: 1), // 🌟 Focus viền đỏ
                 borderRadius: BorderRadius.circular(8),
               ),
               contentPadding: const EdgeInsets.symmetric(vertical: 0),
@@ -99,23 +104,28 @@ class _HudWaypointViewState extends State<HudWaypointView> {
           const SizedBox(height: 15),
 
           // ==========================================
-          // 3. CHỌN CHẾ ĐỘ CHẠY (LIÊN TỤC / DỪNG 5S)
+          // 3. CHỌN CHẾ ĐỘ CHẠY
           // ==========================================
           Row(
             children: [
               Expanded(
                   child: _buildModeButton(
                       navProvider, RunMode.continuous, 'LIÊN TỤC')),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
+              Expanded(
+                  child:
+                      _buildModeButton(navProvider, RunMode.stop5s, 'DỪNG 5S')),
+              const SizedBox(width: 8),
+              // Thêm nút mới này
               Expanded(
                   child: _buildModeButton(
-                      navProvider, RunMode.stop5s, 'DỪNG 5 GIÂY')),
+                      navProvider, RunMode.single, 'CHẠY 1 ĐIỂM')),
             ],
           ),
           const SizedBox(height: 20),
 
           // ==========================================
-          // 4. DANH SÁCH WAYPOINT (CÓ THỂ KÉO THẢ)
+          // 4. DANH SÁCH WAYPOINT
           // ==========================================
           Expanded(
             child: waypoints.isEmpty
@@ -123,7 +133,7 @@ class _HudWaypointViewState extends State<HudWaypointView> {
                     child: Text(
                       "KHÔNG TÌM THẤY WAYPOINT",
                       style: TextStyle(
-                          color: Colors.white24,
+                          color: Colors.black26, // 🌟 Chữ trống xám mờ
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                           letterSpacing: 1),
@@ -131,13 +141,11 @@ class _HudWaypointViewState extends State<HudWaypointView> {
                   )
                 : Theme(
                     data: Theme.of(context).copyWith(
-                      canvasColor:
-                          Colors.transparent, // Nền trong suốt khi đang kéo
+                      canvasColor: Colors.transparent,
                     ),
                     child: ReorderableListView.builder(
                       itemCount: waypoints.length,
                       onReorder: (oldIndex, newIndex) {
-                        // Tính toán đúng index trong list gốc
                         final actualOldIndex = navProvider.waypoints
                             .indexOf(navProvider.filteredWaypoints[oldIndex]);
                         final actualNewIndex =
@@ -152,7 +160,6 @@ class _HudWaypointViewState extends State<HudWaypointView> {
                       },
                       itemBuilder: (context, index) {
                         final wp = waypoints[index];
-                        // Tìm đúng index gốc
                         final actualIndex = navProvider.waypoints.indexOf(wp);
                         return _buildWaypointItem(wp, actualIndex, navProvider);
                       },
@@ -173,9 +180,12 @@ class _HudWaypointViewState extends State<HudWaypointView> {
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 12),
         decoration: BoxDecoration(
-          color: isActive ? neonGreen.withOpacity(0.1) : Colors.transparent,
+          color: isActive
+              ? primaryRed.withOpacity(0.1)
+              : lightPanel, // 🌟 Active: nền đỏ nhạt | Inactive: nền xám nhạt
           border: Border.all(
-            color: isActive ? neonGreen : Colors.white12,
+            color:
+                isActive ? primaryRed : Colors.black12, // 🌟 Viền đỏ hoặc xám
             width: 1,
           ),
           borderRadius: BorderRadius.circular(4),
@@ -184,7 +194,8 @@ class _HudWaypointViewState extends State<HudWaypointView> {
         child: Text(
           label,
           style: TextStyle(
-            color: isActive ? neonGreen : Colors.white54,
+            color:
+                isActive ? primaryRed : Colors.black54, // 🌟 Chữ đỏ hoặc đen mờ
             fontSize: 11,
             fontWeight: FontWeight.bold,
           ),
@@ -202,16 +213,18 @@ class _HudWaypointViewState extends State<HudWaypointView> {
       key: ValueKey(wp.id),
       margin: const EdgeInsets.only(bottom: 8),
       decoration: BoxDecoration(
-        color: isActive ? neonGreen.withOpacity(0.05) : darkPanel,
+        color: isActive
+            ? primaryRed.withOpacity(0.05)
+            : lightPanel, // 🌟 Dòng đang chạy sẽ có nền hơi đỏ
         border: Border(
             left: BorderSide(
-                color: isActive ? Colors.cyanAccent : neonGreen,
+                color: isActive
+                    ? primaryRed
+                    : Colors.black26, // 🌟 Vạch bên trái Đỏ hoặc Xám
                 width: isActive ? 5 : 3)),
       ),
       child: ListTile(
         contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
-
-        // 🌟 CHỌN NHANH ĐIỂM ĐẾN
         onTap: () {
           for (var item in provider.waypoints) {
             if (item.status != WaypointStatus.completed) {
@@ -219,60 +232,62 @@ class _HudWaypointViewState extends State<HudWaypointView> {
             }
           }
           wp.status = WaypointStatus.active;
-          // Thông báo cho UI vẽ lại (hàm selectWaypoint đã gọi notifyListeners)
           provider.selectWaypoint(actualIndex);
         },
-
-        // 🌟 SỬA TÊN BẰNG LONG PRESS
         onLongPress: () =>
             _showRenameDialog(context, wp, actualIndex, provider),
-
         leading: CircleAvatar(
           backgroundColor: isActive
-              ? Colors.cyanAccent.withOpacity(0.2)
-              : neonGreen.withOpacity(0.2),
+              ? primaryRed.withOpacity(0.2)
+              : Colors.black12, // 🌟 Hình tròn Đỏ nhạt hoặc Xám nhạt
           child: Text('${actualIndex + 1}',
               style: TextStyle(
-                  color: isActive ? Colors.cyanAccent : neonGreen,
+                  color: isActive ? primaryRed : Colors.black87, // 🌟 Số thứ tự
                   fontWeight: FontWeight.bold)),
         ),
-        // 🌟 Bọc Text bằng Row để nhét thêm nút Edit kế bên
         title: Row(
           children: [
             Text(wp.name,
                 style: TextStyle(
-                    color: isActive ? Colors.cyanAccent : Colors.white,
+                    color: isActive
+                        ? primaryRed
+                        : Colors.black87, // 🌟 Tên điểm Đỏ hoặc Đen
                     fontWeight: FontWeight.bold,
                     fontSize: 14)),
-            const SizedBox(width: 8), // Khoảng cách nhỏ
-
-            // 🌟 NÚT EDIT RÕ RÀNG
+            const SizedBox(width: 8),
             GestureDetector(
               onTap: () =>
                   _showRenameDialog(context, wp, actualIndex, provider),
-              child: const Icon(Icons.edit, color: Colors.white54, size: 16),
+              child: const Icon(Icons.edit,
+                  color: Colors.black38, size: 16), // 🌟 Nút Edit xám mờ
             ),
           ],
         ),
         subtitle: Text(
           'X: ${wp.x.toStringAsFixed(2)}  |  Y: ${wp.y.toStringAsFixed(2)}',
           style: const TextStyle(
-              color: Colors.white54, fontFamily: 'monospace', fontSize: 11),
+              color: Colors.black54,
+              fontFamily: 'monospace',
+              fontSize: 11), // 🌟 Tọa độ xám mờ
         ),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             if (isActive)
-              const Icon(Icons.directions_run,
-                  color: Colors.cyanAccent, size: 20)
+              Icon(Icons.directions_run,
+                  color: primaryRed, size: 20) // 🌟 Icon đang chạy màu đỏ
             else if (wp.status == WaypointStatus.completed)
-              const Icon(Icons.check_circle, color: Colors.green, size: 20),
+              const Icon(Icons.check_circle,
+                  color: Colors.green,
+                  size: 20), // Giữ màu xanh lá cho điểm đã hoàn thành
             const SizedBox(width: 10),
             IconButton(
-              icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+              icon: const Icon(Icons.delete_outline,
+                  color: Colors.black38), // 🌟 Thùng rác xám mờ
               onPressed: () => provider.removeWaypoint(actualIndex),
             ),
-            const Icon(Icons.drag_handle, color: Colors.white24),
+            const Icon(Icons.drag_handle,
+                color: Colors.black26), // 🌟 Icon kéo xám mờ
           ],
         ),
       ),
@@ -289,34 +304,44 @@ class _HudWaypointViewState extends State<HudWaypointView> {
       context: context,
       builder: (context) {
         return AlertDialog(
-          backgroundColor: darkPanel,
+          backgroundColor: background, // 🌟 Nền hộp thoại Trắng
           title: Text("Đổi Tên Waypoint",
-              style: TextStyle(color: neonGreen, fontSize: 16)),
+              style: TextStyle(
+                  color: primaryRed,
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold)),
           content: TextField(
             controller: renameController,
-            style: const TextStyle(color: Colors.white),
+            style: const TextStyle(
+                color: Colors.black87), // 🌟 Chữ nhập vào màu đen
             decoration: InputDecoration(
               focusedBorder: UnderlineInputBorder(
-                  borderSide: BorderSide(color: neonGreen)),
+                  borderSide: BorderSide(
+                      color: primaryRed)), // 🌟 Gạch chân đỏ khi focus
               enabledBorder: const UnderlineInputBorder(
-                  borderSide: BorderSide(color: Colors.white24)),
+                  borderSide: BorderSide(color: Colors.black12)),
             ),
           ),
           actions: [
             TextButton(
               onPressed: () => Navigator.pop(context),
-              child: const Text("HỦY", style: TextStyle(color: Colors.white54)),
+              child: const Text("HỦY", style: TextStyle(color: Colors.black54)),
             ),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  backgroundColor: neonGreen.withOpacity(0.2)),
+                  backgroundColor:
+                      primaryRed.withOpacity(0.1), // 🌟 Nút lưu nền đỏ nhạt
+                  elevation: 0),
               onPressed: () {
                 if (renameController.text.isNotEmpty) {
                   provider.renameWaypoint(index, renameController.text);
                   Navigator.pop(context);
                 }
               },
-              child: Text("LƯU", style: TextStyle(color: neonGreen)),
+              child: Text("LƯU",
+                  style: TextStyle(
+                      color: primaryRed,
+                      fontWeight: FontWeight.bold)), // 🌟 Chữ nút lưu màu đỏ
             ),
           ],
         );

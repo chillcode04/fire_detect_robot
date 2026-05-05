@@ -39,6 +39,7 @@ dependencies:
   flutter_mjpeg: ^2.0.4
   shared_preferences: ^2.5.3
   roslibdart: ^0.0.1-dev+4
+  url_launcher: ^6.3.1
 
 dev_dependencies:
   flutter_test:

@@ -11,10 +11,8 @@ import 'providers/surveillance_provider.dart';
 import 'features/dashboard/screens/home_page.dart';
 
 void main() {
-  // Đảm bảo các dịch vụ hệ thống của Flutter đã sẵn sàng
   WidgetsFlutterBinding.ensureInitialized();
 
-  // 1. TỐI ƯU MOBILE: Ẩn thanh trạng thái (Pin, Giờ) và thanh điều hướng ảo
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
 
   // 2. TỐI ƯU MOBILE: Khóa hướng màn hình luôn luôn là chiều DỌC
@@ -23,7 +21,6 @@ void main() {
     DeviceOrientation.portraitDown,
   ]).then((_) {
     runApp(
-      // 3. ĐẤU NỐI PROVIDERS: Để dữ liệu chạy xuyên suốt các màn hình
       MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => ConnectionProvider()),
@@ -43,18 +40,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'ROS 2 HUD Controller',
-      debugShowCheckedModeBanner: false, // Tắt cái nhãn "Debug" ở góc màn hình
-
-      // Thiết lập tông màu tối cho App chuyên dụng
+      debugShowCheckedModeBanner: false,
       theme: ThemeData.dark().copyWith(
-        scaffoldBackgroundColor: Colors.black,
+        scaffoldBackgroundColor: const Color.fromARGB(255, 238, 237, 237),
         colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF00E676), // Màu xanh Neon chủ đạo
+          seedColor: const Color.fromARGB(255, 228, 109, 111),
           brightness: Brightness.dark,
         ),
       ),
-
-      // Chỉ định HomePage của bạn làm màn hình khởi đầu
       home: const HomePage(),
     );
   }

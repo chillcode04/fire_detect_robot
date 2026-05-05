@@ -14,6 +14,10 @@ class HudMapView extends StatefulWidget {
 class _HudMapViewState extends State<HudMapView> {
   final TransformationController _viewController = TransformationController();
 
+  // 🌟 BẢNG MÀU ĐỒNG BỘ ĐỎ - TRẮNG
+  final Color primaryRed = const Color.fromARGB(255, 237, 109, 109);
+  final Color mapBackground = const Color(0xFFF9F9F9); // Trắng xám nhạt
+
   @override
   void initState() {
     super.initState();
@@ -59,9 +63,9 @@ class _HudMapViewState extends State<HudMapView> {
     return Container(
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
-        color: const Color(0xFF050505),
-        border:
-            Border.all(color: Colors.cyanAccent.withOpacity(0.5), width: 1.5),
+        color: mapBackground, // 🌟 Nền trắng thay vì đen
+        border: Border.all(
+            color: primaryRed.withOpacity(0.5), width: 1.5), // 🌟 Viền đỏ
         borderRadius: BorderRadius.circular(15),
       ),
       clipBehavior: Clip.hardEdge,
@@ -93,10 +97,12 @@ class _HudMapViewState extends State<HudMapView> {
           // KHU VỰC CHÍNH: MAP SLAM & ROBOT & WAYPOINT
           // ==========================================
           navProvider.slamImage == null
-              ? const Center(
+              ? Center(
                   child: Text("AWAITING SLAM MAP DATA...",
                       style: TextStyle(
-                          color: Colors.cyanAccent, fontFamily: 'monospace')),
+                          color: primaryRed, // 🌟 Chữ báo lỗi màu đỏ
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'monospace')),
                 )
               : Center(
                   child: InteractiveViewer(
@@ -105,7 +111,6 @@ class _HudMapViewState extends State<HudMapView> {
                     minScale: 0.1,
                     constrained: false,
                     boundaryMargin: const EdgeInsets.all(2000),
-                    // 🌟 BỌC GESTURE DETECTOR Ở ĐÂY ĐỂ CẮM CỜ
                     child: GestureDetector(
                       onTapUp: (TapUpDetails details) {
                         double px = details.localPosition.dx;
@@ -126,8 +131,9 @@ class _HudMapViewState extends State<HudMapView> {
                           SnackBar(
                             content: Text('📍 Đã thêm WP $nextNum',
                                 style: const TextStyle(
-                                    fontWeight: FontWeight.bold)),
-                            backgroundColor: const Color(0xFF00E676),
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white)),
+                            backgroundColor: primaryRed, // 🌟 Thông báo màu đỏ
                             duration: const Duration(milliseconds: 800),
                           ),
                         );
@@ -137,7 +143,7 @@ class _HudMapViewState extends State<HudMapView> {
                         height: navProvider.mapHeight.toDouble(),
                         child: Stack(
                           children: [
-                            // 🌟 LỚP BẢN ĐỒ SLAM TĨNH (Dùng ui.Image)
+                            // LỚP BẢN ĐỒ SLAM TĨNH
                             CustomPaint(
                               size: Size.infinite,
                               painter: StaticMapPainter(
@@ -151,7 +157,7 @@ class _HudMapViewState extends State<HudMapView> {
                               ),
                             ),
 
-                            // 🌟 LỚP ROBOT ĐỘNG (Lái mượt 30Hz)
+                            // LỚP ROBOT ĐỘNG
                             CustomPaint(
                               size: Size.infinite,
                               painter: RobotLayerPainter(
@@ -171,7 +177,9 @@ class _HudMapViewState extends State<HudMapView> {
                   ),
                 ),
 
-          // Các Nút Công Cụ và Ghi chú giữ nguyên...
+          // ==========================================
+          // CÁC NÚT CÔNG CỤ (ZOOM, CENTER)
+          // ==========================================
           Positioned(
             top: 10,
             right: 10,
@@ -186,14 +194,16 @@ class _HudMapViewState extends State<HudMapView> {
             ),
           ),
 
+          // THÔNG TIN ĐỘ PHÂN GIẢI
           Positioned(
             bottom: 10,
             left: 10,
             child: Text(
                 "RESOLUTION: ${navProvider.mapResolution} m/px\nGRID: MAP ACTIVE",
                 style: TextStyle(
-                    color: Colors.cyanAccent.withOpacity(0.7),
+                    color: Colors.black54, // 🌟 Chữ đen mờ trên nền trắng
                     fontSize: 10,
+                    fontWeight: FontWeight.bold,
                     fontFamily: 'monospace')),
           )
         ],
@@ -207,16 +217,18 @@ class _HudMapViewState extends State<HudMapView> {
       child: Container(
         padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
-            color: Colors.black54,
-            border: Border.all(color: Colors.cyanAccent)),
-        child: Icon(icon, color: Colors.cyanAccent, size: 20),
+            color: Colors.white, // 🌟 Nút màu trắng
+            borderRadius:
+                BorderRadius.circular(8), // Thêm bo góc cho nút mềm mại hơn
+            border: Border.all(color: primaryRed.withOpacity(0.5))),
+        child: Icon(icon, color: primaryRed, size: 20), // 🌟 Icon màu đỏ
       ),
     );
   }
 }
 
 // ==========================================
-// PAINTER TĨNH: LỚP GRID (Để map đỡ chìm)
+// PAINTER TĨNH: LỚP GRID
 // ==========================================
 class GridLayerPainter extends CustomPainter {
   final double mapResolution;
@@ -225,7 +237,8 @@ class GridLayerPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final gridPaint = Paint()
-      ..color = Colors.cyanAccent.withOpacity(0.05)
+      ..color =
+          Colors.black12 // 🌟 Lưới mờ màu xám đen để nhìn rõ trên nền trắng
       ..strokeWidth = 1.0;
 
     double stepX = 20.0;
@@ -244,7 +257,7 @@ class GridLayerPainter extends CustomPainter {
 }
 
 // ==========================================
-// 🌟 TÁCH LỚP 1: PAINTER TĨNH (VẼ IMAGE & WAYPOINT)
+// PAINTER TĨNH: VẼ IMAGE & WAYPOINT
 // ==========================================
 class StaticMapPainter extends CustomPainter {
   final ui.Image slamImage;
@@ -273,26 +286,25 @@ class StaticMapPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    // 🌟 KHÔNG CÒN VÒNG LẶP FOR NỮA. CHỈ CẦN 1 LỆNH VẼ ẢNH!
     canvas.drawImage(slamImage, Offset.zero, Paint());
 
     // Vẽ Waypoints
-    final pointPaint = Paint()..color = Colors.cyanAccent;
+    final pointPaint = Paint()..color = Colors.red; // 🌟 Điểm màu Đỏ
     final borderPaint = Paint()
-      ..color = Colors.black
+      ..color = Colors.white // 🌟 Viền màu trắng bao quanh điểm đỏ
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 2.0;
+      ..strokeWidth = 1.5;
 
     for (int i = 0; i < waypoints.length; i++) {
       final pos = _toPixel(waypoints[i].x, waypoints[i].y);
-      canvas.drawCircle(pos, 2.5, pointPaint);
-      canvas.drawCircle(pos, 2.5, borderPaint);
+      canvas.drawCircle(pos, 3.0, pointPaint);
+      canvas.drawCircle(pos, 3.0, borderPaint);
 
       TextPainter tp = TextPainter(
         text: TextSpan(
             style: const TextStyle(
-                color: Colors.black,
-                fontSize: 3.5,
+                color: Colors.white, // 🌟 Số thứ tự màu trắng
+                fontSize: 4.0,
                 fontWeight: FontWeight.bold),
             text: '${i + 1}'),
         textAlign: TextAlign.center,
@@ -308,7 +320,7 @@ class StaticMapPainter extends CustomPainter {
 }
 
 // ==========================================
-// TÁCH LỚP 2: PAINTER ĐỘNG (CHỈ VẼ ROBOT)
+// PAINTER ĐỘNG: VẼ ROBOT
 // ==========================================
 class RobotLayerPainter extends CustomPainter {
   final int height;
@@ -339,21 +351,23 @@ class RobotLayerPainter extends CustomPainter {
     canvas.rotate(-robotYaw * pi / 180);
 
     final robotPaint = Paint()
-      ..color = Colors.cyanAccent
+      ..color = Colors.red // 🌟 Mũi tên robot màu Đỏ
       ..style = PaintingStyle.fill;
+
     var path = Path();
-    path.moveTo(4, 0);
-    path.lineTo(-3, 3);
-    path.lineTo(-1.5, 0);
-    path.lineTo(-3, -3);
+    path.moveTo(5, 0);
+    path.lineTo(-4, 4);
+    path.lineTo(-2, 0);
+    path.lineTo(-4, -4);
     path.close();
+
     canvas.drawPath(path, robotPaint);
 
     canvas.drawCircle(
         Offset.zero,
         15,
         Paint()
-          ..color = Colors.cyanAccent.withOpacity(0.2)
+          ..color = Colors.red.withOpacity(0.15)
           ..style = PaintingStyle.fill);
     canvas.restore();
   }
