@@ -1,0 +1,6 @@
+../Core/Src/freertos.c:98:6:MX_FREERTOS_Init	8	static
+../Core/Src/freertos.c:148:6:Task_pub_sub	272	static
+../Core/Src/freertos.c:263:6:Task_IMU	16	static
+../Core/Src/freertos.c:281:6:HAL_TIM_PeriodElapsedCallback	16	static
+../Core/Src/freertos.c:295:6:Task_control	24	static
+../Core/Src/freertos.c:311:6:Task_BME	16	static

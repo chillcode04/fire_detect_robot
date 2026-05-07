@@ -1,0 +1,95 @@
+!SESSION 2026-05-05 17:47:25.159 -----------------------------------------------
+eclipse.buildId=Version 2.0.0
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-05-05 17:47:37.080
+!MESSAGE Log4j2 initialized with config file /home/long/STM32CubeIDE/micro_ros (1)/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-05-05 17:47:39.421
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-05-05 17:49:09.813 -----------------------------------------------
+eclipse.buildId=Version 2.0.0
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-05-05 17:49:15.221
+!MESSAGE Log4j2 initialized with config file /home/long/STM32CubeIDE/micro_ros (1)/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-05-05 17:49:17.591
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-05-05 17:54:50.262 -----------------------------------------------
+eclipse.buildId=Version 2.0.0
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-05-05 17:55:01.500
+!MESSAGE Log4j2 initialized with config file /home/long/STM32CubeIDE/micro_ros2/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-05-05 17:55:04.305
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2026-05-05 17:56:22.944 -----------------------------------------------
+eclipse.buildId=Version 2.0.0
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-05-05 17:56:26.583
+!MESSAGE Log4j2 initialized with config file /home/long/STM32CubeIDE/micro_ros2/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-05-05 17:56:29.284
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2026-05-05 17:57:14.912
+!MESSAGE Indexed 'micro_ros' (37 sources, 155 headers) in 2.71 sec: 16,824 declarations; 70,802 references; 15 unresolved inclusions; 202 syntax errors; 358 unresolved names (0.41%)
+
+!ENTRY org.eclipse.ui.ide 4 0 2026-05-05 17:57:30.566
+!MESSAGE Could not import project located at /opt/st/stm32cubeide_2.0.0/readme
+!STACK 0
+org.eclipse.ui.internal.wizards.datatransfer.CouldNotImportProjectException: Could not import project located at /opt/st/stm32cubeide_2.0.0/readme
+	at org.eclipse.ui.internal.wizards.datatransfer.SmartImportJob.toExistingOrNewProject(SmartImportJob.java:555)
+	at org.eclipse.ui.internal.wizards.datatransfer.SmartImportJob.run(SmartImportJob.java:246)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+Caused by: org.eclipse.core.runtime.CoreException: Parent of resource: /opt/st/stm32cubeide_2.0.0/readme/.project is marked as read-only.
+	at org.eclipse.core.internal.filesystem.Policy.error(Policy.java:32)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.checkReadOnlyParent(LocalFile.java:105)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.handleWriteIOException(LocalFile.java:535)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.write(LocalFile.java:530)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.write(FileSystemResourceManager.java:1355)
+	at org.eclipse.core.internal.localstore.FileSystemResourceManager.internalWrite(FileSystemResourceManager.java:725)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1466)
+	at org.eclipse.core.internal.resources.Project.writeDescription(Project.java:1447)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:331)
+	at org.eclipse.core.internal.resources.Project.create(Project.java:291)
+	at org.eclipse.ui.internal.wizards.datatransfer.SmartImportJob.createOrImportProject(SmartImportJob.java:594)
+	at org.eclipse.ui.internal.wizards.datatransfer.SmartImportJob.toExistingOrNewProject(SmartImportJob.java:542)
+	... 2 more
+Caused by: java.nio.file.AccessDeniedException: /opt/st/stm32cubeide_2.0.0/readme/.project
+	at java.base/sun.nio.fs.UnixException.translateToIOException(UnixException.java:90)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:106)
+	at java.base/sun.nio.fs.UnixException.rethrowAsIOException(UnixException.java:111)
+	at java.base/sun.nio.fs.UnixFileSystemProvider.newByteChannel(UnixFileSystemProvider.java:261)
+	at java.base/java.nio.file.spi.FileSystemProvider.newOutputStream(FileSystemProvider.java:482)
+	at java.base/java.nio.file.Files.newOutputStream(Files.java:228)
+	at java.base/java.nio.file.Files.write(Files.java:3505)
+	at org.eclipse.core.internal.filesystem.local.LocalFile.write(LocalFile.java:527)
+	... 10 more
+!SESSION 2026-05-05 18:04:25.299 -----------------------------------------------
+eclipse.buildId=Version 2.0.0
+java.version=21.0.8
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=linux, ARCH=x86_64, WS=gtk, NL=en_US
+Command-line arguments:  -os linux -ws gtk -arch x86_64 -data /home/long/STM32CubeIDE/micro_ros2
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2026-05-05 18:04:27.990
+!MESSAGE Log4j2 initialized with config file /home/long/STM32CubeIDE/micro_ros2/.metadata/.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2026-05-05 18:04:29.764
+!MESSAGE Started RMI Server, listening on port 41337

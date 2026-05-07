@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Delete resource &apos;micro_ros&apos;" deleteContents="false" description="Delete resource &apos;micro_ros&apos;" element1="/micro_ros" flags="7" id="org.eclipse.ltk.core.refactoring.delete.resources" resources="1" stamp="1777978921333"/>
+</session>

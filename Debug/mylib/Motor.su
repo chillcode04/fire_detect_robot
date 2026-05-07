@@ -1,0 +1,5 @@
+../mylib/Motor.c:14:7:Motor_Init	32	static
+../mylib/Motor.c:61:6:Motor_GetSpeed	32	static
+../mylib/Motor.c:72:6:Motor_SetPwm	48	static
+../mylib/Motor.c:131:6:Motor_SetTarget	24	static
+../mylib/Motor.c:136:6:Drive_VW	48	static
