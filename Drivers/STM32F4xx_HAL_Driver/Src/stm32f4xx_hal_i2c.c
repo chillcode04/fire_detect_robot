@@ -7270,7 +7270,7 @@ static HAL_StatusTypeDef I2C_WaitOnMasterAddressFlagUntilTimeout(I2C_HandleTypeD
       hi2c->PreviousState       = I2C_STATE_NONE;
       hi2c->State               = HAL_I2C_STATE_READY;
       hi2c->Mode                = HAL_I2C_MODE_NONE;
-      hi2c->ErrorCode           |= HAL_I2C_ERROR_AF;
+      hi2c->ErrorCode          |= HAL_I2C_ERROR_AF;
 
       /* Process Unlocked */
       __HAL_UNLOCK(hi2c);

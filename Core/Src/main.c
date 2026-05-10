@@ -111,6 +111,7 @@ int main(void)
   MX_TIM4_Init();
   MX_USART1_UART_Init();
   MX_I2C1_Init();
+  MX_I2C3_Init();
   /* USER CODE BEGIN 2 */
   //reset_I2C();
   Sensor_Init();
@@ -176,8 +177,6 @@ void Sensor_Init(void)
 
   //Init structure definition section
 	BME280_Init_t BME280_InitStruct = {0};
-
-	//Reset section
 	Reset_BME280();
 
 	/*============================ *BME280 Initialization* ============================*/
@@ -190,6 +189,7 @@ void Sensor_Init(void)
 	BME280_InitStruct.SPI_EnOrDis = SPI3_W_DISABLE;			//SPI3_W_DISABLE or SPI3_W_ENABLE can be written
 	BME280_InitStruct.T_StandBy = T_SB_250;					//T_SB_X
 	BME280Init(BME280_InitStruct);
+	Calibdata_BME280();
 }
 
 

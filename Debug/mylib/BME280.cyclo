@@ -2,8 +2,8 @@
 ../mylib/BME280.c:105:19:BME280_SleepMode	1
 ../mylib/BME280.c:120:6:Calibdata_BME280	1
 ../mylib/BME280.c:155:12:RawdataBME280	2
-../mylib/BME280.c:181:9:BME280_measure_Temp	1
-../mylib/BME280.c:199:10:BME280_measure_Press	2
-../mylib/BME280.c:228:10:BME280_measure_Hum	1
-../mylib/BME280.c:252:6:BME280Calculation	1
-../mylib/BME280.c:277:6:BME280Init	2
+../mylib/BME280.c:179:9:BME280_measure_Temp	1
+../mylib/BME280.c:197:10:BME280_measure_Press	2
+../mylib/BME280.c:226:10:BME280_measure_Hum	1
+../mylib/BME280.c:250:6:BME280Calculation	1
+../mylib/BME280.c:275:6:BME280Init	2

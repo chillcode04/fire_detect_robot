@@ -158,9 +158,7 @@ Raw_Data_t RawdataBME280(void){
 	Raw_Data_t data = {0};
 
 	HAL_StatusTypeDef status;
-	status = HAL_I2C_Mem_Read(BME280_I2C_HANDLE, BME280_ADDR, RAWDATA_BASEADDR, 1, rawData, 8, 1000);
-
-
+	status = HAL_I2C_Mem_Read(BME280_I2C_HANDLE, BME280_ADDR, RAWDATA_BASEADDR, 1, rawData, 8, 5000);
 	if (status != HAL_OK) {
 	        printf("I2C Read Error in RawdataBME280!\n");
 	    }
@@ -302,5 +300,5 @@ void BME280Init(BME280_Init_t BME280Init){
 	init=0;
 
 	printf("BME280 Initialization process is done!\n");
-	Calibdata_BME280();
+
 }

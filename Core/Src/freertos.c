@@ -39,7 +39,7 @@ extern BME280_Data_t BME280;
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+osMutexId_t i2c3_mutex;
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -97,7 +97,7 @@ extern PID_TypeDef YPID;
   */
 void MX_FREERTOS_Init(void) {
   /* USER CODE BEGIN Init */
-
+	i2c3_mutex = osMutexNew(NULL);
   /* USER CODE END Init */
 
   /* USER CODE BEGIN RTOS_MUTEX */
@@ -121,7 +121,7 @@ void MX_FREERTOS_Init(void) {
   myTask1Handle = osThreadNew(Task_pub_sub, NULL, &myTask1_attributes);
 
   /* creation of myTask02 */
-  myTask02Handle = osThreadNew(Task_IMU, NULL, &myTask02_attributes);
+//  myTask02Handle = osThreadNew(Task_IMU, NULL, &myTask02_attributes);
 
   /* creation of myTask03 */
   myTask03Handle = osThreadNew(Task_control, NULL, &myTask03_attributes);
@@ -309,16 +309,27 @@ void Task_control(void *argument)
 /* Private application code --------------------------------------------------*/
 /* USER CODE BEGIN Application */
 void Task_BME(void *argument) {
-  for(;;) {
-    BME280Calculation(&BME280); // Ghi thẳng kết quả vào biến toàn cục BME280
+    for (;;) {
+        osMutexAcquire(i2c3_mutex, osWaitForever);
+        BME280Calculation(&BME280);
 
-    // Sau đó cập nhật các biến double đơn lẻ để publisher gửi đi
-    bme_temp = (double)BME280.Temperature;
-    bme_humi = (double)BME280.Humidity;
+        if (BME280.Humidity == 0.0f || BME280.Temperature == 0.0f) {
+            HAL_I2C_DeInit(&hi2c3);
+            osMutexRelease(i2c3_mutex);
+            osDelay(10);
+            osMutexAcquire(i2c3_mutex, osWaitForever);
+            MX_I2C3_Init();
+            Calibdata_BME280();
+        }
 
-    cnt_bme++;
-    osDelay(pdMS_TO_TICKS(1000));
-  }
+        osMutexRelease(i2c3_mutex);
+
+        bme_temp = (double)BME280.Temperature;
+        bme_humi = (double)BME280.Humidity;
+        cnt_bme++;
+
+        osDelay(1000);
+    }
 }
 
 /* USER CODE END Application */

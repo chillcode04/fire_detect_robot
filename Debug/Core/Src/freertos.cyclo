@@ -3,4 +3,4 @@
 ../Core/Src/freertos.c:263:6:Task_IMU	1
 ../Core/Src/freertos.c:281:6:HAL_TIM_PeriodElapsedCallback	2
 ../Core/Src/freertos.c:295:6:Task_control	1
-../Core/Src/freertos.c:311:6:Task_BME	1
+../Core/Src/freertos.c:311:6:Task_BME	3

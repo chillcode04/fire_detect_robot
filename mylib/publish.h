@@ -9,6 +9,7 @@
 #include <rmw_microros/rmw_microros.h>
 
 #include <math.h>
+#include "cmsis_os.h"
 #include <std_msgs/msg/int32.h>
 #include <geometry_msgs/msg/twist.h>
 #include <nav_msgs/msg/odometry.h>
@@ -22,9 +23,11 @@
 #include <pid.h>
 #include <BME280.h>
 
+
 #define RCCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Aborting.\n",__LINE__,(int)temp_rc); }}
 #define RCSOFTCHECK(fn) { rcl_ret_t temp_rc = fn; if((temp_rc != RCL_RET_OK)){printf("Failed status on line %d: %d. Continuing.\n",__LINE__,(int)temp_rc);}}
 
+extern osMutexId_t i2c3_mutex;
 extern double x_pos, y_pos, z_pos;
 extern double vx, vy;
 extern double v_yaw;
