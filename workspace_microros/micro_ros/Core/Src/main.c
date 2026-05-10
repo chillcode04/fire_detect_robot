@@ -72,6 +72,8 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+#define USE_FUZZY 1
+#define USE_PID   0
 Motor Left_motor;
 Motor *pLeft = &Left_motor;
 Motor Right_motor;
@@ -80,6 +82,7 @@ PID_TypeDef RPID;
 PID_TypeDef LPID;
 PID_TypeDef YPID;
 
+#if USE_FUZZY
 FuzzyTuner LeftTuner;
 FuzzyTuner RightTuner;
 const int8_t Kp_Table[49] = {
@@ -92,8 +95,6 @@ const int8_t Kp_Table[49] = {
     -1,  0,  1,  1,  2,  2,  3,  // PM
      0,  0,  1,  2,  2,  3,  3   // PL (Dòng 6)
 };
-
-
 
 const int8_t Ki_Table[49] = {
 // de: NL,  NM,  NS,  ZE,  PS,  PM,  PL   |  e:
@@ -116,6 +117,7 @@ const int8_t Kd_Table[49] = {
     -2,  -1,   0,   1,   1,   2,   3,  // PM
     -2,  -1,   0,   0,   1,   2,   3   // PL
 };
+#endif /* USE_FUZZY */
 /* USER CODE END 0 */
 
 /**
@@ -158,8 +160,8 @@ int main(void)
   /* USER CODE BEGIN 2 */
   //reset_I2C();
   MPU6050_Init();
-  MPU6050_CalibGz(&MPU6050,1000);
-//  MPU6050.Gz_bias = -0.275;
+  //MPU6050_CalibGz(&MPU6050,50000);
+  MPU6050.Gz_bias = -0.076894655823707581;
   HAL_TIM_Base_Start_IT(&htim1);
   HAL_TIM_Encoder_Start_IT(&htim2, TIM_CHANNEL_ALL); //LEFT
   HAL_TIM_Encoder_Start_IT(&htim4, TIM_CHANNEL_ALL); //RIGHT
@@ -172,9 +174,10 @@ int main(void)
 
 	// --- Base timer for control loop (interrupt) ---
 	// Khoi tao Fuzzy-PID
-//  Fuzzy_Init(&LeftTuner, 300.0f, 60.0f, 0.6f, 3.0f, 0.005f, Kp_Table, Ki_Table, Kd_Table);
-//  Fuzzy_Init(&RightTuner, 300.0f, 60.0f, 0.3f, 3.0f, 0.0015f, Kp_Table, Ki_Table, Kd_Table);
-
+#if USE_FUZZY
+  Fuzzy_Init(&LeftTuner, 300.0f, 60.0f, 0.6f, 3.0f, 0.005f, Kp_Table, Ki_Table, Kd_Table);
+  Fuzzy_Init(&RightTuner, 300.0f, 60.0f, 0.3f, 3.0f, 0.0015f, Kp_Table, Ki_Table, Kd_Table);
+#endif
     // Khoi tao 2 banh xe
   Motor_Init(&Left_motor, LEFT,GPIOB, GPIO_PIN_12, GPIOB, GPIO_PIN_13,&htim3, TIM_CHANNEL_1, &htim2, 9.6, 960, 0.024);
   Motor_Init(&Right_motor,RIGHT,GPIOB, GPIO_PIN_14, GPIOB, GPIO_PIN_15,&htim3, TIM_CHANNEL_2, &htim4	, 17.7, 1770, 0.04425);
@@ -260,10 +263,6 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
-double Convert_mps_pwd(double v) {
-	return (v * 999) / (318.18 * 2 * 3.1415926f * WHEEL_RADIUS_M / 60); // pwd
-}
-
 double Convert_mps_pwm_L(double v) {
     double rpm_max = 280.0;
 	return (v * 999) / (rpm_max* 2 * 3.1415926f * WHEEL_RADIUS_M / 60);
@@ -273,26 +272,73 @@ double Convert_mps_pwm_R(double v) {
     double rpm_max = 280.0;
 	return (v * 999) / (rpm_max* 2 * 3.1415926f * WHEEL_RADIUS_M / 60);
 }
-void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
-{
-  if (htim->Instance == TIM1) {
-      Motor_GetSpeed(&Left_motor);
-	  Motor_GetSpeed(&Right_motor);
-
-//	  PID_Compute(&LPID);
-      Left_motor.Pid_output = Convert_mps_pwm_L(vL);
-
-	  Right_motor.Pid_output = Convert_mps_pwm_R(vR);
-//      Left_motor.Pid_output = 999;
+//void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+//{
+//  if (htim->Instance == TIM1) {
+//      Motor_GetSpeed(&Left_motor);
+//	  Motor_GetSpeed(&Right_motor);
 //
-//	  Right_motor.Pid_output = 999;
-//	  PID_Compute(&RPID);
+////	  PID_Compute(&LPID);
+//      Left_motor.Pid_output = Convert_mps_pwm_L(vL);
+//
+//	  Right_motor.Pid_output = Convert_mps_pwm_R(vR);
+////      Left_motor.Pid_output = 999;
+////
+////	  Right_motor.Pid_output = 999;
+////	  PID_Compute(&RPID);
+//
+//      vl_cur = Left_motor.cur_speed;
+//	  vr_cur = Right_motor.cur_speed;
+//      Motor_SetPwm(&Left_motor);
+//      Motor_SetPwm(&Right_motor);
+//   }
+//}
 
-      vl_cur = Left_motor.cur_speed;
-	  vr_cur = Right_motor.cur_speed;
-      Motor_SetPwm(&Left_motor);
-      Motor_SetPwm(&Right_motor);
-   }
+/* USER CODE BEGIN 4 */
+  void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
+{
+   if(htim->Instance == TIM1) {
+
+   		Motor_GetSpeed(&Left_motor);
+		Motor_GetSpeed(&Right_motor);
+	    vl_cur = Left_motor.cur_speed;
+		vr_cur = Right_motor.cur_speed;
+#if USE_FUZZY
+		   // ----Banh trai--------------
+		float dt = 0.01f;
+
+		float errL = Left_motor.target_speed - Left_motor.cur_speed;
+        float dErrL = (errL - global_lastErrL) / dt;
+        global_lastErrL = errL;
+
+		Fuzzy_Compute(&LeftTuner, errL, dErrL);
+		current_Kp_L = 9.6f + LeftTuner.deltaKp;
+        current_Ki_L = 960.0f + LeftTuner.deltaKi;
+        current_Kd_L = 0.024f + LeftTuner.deltaKd;
+        PID_SetTunings(&LPID, current_Kp_L, current_Ki_L, current_Kd_L);
+
+		   //------Banh phai-------------
+	   	float errR = Right_motor.target_speed - Right_motor.cur_speed;
+        float dErrR = (errR - global_lastErrR) / dt;
+        global_lastErrR = errR;
+
+		Fuzzy_Compute(&RightTuner, errR, dErrR);
+		current_Kp_R = 17.7f + RightTuner.deltaKp;
+        current_Ki_R = 1770.0f + RightTuner.deltaKi;
+        current_Kd_R = 0.04425f + RightTuner.deltaKd;
+		PID_SetTunings(&RPID, current_Kp_R, current_Ki_R, current_Kd_R);
+#endif	/* USE_FUZZY */
+
+#if defined(USE_FUZZY) || defined(USE_PID)
+		 PID_Compute(&LPID);
+		 PID_Compute(&RPID);
+#else /* No Fuzzy & No PID */
+	     Left_motor.Pid_output = Convert_mps_pwm_L(vL);
+		 Right_motor.Pid_output = Convert_mps_pwm_R(vR);
+#endif
+		 Motor_SetPwm(&Left_motor);
+		 Motor_SetPwm(&Right_motor);
+    }
 }
 /* USER CODE END 4 */
 

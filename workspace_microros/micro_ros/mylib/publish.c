@@ -112,7 +112,7 @@ void timer_callback(rcl_timer_t * timer, int64_t last_call_time)
         // ====== Publish wheel velocity ======
         wheel_vel_msg.x = vl_cur_mps;
         wheel_vel_msg.y = vr_cur_mps;
-        wheel_vel_msg.z = v_mps;
+        wheel_vel_msg.z = yaw;
 
 		RCSOFTCHECK(rcl_publish(&odom_pub, &odom_msg, NULL));
 		RCSOFTCHECK(rcl_publish(&tf_pub, &tf_msg, NULL));
