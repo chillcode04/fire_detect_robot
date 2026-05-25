@@ -13,9 +13,9 @@ class AppDrawer extends StatelessWidget {
       backgroundColor: const Color(0xFF1A1A1A), // Màu tối chuẩn HUD
       child: Column(
         children: [
-          // Phần Header màu xanh giống trong ảnh bạn gửi
           DrawerHeader(
-            decoration: const BoxDecoration(color: Color(0xFF00A896)),
+            decoration:
+                const BoxDecoration(color: Color.fromARGB(255, 228, 119, 119)),
             child: const Center(
               child: Text('MENU',
                   style: TextStyle(
@@ -24,7 +24,6 @@ class AppDrawer extends StatelessWidget {
                       fontWeight: FontWeight.bold)),
             ),
           ),
-          // Các lựa chọn chế độ
           _buildMenuItem(
               context, 'Manual Control', AppMode.manual, Icons.sports_esports),
           _buildMenuItem(context, 'Map View', AppMode.map, Icons.map),

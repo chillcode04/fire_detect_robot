@@ -3,11 +3,11 @@ import 'dart:typed_data';
 import 'dart:ui' as ui;
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import '../services/ros_service.dart';
 
 enum WaypointStatus { pending, active, completed }
 
-// 🌟 Đã thêm chế độ 'single' vào danh sách
 enum RunMode { continuous, stop5s, single }
 
 enum AppMode { manual, waypoint, map, settings }
@@ -28,15 +28,15 @@ class Waypoint {
   });
 }
 
-// 🌟 Model lưu trữ thông tin báo động
 class AlarmLog {
   final DateTime timestamp;
   final String type;
   final double x;
   final double y;
+  final Uint8List? imageBytes;
   final String imageUrl;
-  final double temperature; // Chỉ khai báo 1 lần ở đây
-  final double humidity; // Chỉ khai báo 1 lần ở đây
+  final double temperature;
+  final double humidity;
 
   AlarmLog({
     required this.timestamp,
@@ -44,8 +44,9 @@ class AlarmLog {
     required this.x,
     required this.y,
     required this.imageUrl,
-    required this.temperature, // Chỉ truyền 1 lần ở đây
-    required this.humidity, // Chỉ truyền 1 lần ở đây
+    this.imageBytes,
+    required this.temperature,
+    required this.humidity,
   });
 }
 
@@ -83,7 +84,6 @@ class NavigationProvider extends ChangeNotifier {
   String get searchQuery => _searchQuery;
 
   NavigationProvider() {
-    // 1. Lắng nghe Odom
     rosService.odomStream.listen((msg) {
       try {
         final position = msg['pose']['pose']['position'];
@@ -101,7 +101,6 @@ class NavigationProvider extends ChangeNotifier {
       }
     });
 
-    // 2. Lắng nghe Map
     rosService.mapStream.listen((msg) {
       try {
         final info = msg['info'];
@@ -116,37 +115,37 @@ class NavigationProvider extends ChangeNotifier {
         debugPrint("🚨 LỖI MAP: $e");
       }
     });
-
-    // 3. Lắng nghe AI YOLO
     rosService.cameraResultStream.listen((jsonString) {
       _handleCameraAI(jsonString);
     });
 
-    rosService.envSensorsStream.listen((jsonString) {
-      try {
-        final data = jsonDecode(jsonString);
-        // Cập nhật giá trị liên tục từ vi điều khiển
-        currentTemp = (data['temp'] ?? 0.0).toDouble();
-        currentHum = (data['hum'] ?? 0.0).toDouble();
-      } catch (e) {
-        debugPrint("🚨 LỖI JSON CẢM BIẾN: $e");
-      }
+    rosService.tempStream.listen((temp) {
+      currentTemp = temp;
+    });
+
+    rosService.humStream.listen((hum) {
+      currentHum = hum;
     });
   }
 
-  // ==========================================
-  // 🌟 LOGIC XỬ LÝ HỎA HOẠN VÀ LƯU NHẬT KÝ
-  // ==========================================
+  DateTime? _lastAlarmTime;
+
   void _handleCameraAI(String jsonString) {
     try {
       final Map<String, dynamic> data = jsonDecode(jsonString);
       String detectedClass = data['class'] ?? "";
-      double confidence = data['conf'] ?? 0.0;
+      double confidence = (data['conf'] ?? 0.0).toDouble();
+      String base64Image = data['image'] ?? ""; // ← lấy ảnh từ JSON luôn
 
       if ((detectedClass == "fire" || detectedClass == "smoke") &&
-          confidence > 0.7) {
-        if (!isFireAlarmActive) {
-          _triggerFireEmergency(detectedClass.toUpperCase());
+          confidence > 0.5) {
+        final now = DateTime.now();
+        bool cooldownPassed = _lastAlarmTime == null ||
+            now.difference(_lastAlarmTime!).inSeconds >= 10;
+
+        if (cooldownPassed) {
+          _lastAlarmTime = now;
+          _triggerFireEmergency(detectedClass.toUpperCase(), base64Image);
         }
       }
     } catch (e) {
@@ -154,40 +153,49 @@ class NavigationProvider extends ChangeNotifier {
     }
   }
 
-  void _triggerFireEmergency(String type) {
-    isFireAlarmActive = true;
-    isNavigating = false;
-    isPaused = true;
-    rosService.stopRobot();
+  void _triggerFireEmergency(String type, String base64Image) {
+    final detectedAt = DateTime.now();
+    final snapX = currentX;
+    final snapY = currentY;
+    final snapTemp = currentTemp;
+    final snapHum = currentHum;
 
-    try {
-      String currentIp =
-          rosService.ros.url.replaceAll('ws://', '').split(':')[0];
-      String snapshotUrl =
-          "http://$currentIp:8080/snapshot?topic=/camera/image_raw";
-
-      alarmLogs.insert(
-          0,
-          AlarmLog(
-            timestamp: DateTime.now(),
-            type: type,
-            x: currentX,
-            y: currentY,
-            imageUrl: snapshotUrl,
-            temperature: currentTemp,
-            humidity: currentHum,
-          ));
-
-      debugPrint("🔥 ĐÃ LƯU NHẬT KÝ ($type) TẠI X: $currentX, Y: $currentY");
-    } catch (e) {
-      debugPrint("Lỗi khi lưu log ảnh: $e");
+    if (!isFireAlarmActive) {
+      isFireAlarmActive = true;
+      isNavigating = false;
+      isPaused = true;
+      rosService.stopRobot();
     }
+
+    Uint8List? imageBytes;
+    if (base64Image.isNotEmpty) {
+      try {
+        imageBytes = base64Decode(base64Image);
+      } catch (e) {
+        debugPrint("Lỗi decode ảnh base64: $e");
+      }
+    }
+
+    alarmLogs.insert(
+      0,
+      AlarmLog(
+        timestamp: detectedAt,
+        type: type,
+        x: snapX,
+        y: snapY,
+        imageUrl: "",
+        imageBytes: imageBytes,
+        temperature: snapTemp,
+        humidity: snapHum,
+      ),
+    );
 
     notifyListeners();
   }
 
   void clearFireAlarm() {
     isFireAlarmActive = false;
+    isPaused = false;
     notifyListeners();
   }
 
@@ -204,15 +212,13 @@ class NavigationProvider extends ChangeNotifier {
       target.status = WaypointStatus.completed;
       notifyListeners();
 
-      // 🌟 NẾU CHẾ ĐỘ LÀ SINGLE -> DỪNG NGAY LẬP TỨC KHÔNG ĐI TIẾP
       if (_currentRunMode == RunMode.single) {
         isNavigating = false;
-        rosService.move(0.0, 0.0); // Ra lệnh phanh mượt mà cho robot
+        rosService.move(0.0, 0.0);
         notifyListeners();
         return;
       }
 
-      // Nếu là chạy liên tục hoặc dừng 5s thì nạp điểm tiếp theo
       if (targetIndex < waypoints.length - 1) {
         int nextIndex = targetIndex + 1;
         if (_currentRunMode == RunMode.continuous) {

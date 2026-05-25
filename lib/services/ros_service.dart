@@ -13,15 +13,15 @@ class RosService {
   Timer? _connectionTimer;
 
   // --- 1. KHAI BÁO CÁC TOPIC ---
-  Topic? envSensorsTopic;
+  Topic? tempTopic;
+  Topic? humTopic;
   Topic? cmdVelTopic;
   Topic? goalTopic;
   Topic? odomTopic;
   Topic? mapTopic;
   Topic? fireAlarmTopic;
-  Topic? cameraResultTopic; // 🌟 Đã thêm lại
+  Topic? cameraResultTopic;
 
-  // --- 2. CÁC ĐƯỜNG DÂY NÓNG (STREAMS) BÁO VỀ UI ---
   final _connectionController = StreamController<bool>.broadcast();
   Stream<bool> get connectionStream => _connectionController.stream;
 
@@ -34,12 +34,14 @@ class RosService {
   final _mapController = StreamController<dynamic>.broadcast();
   Stream<dynamic> get mapStream => _mapController.stream;
 
-  // 🌟 Loa phát JSON từ AI YOLO
   final _cameraResultController = StreamController<String>.broadcast();
   Stream<String> get cameraResultStream => _cameraResultController.stream;
 
-  final _envSensorsController = StreamController<String>.broadcast();
-  Stream<String> get envSensorsStream => _envSensorsController.stream;
+  final _tempController = StreamController<double>.broadcast();
+  Stream<double> get tempStream => _tempController.stream;
+
+  final _humController = StreamController<double>.broadcast();
+  Stream<double> get humStream => _humController.stream;
 
   void connectToRobot(String ipAddress) {
     _connectionTimer?.cancel();
@@ -80,63 +82,75 @@ class RosService {
     odomTopic = Topic(
         ros: ros,
         name: AppConfig.topicOdom,
-        type: 'nav_msgs/msg/Odometry'); // Thêm /msg/
+        type: 'geometry_msgs/msg/PoseWithCovarianceStamped');
     odomTopic?.subscribe((msg) async {
       _odomController.add(msg);
     });
 
     mapTopic = Topic(
-        ros: ros,
-        name: AppConfig.topicMap,
-        type: 'nav_msgs/msg/OccupancyGrid'); // Thêm /msg/
+        ros: ros, name: AppConfig.topicMap, type: 'nav_msgs/msg/OccupancyGrid');
     mapTopic?.subscribe((msg) async {
       _mapController.add(msg);
     });
 
     fireAlarmTopic = Topic(
-        ros: ros,
-        name: AppConfig.topicFireAlarm,
-        type: 'std_msgs/msg/Bool'); // Thêm /msg/
+        ros: ros, name: AppConfig.topicFireAlarm, type: 'std_msgs/msg/Bool');
     fireAlarmTopic?.subscribe((msg) async {
       bool isFire = msg['data'] ?? false;
       _fireAlarmController.add(isFire);
     });
 
-    cameraResultTopic = Topic(
-        ros: ros,
-        name: '/camera_result',
-        type: 'std_msgs/msg/String'); // Thêm /msg/
+    cameraResultTopic =
+        Topic(ros: ros, name: '/camera_result', type: 'std_msgs/msg/String');
     cameraResultTopic?.subscribe((msg) async {
       try {
         String jsonString = msg['data'] ?? "";
         if (jsonString.isNotEmpty) {
-          _cameraResultController.add(jsonString); // Phát tín hiệu JSON đi
+          _cameraResultController.add(jsonString);
         }
       } catch (e) {
         debugPrint("🚨 LỖI KHI NHẬN DỮ LIỆU CAMERA RESULT: $e");
       }
     });
-    envSensorsTopic = Topic(
-        ros: ros, name: AppConfig.topicEnvSensors, type: 'std_msgs/msg/String');
-    envSensorsTopic?.subscribe((msg) async {
+
+    tempTopic = Topic(
+        ros: ros,
+        name: '/bme280/temperature',
+        type: 'sensor_msgs/msg/Temperature');
+    tempTopic?.subscribe((msg) async {
       try {
-        String jsonString = msg['data'] ?? "";
-        if (jsonString.isNotEmpty) {
-          _envSensorsController.add(jsonString); // Phát tín hiệu đi
+        if (msg['temperature'] != null) {
+          _tempController.add(msg['temperature'].toDouble());
         }
       } catch (e) {
-        debugPrint("🚨 LỖI NHẬN DỮ LIỆU CẢM BIẾN: $e");
+        debugPrint("🚨 LỖI ĐỌC NHIỆT ĐỘ: $e");
+      }
+    });
+
+    humTopic = Topic(
+        ros: ros,
+        name: '/bme280/humidity',
+        type: 'sensor_msgs/msg/RelativeHumidity');
+    humTopic?.subscribe((msg) async {
+      try {
+        if (msg['relative_humidity'] != null) {
+          _humController.add(msg['relative_humidity'].toDouble());
+        }
+      } catch (e) {
+        debugPrint("🚨 LỖI ĐỌC ĐỘ ẨM: $e");
       }
     });
   }
 
   void _setupPublishers() {
     cmdVelTopic = Topic(
-        ros: ros, name: AppConfig.topicCmdVel, type: 'geometry_msgs/Twist');
+        ros: ros, name: AppConfig.topicCmdVel, type: 'geometry_msgs/msg/Twist');
     cmdVelTopic?.advertise();
 
     goalTopic = Topic(
-        ros: ros, name: AppConfig.topicGoal, type: 'geometry_msgs/PoseStamped');
+        ros: ros,
+        name: AppConfig.topicGoal,
+        type: 'geometry_msgs/msg/PoseStamped');
     goalTopic?.advertise();
   }
 
@@ -149,7 +163,6 @@ class RosService {
     cmdVelTopic?.publish(msg);
   }
 
-  // 🌟 HÀM DỪNG KHẨN CẤP (Dùng khi phát hiện cháy)
   void stopRobot() {
     if (ros.status != Status.connected) return;
     var msg = {
@@ -187,7 +200,10 @@ class RosService {
     mapTopic?.unsubscribe();
     fireAlarmTopic?.unsubscribe();
     cameraResultTopic?.unsubscribe();
-    envSensorsTopic?.unsubscribe();
+
+    tempTopic?.unsubscribe();
+    humTopic?.unsubscribe();
+
     cmdVelTopic?.unadvertise();
     goalTopic?.unadvertise();
     ros.close();

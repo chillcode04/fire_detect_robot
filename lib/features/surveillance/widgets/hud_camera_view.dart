@@ -21,19 +21,14 @@ class HudCameraView extends StatelessWidget {
       color: const Color(0xFF050505),
       child: Stack(
         children: [
-          // ==========================================
-          // 1. LỚP DƯỚI CÙNG: CAMERA STREAM
-          // ==========================================
           SizedBox(
             width: double.infinity,
             height: double.infinity,
             child: connProvider.isConnected && connProvider.ipAddress.isNotEmpty
                 ? Mjpeg(
-                    stream:
-                        survProvider.getCameraStreamUrl(connProvider.ipAddress),
+                    stream: survProvider.getCameraStreamUrl(),
                     isLive: true,
-                    fit: BoxFit
-                        .contain, // Giữ nguyên tỉ lệ khung hình của Camera
+                    fit: BoxFit.contain,
                     error: (context, error, stack) => const Center(
                       child: Text("MẤT TÍN HIỆU CAMERA",
                           style: TextStyle(
@@ -46,18 +41,10 @@ class HudCameraView extends StatelessWidget {
                     child: Icon(Icons.videocam_off,
                         color: Colors.white24, size: 50)),
           ),
-
-          // ==========================================
-          // 2. TÂM NGẮM CAMERA
-          // ==========================================
           Center(
             child:
                 Icon(Icons.add, color: primaryRed.withOpacity(0.5), size: 40),
           ),
-
-          // ==========================================
-          // 3. LỚP TRÊN CÙNG: CẢNH BÁO HỎA HOẠN & KHÓI
-          // ==========================================
           if (survProvider.isAlarmActive)
             Container(
               decoration: BoxDecoration(

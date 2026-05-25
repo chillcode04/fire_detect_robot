@@ -48,7 +48,7 @@ class _HudSettingsViewState extends State<HudSettingsView> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Icon(Icons.tune, color: primaryRed, size: 28), // 🌟 Icon đỏ
+                Icon(Icons.tune, color: primaryRed, size: 28), 
                 const SizedBox(width: 10),
                 Text("HỆ THỐNG CẤU HÌNH",
                     style: TextStyle(
@@ -59,7 +59,7 @@ class _HudSettingsViewState extends State<HudSettingsView> {
               ],
             ),
           ),
-          const Divider(color: Colors.black12, height: 30), // 🌟 Viền xám mờ
+          const Divider(color: Colors.black12, height: 30), 
 
           // ==========================================
           // PHẦN 1: KẾT NỐI ROS 2
@@ -69,7 +69,7 @@ class _HudSettingsViewState extends State<HudSettingsView> {
           TextField(
             controller: _ipController,
             style:
-                const TextStyle(color: Colors.black87), // 🌟 Chữ đen khi nhập
+                const TextStyle(color: Colors.black87),
             decoration:
                 _buildInputDecoration("Địa chỉ IP Robot (ví dụ: 192.168.x.x)"),
           ),
@@ -79,7 +79,7 @@ class _HudSettingsViewState extends State<HudSettingsView> {
               Expanded(
                   child: _buildActionButton(
                       "LƯU IP", Icons.save, Colors.grey[300]!, () {
-                // 🌟 Nút lưu xám nhạt
+                
                 context.read<ConnectionProvider>().saveIp(_ipController.text);
                 ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                     content: const Text("Đã lưu IP thành công!",
@@ -100,9 +100,9 @@ class _HudSettingsViewState extends State<HudSettingsView> {
                           ? Colors.orange
                           : (connProvider.isConnected
                               ? primaryRed.withOpacity(
-                                  0.8) // 🌟 Đang kết nối thì màu Đỏ
+                                  0.8) 
                               : primaryRed), () {
-                // 🌟 Nút kết nối màu Đỏ
+              
                 context.read<ConnectionProvider>().toggleConnection();
               })),
             ],
@@ -110,9 +110,7 @@ class _HudSettingsViewState extends State<HudSettingsView> {
 
           const SizedBox(height: 40),
 
-          // ==========================================
-          // PHẦN 2: NHẬT KÝ ẢNH HỎA HOẠN
-          // ==========================================
+         
           _buildSectionTitle("2. NHẬT KÝ BÁO ĐỘNG AI"),
           const SizedBox(height: 15),
 
@@ -121,7 +119,7 @@ class _HudSettingsViewState extends State<HudSettingsView> {
                   "Chưa có dữ liệu",
                   "Hệ thống an toàn",
                   const Icon(Icons.security,
-                      color: Colors.black38)) // 🌟 Icon an toàn xám
+                      color: Colors.black38))
               : ListView.builder(
                   shrinkWrap: true,
                   physics: const NeverScrollableScrollPhysics(),
@@ -130,7 +128,7 @@ class _HudSettingsViewState extends State<HudSettingsView> {
                     final log = navProvider.alarmLogs[index];
                     bool isFire = log.type == "FIRE";
 
-                    // 🌟 Sử dụng Material và InkWell để tạo hiệu ứng chạm đẹp mắt
+                    
                     return Container(
                       margin: const EdgeInsets.only(bottom: 10),
                       child: Material(
@@ -148,7 +146,7 @@ class _HudSettingsViewState extends State<HudSettingsView> {
                         child: InkWell(
                           borderRadius: BorderRadius.circular(8),
                           onTap: () {
-                            // Gọi hàm dẫn đường tới tọa độ của log
+                            
                             navProvider.selectWaypointByCoords(log.x, log.y);
                             navProvider.setMode(AppMode.map);
                             ScaffoldMessenger.of(context).showSnackBar(
@@ -160,25 +158,26 @@ class _HudSettingsViewState extends State<HudSettingsView> {
                             padding: const EdgeInsets.all(10),
                             child: Row(
                               children: [
-                                // Ảnh chụp từ Robot
+                                
                                 ClipRRect(
                                   borderRadius: BorderRadius.circular(4),
-                                  child: Image.network(
-                                    log.imageUrl,
-                                    width: 80,
-                                    height: 60,
-                                    fit: BoxFit.cover,
-                                    errorBuilder: (context, e, s) => Container(
-                                        width: 80,
-                                        height: 60,
-                                        color: Colors
-                                            .black12, // 🌟 Nền lỗi ảnh xám
-                                        child: const Icon(Icons.broken_image,
-                                            color: Colors.black26)),
-                                  ),
+                                  child: log.imageBytes != null
+                                      ? Image.memory(
+                                          log.imageBytes!,
+                                          width: 80,
+                                          height: 60,
+                                          fit: BoxFit.cover,
+                                        )
+                                      : Container(
+                                          width: 80,
+                                          height: 60,
+                                          color: Colors.black12,
+                                          child: const Icon(Icons.broken_image,
+                                              color: Colors.black26),
+                                        ),
                                 ),
                                 const SizedBox(width: 15),
-                                // Thông tin tọa độ và thời gian
+                               
                                 Expanded(
                                   child: Column(
                                     crossAxisAlignment:
@@ -189,7 +188,7 @@ class _HudSettingsViewState extends State<HudSettingsView> {
                                               color: isFire
                                                   ? Colors.red
                                                   : Colors
-                                                      .orange, // 🌟 Chữ đỏ hoặc cam
+                                                      .orange,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 13)),
                                       Text(
@@ -197,7 +196,7 @@ class _HudSettingsViewState extends State<HudSettingsView> {
                                           style: const TextStyle(
                                               color: Colors.black87,
                                               fontSize:
-                                                  11)), // 🌟 Chữ thông tin đen
+                                                  11)), 
 
                                       Text(
                                           "Môi trường: ${log.temperature}°C | ${log.humidity}%",
@@ -216,7 +215,7 @@ class _HudSettingsViewState extends State<HudSettingsView> {
                                   ),
                                 ),
 
-                                const SizedBox(width: 8), // Khoảng cách nhỏ
+                                const SizedBox(width: 8), 
                                 IconButton(
                                   icon: const Icon(Icons.delete_outline,
                                       color: Colors.black38, size: 20),

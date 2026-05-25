@@ -10,19 +10,15 @@ class HudControlPanel extends StatefulWidget {
 }
 
 class _HudControlPanelState extends State<HudControlPanel> {
-  // Biến lưu trữ tốc độ
-  double maxLinearSpeed = 0.5;
+  double maxLinearSpeed = 0.1;
   double maxAngularSpeed = 1.0;
 
-  // Biến trạng thái chế độ (Manual hoặc Auto)
   bool isAutoMode = false;
   Timer? _driveTimer;
   String activeDirection = 'NONE';
 
-  // 🌟 BẢNG MÀU MỚI: ĐỎ - TRẮNG
   final Color primaryRed = Colors.red;
-  final Color autoModeColor =
-      Colors.orange[800]!; // Cam đậm cho chế độ Auto để dễ phân biệt
+  final Color autoModeColor = Colors.orange[800]!;
 
   @override
   void dispose() {
@@ -50,11 +46,8 @@ class _HudControlPanelState extends State<HudControlPanel> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                  color: primaryRed
-                      .withOpacity(0.1), // 🌟 Sửa nền thành tone đỏ nhạt
-                  shape: BoxShape.circle),
-              child:
-                  Icon(Icons.camera_alt, color: primaryRed), // 🌟 Sửa màu icon
+                  color: primaryRed.withOpacity(0.1), shape: BoxShape.circle),
+              child: Icon(Icons.camera_alt, color: primaryRed),
             ),
             const SizedBox(width: 15),
             _buildActionButton(Icons.zoom_in, null),
@@ -63,11 +56,9 @@ class _HudControlPanelState extends State<HudControlPanel> {
           ],
         ),
 
-        // Nút chuyển chế độ
         const SizedBox(height: 10),
         _buildModeButton(),
 
-        // PHẦN QUAN TRỌNG: Khu vực lái xe
         Expanded(
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
@@ -75,17 +66,14 @@ class _HudControlPanelState extends State<HudControlPanel> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildVerticalSlider(
-                  label: 'V-SPEED\n${maxLinearSpeed.toStringAsFixed(1)} m/s',
+                  label: 'Velocity\n${maxLinearSpeed.toStringAsFixed(1)} m/s',
                   value: maxLinearSpeed,
                   min: 0.1,
                   max: 1.0,
                   color: primaryRed,
                   onChanged: (val) => setState(() => maxLinearSpeed = val),
                 ),
-
                 const Spacer(flex: 2),
-
-                // D-Pad ở giữa
                 Expanded(
                   flex: 5,
                   child: Center(
@@ -99,11 +87,9 @@ class _HudControlPanelState extends State<HudControlPanel> {
                     ),
                   ),
                 ),
-
                 const Spacer(flex: 2),
-
                 _buildVerticalSlider(
-                  label: 'OMEGA\n${maxAngularSpeed.toStringAsFixed(1)} rad',
+                  label: 'Omega\n${maxAngularSpeed.toStringAsFixed(1)} rad',
                   value: maxAngularSpeed,
                   min: 0.2,
                   max: 2.0,
@@ -118,10 +104,6 @@ class _HudControlPanelState extends State<HudControlPanel> {
       ],
     );
   }
-
-  // ==========================================
-  // CÁC WIDGET PHỤ TRỢ (GIAO DIỆN SÁNG)
-  // ==========================================
 
   Widget _buildVerticalSlider({
     required String label,
@@ -139,8 +121,7 @@ class _HudControlPanelState extends State<HudControlPanel> {
             label,
             textAlign: TextAlign.center,
             style: TextStyle(
-                color:
-                    Colors.black87, // 🌟 Chữ màu đen để nổi bật trên nền trắng
+                color: Colors.black87,
                 fontSize: 11,
                 fontFamily: 'monospace',
                 fontWeight: FontWeight.bold),
@@ -152,9 +133,8 @@ class _HudControlPanelState extends State<HudControlPanel> {
               child: SliderTheme(
                 data: SliderTheme.of(context).copyWith(
                   activeTrackColor: color,
-                  inactiveTrackColor:
-                      Colors.grey[300], // 🌟 Track chìm màu xám nhạt
-                  thumbColor: color, // 🌟 Cục tròn màu đỏ
+                  inactiveTrackColor: Colors.grey[300],
+                  thumbColor: color,
                   trackHeight: 8.0,
                   thumbShape:
                       const RoundSliderThumbShape(enabledThumbRadius: 12.0),
@@ -199,13 +179,12 @@ class _HudControlPanelState extends State<HudControlPanel> {
     );
   }
 
-  // Widget cụm D-Pad
   Widget _buildDPad() {
     return Container(
       width: 160,
       height: 160,
       decoration: BoxDecoration(
-          color: Colors.grey[200], // 🌟 Nền cụm D-Pad màu xám nhạt
+          color: Colors.grey[200],
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
@@ -241,13 +220,13 @@ class _HudControlPanelState extends State<HudControlPanel> {
               decoration: BoxDecoration(
                   color: activeDirection == 'NONE'
                       ? primaryRed.withOpacity(0.2)
-                      : Colors.white, // 🌟 Nền nút Stop màu trắng
+                      : Colors.white,
                   shape: BoxShape.circle,
                   border: Border.all(color: primaryRed, width: 2)),
               child: const Center(
                 child: Text('STOP',
                     style: TextStyle(
-                        color: Colors.red, // 🌟 Chữ đỏ
+                        color: Colors.red,
                         fontSize: 11,
                         fontWeight: FontWeight.bold)),
               ),
